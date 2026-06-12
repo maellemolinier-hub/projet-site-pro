@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Estimation immobilière gratuite sur Cannes, Grasse et la Côte d'Azur. Basée sur les données DVF officielles. Recevez votre pré-dossier d'estimation en quelques minutes.">
+  <meta name="keywords" content="estimation immobilière gratuite Cannes, prix immobilier Grasse, valeur appartement Côte d'Azur, DVF estimation">
+  <title>Estimation Gratuite · Maëlle Jean Immobilier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/estimation.css">
+</head>
+<body>
+
+  <nav id="navbar" class="scrolled">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-main" style="color:var(--color-primary)">Maëlle Jean</span>
+        <span class="logo-sub" style="color:var(--color-text-muted)">Immobilier · Côte d'Azur</span>
+      </a>
+      <div class="nav-links">
+        <a href="../index.html#services">Services</a>
+        <a href="../index.html#home-staging">Home Staging</a>
+        <a href="../index.html#expertise">À propos</a>
+        <a href="vlog.html">Vlog</a>
+        <a href="estimation.html" class="nav-cta-link">Estimer mon bien</a>
+        <a href="rendez-vous.html" class="nav-cta">Prendre RDV</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container" style="position:relative;z-index:1">
+      <span class="section-tag section-tag--light">Outil gratuit</span>
+      <h1>Combien vaut votre bien ?</h1>
+      <p>Estimation basée sur les données DVF officielles + mon expertise locale depuis 2018. Recevez votre pré-dossier personnalisé en moins de 5 minutes.</p>
+    </div>
+  </section>
+
+  <section class="estimation-section">
+    <div class="container">
+      <div class="estimation-layout">
+
+        <!-- FORMULAIRE -->
+        <div class="estimation-form-wrap">
+          <div class="estimation-steps">
+            <div class="estep estep--active" data-step="1">
+              <div class="estep-num">1</div>
+              <span>Votre bien</span>
+            </div>
+            <div class="estep-line"></div>
+            <div class="estep" data-step="2">
+              <div class="estep-num">2</div>
+              <span>Caractéristiques</span>
+            </div>
+            <div class="estep-line"></div>
+            <div class="estep" data-step="3">
+              <div class="estep-num">3</div>
+              <span>Votre pré-dossier</span>
+            </div>
+          </div>
+
+          <form id="estimationForm" class="estimation-form">
+            <!-- ÉTAPE 1 -->
+            <div class="form-step form-step--active" id="step1">
+              <h3>Votre bien immobilier</h3>
+              <p class="step-desc">Commençons par les informations de base pour localiser votre bien.</p>
+
+              <div class="form-group">
+                <label>Type de bien *</label>
+                <div class="radio-cards">
+                  <label class="radio-card">
+                    <input type="radio" name="type" value="appartement" required>
+                    <div class="rcard-content">
+                      <span class="rcard-icon">🏢</span>
+                      <span>Appartement</span>
+                    </div>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="type" value="maison">
+                    <div class="rcard-content">
+                      <span class="rcard-icon">🏠</span>
+                      <span>Maison</span>
+                    </div>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="type" value="villa">
+                    <div class="rcard-content">
+                      <span class="rcard-icon">🌴</span>
+                      <span>Villa</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="adresse">Adresse ou secteur *</label>
+                <div class="input-with-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <input type="text" id="adresse" placeholder="Ex: 12 rue de la Mer, Cannes 06400" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="ville">Ville *</label>
+                  <select id="ville" required>
+                    <option value="">Choisir...</option>
+                    <option>Cannes</option>
+                    <option>Grasse</option>
+                    <option>Mougins</option>
+                    <option>Antibes</option>
+                    <option>Valbonne</option>
+                    <option>Le Cannet</option>
+                    <option>Mandelieu-la-Napoule</option>
+                    <option>Vallauris</option>
+                    <option>Biot</option>
+                    <option>Autre (06)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="surface">Surface habitable (m²) *</label>
+                  <input type="number" id="surface" placeholder="Ex: 75" min="15" max="1000" required>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-primary btn-next" onclick="nextStep(1)">
+                Continuer →
+              </button>
+            </div>
+
+            <!-- ÉTAPE 2 -->
+            <div class="form-step" id="step2">
+              <h3>Caractéristiques du bien</h3>
+              <p class="step-desc">Ces détails affinent considérablement l'estimation.</p>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="pieces">Nombre de pièces *</label>
+                  <select id="pieces" required>
+                    <option value="">Choisir...</option>
+                    <option value="1">Studio / T1</option>
+                    <option value="2">T2 — 2 pièces</option>
+                    <option value="3">T3 — 3 pièces</option>
+                    <option value="4">T4 — 4 pièces</option>
+                    <option value="5">T5 — 5 pièces</option>
+                    <option value="6">6 pièces et +</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="etage">Étage / Situation</label>
+                  <select id="etage">
+                    <option value="rdc">Rez-de-chaussée</option>
+                    <option value="inter" selected>Étage intermédiaire</option>
+                    <option value="dernier">Dernier étage</option>
+                    <option value="na">N/A (maison)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="annee">Année de construction</label>
+                  <select id="annee">
+                    <option value="">Non précisé</option>
+                    <option value="avant1950">Avant 1950</option>
+                    <option value="1950-1970">1950 – 1970</option>
+                    <option value="1971-1990">1971 – 1990</option>
+                    <option value="1991-2010">1991 – 2010</option>
+                    <option value="apres2010">Après 2010</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="etat">État général *</label>
+                  <select id="etat" required>
+                    <option value="">Choisir...</option>
+                    <option value="excellent">Excellent (refait à neuf)</option>
+                    <option value="bon">Bon état (entretenu)</option>
+                    <option value="moyen">État moyen (rafraîchissement)</option>
+                    <option value="travaux">À rénover</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Équipements & atouts</label>
+                <div class="checkbox-grid">
+                  <label class="check-item">
+                    <input type="checkbox" name="atouts" value="parking"> Parking / Garage
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="atouts" value="terrasse"> Terrasse / Balcon
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="atouts" value="piscine"> Piscine
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="atouts" value="vue_mer"> Vue mer
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="atouts" value="ascenseur"> Ascenseur
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="atouts" value="cave"> Cave / Cellier
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="atouts" value="gardien"> Gardien / Digicode
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="atouts" value="jardin"> Jardin privatif
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="dpe">Classe énergétique (DPE)</label>
+                <div class="dpe-select" id="dpeSelect">
+                  <button type="button" class="dpe-btn" data-val="A">A</button>
+                  <button type="button" class="dpe-btn dpe-B" data-val="B">B</button>
+                  <button type="button" class="dpe-btn dpe-C" data-val="C">C</button>
+                  <button type="button" class="dpe-btn dpe-D dpe-selected" data-val="D">D</button>
+                  <button type="button" class="dpe-btn dpe-E" data-val="E">E</button>
+                  <button type="button" class="dpe-btn dpe-F" data-val="F">F</button>
+                  <button type="button" class="dpe-btn dpe-G" data-val="G">G</button>
+                  <button type="button" class="dpe-btn dpe-nc" data-val="nc">NC</button>
+                </div>
+                <input type="hidden" id="dpe" value="D">
+              </div>
+
+              <div class="form-nav">
+                <button type="button" class="btn btn-outline" onclick="prevStep(2)">← Retour</button>
+                <button type="button" class="btn btn-primary" onclick="nextStep(2)">Voir mon estimation →</button>
+              </div>
+            </div>
+
+            <!-- ÉTAPE 3 — RÉSULTAT -->
+            <div class="form-step" id="step3">
+              <div class="estimation-loading" id="estLoading">
+                <div class="loading-orb"></div>
+                <p>Analyse des données DVF en cours<span class="dots">...</span></p>
+                <p class="loading-sub">Comparaison avec les transactions récentes de votre secteur</p>
+              </div>
+
+              <div class="estimation-result" id="estResult" style="display:none">
+                <div class="result-header">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <h3>Votre pré-dossier d'estimation</h3>
+                  <p id="resultAdresse"></p>
+                </div>
+
+                <div class="result-price-block">
+                  <div class="result-range">
+                    <div class="price-low">
+                      <span class="price-label">Fourchette basse</span>
+                      <span class="price-val" id="priceLow">—</span>
+                    </div>
+                    <div class="price-estimated">
+                      <span class="price-label-main">Estimation centrale</span>
+                      <span class="price-main" id="priceMain">—</span>
+                      <span class="price-sqm" id="priceSqm">— €/m²</span>
+                    </div>
+                    <div class="price-high">
+                      <span class="price-label">Fourchette haute</span>
+                      <span class="price-val" id="priceHigh">—</span>
+                    </div>
+                  </div>
+                  <div class="result-confidence">
+                    <div class="confidence-bar">
+                      <div class="confidence-fill" id="confidenceFill"></div>
+                    </div>
+                    <span id="confidenceLabel">Confiance : haute</span>
+                  </div>
+                </div>
+
+                <div class="result-dvf-data">
+                  <h4>📊 Transactions DVF de référence</h4>
+                  <p>Basé sur <strong id="dvfCount">12</strong> ventes récentes dans votre secteur (données officielles Etalab).</p>
+                  <table class="dvf-table">
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th>Surface</th>
+                        <th>Prix</th>
+                        <th>€/m²</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dvfTableBody"></tbody>
+                  </table>
+                </div>
+
+                <div class="result-factors">
+                  <h4>🔍 Facteurs analysés</h4>
+                  <div class="factors-grid" id="factorsGrid"></div>
+                </div>
+
+                <div class="result-cta-block">
+                  <div class="result-cta-content">
+                    <h4>Affiner avec une expertise terrain ?</h4>
+                    <p>Cette estimation DVF est un solide point de départ. Une visite de Maëlle permet d'ajuster en tenant compte des détails que les données ne voient pas : luminosité, vue, finitions, voisinage.</p>
+                    <div class="result-cta-btns">
+                      <a href="rendez-vous.html" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Confirmer avec Maëlle (gratuit)
+                      </a>
+                      <button type="button" class="btn btn-outline" onclick="downloadReport()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Télécharger le rapport PDF
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Lead capture pour recevoir le rapport -->
+                <div class="result-lead-form" id="leadForm">
+                  <h4>Recevoir votre rapport complet par email</h4>
+                  <p>Je vous envoie le pré-dossier PDF + mes recommandations personnalisées.</p>
+                  <form onsubmit="submitLead(event)">
+                    <div class="lead-form-row">
+                      <input type="text" placeholder="Prénom" required>
+                      <input type="tel" placeholder="Téléphone" required>
+                      <input type="email" placeholder="Email" required>
+                      <button type="submit" class="btn btn-primary">Recevoir →</button>
+                    </div>
+                    <p class="form-notice">Maëlle vous rappelle sous 2h. Aucun spam.</p>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- SIDEBAR INFO -->
+        <aside class="estimation-sidebar">
+          <div class="sidebar-card sidebar-card--expert">
+            <div class="sidebar-expert-img"></div>
+            <div class="sidebar-expert-info">
+              <strong>Maëlle Jean</strong>
+              <span>Experte en valeur vénale</span>
+            </div>
+            <p>"Mon estimation DVF vous donne la vérité du marché — pas un chiffre pour vous faire signer."</p>
+            <a href="rendez-vous.html" class="btn btn-primary btn-sm">Prendre RDV gratuit</a>
+          </div>
+
+          <div class="sidebar-card">
+            <h5>🛡️ Pourquoi nos estimations sont fiables</h5>
+            <ul class="sidebar-list">
+              <li>Données DVF officielles (Etalab)</li>
+              <li>Ajustement par caractéristiques</li>
+              <li>Connaissance micro-locale depuis 2018</li>
+              <li>Certifiée expert valeur vénale</li>
+            </ul>
+          </div>
+
+          <div class="sidebar-card sidebar-card--accent">
+            <h5>📚 Guide vendeur gratuit</h5>
+            <p>Téléchargez mes 5 conseils pour vendre au meilleur prix sans stress.</p>
+            <a href="ebook.html" class="btn btn-outline btn-sm">Télécharger →</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2024 Maëlle Jean Immobilier · <a href="../index.html">Accueil</a> · <a href="#">Mentions légales</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="chatbot-widget" id="chatbotWidget">
+    <button class="chatbot-toggle" id="chatbotToggle">
+      <div class="chatbot-avatar-ring">
+        <div class="chatbot-avatar">MJ</div>
+      </div>
+    </button>
+    <div class="chatbot-panel" id="chatbotPanel">
+      <div class="chatbot-header">
+        <div class="chatbot-header-info">
+          <div class="chatbot-header-avatar">MJ</div>
+          <div><strong>Maëlle Jean</strong><span>Assistante IA</span></div>
+        </div>
+        <button class="chatbot-close" id="chatbotClose">×</button>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chat-msg chat-msg--bot">
+          <div class="chat-avatar">MJ</div>
+          <div class="chat-bubble">Besoin d'aide pour remplir le formulaire d'estimation ? Je suis là ! 😊</div>
+        </div>
+      </div>
+      <div class="chatbot-input-area">
+        <input type="text" id="chatInput" placeholder="Posez votre question..." onkeypress="handleChatKey(event)">
+        <button onclick="sendMessage()" class="chat-send">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="../js/main.js"></script>
+  <script src="../js/chatbot.js"></script>
+  <script src="../js/estimation.js"></script>
+</body>
+</html>

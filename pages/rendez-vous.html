@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Prenez rendez-vous en ligne avec Maëlle Jean, conseillère immobilière sur la Côte d'Azur. Consultation gratuite et sans engagement à Cannes, Grasse et environs.">
+  <title>Prendre Rendez-vous · Maëlle Jean Immobilier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .rdv-section { padding: 60px 0 100px; background: var(--color-bg); }
+    .rdv-layout { display: grid; grid-template-columns: 1fr 400px; gap: 60px; align-items: flex-start; }
+
+    /* Type RDV */
+    .rdv-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 36px; }
+    .rdv-type-card {
+      border: 2px solid var(--color-border); border-radius: var(--radius-lg);
+      padding: 20px 16px; text-align: center; cursor: pointer; transition: var(--transition);
+      background: var(--color-white);
+    }
+    .rdv-type-card:hover, .rdv-type-card.selected {
+      border-color: var(--color-accent); background: rgba(200,169,110,0.06);
+    }
+    .rdv-type-card.selected { border-width: 2px; box-shadow: 0 0 0 3px rgba(200,169,110,0.15); }
+    .rdv-type-icon { font-size: 2rem; margin-bottom: 10px; }
+    .rdv-type-card h4 { font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px; }
+    .rdv-type-card p { font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.4; }
+
+    /* Calendar */
+    .rdv-form-wrap {
+      background: var(--color-white); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: 48px; box-shadow: var(--shadow-sm);
+    }
+    .rdv-form-wrap h3 { font-size: 1.6rem; margin-bottom: 8px; }
+    .rdv-form-wrap > p { color: var(--color-text-muted); margin-bottom: 32px; font-size: 0.93rem; }
+
+    /* Calendar widget */
+    .calendar-widget { margin-bottom: 28px; }
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .cal-header h4 { font-size: 1rem; color: var(--color-primary); }
+    .cal-nav {
+      background: none; border: 1px solid var(--color-border); width: 32px; height: 32px;
+      border-radius: 50%; cursor: pointer; font-size: 1rem; color: var(--color-text-muted);
+      display: flex; align-items: center; justify-content: center; transition: var(--transition);
+    }
+    .cal-nav:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-primary); }
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;
+    }
+    .cal-day-header { font-size: 0.72rem; font-weight: 700; color: var(--color-text-muted); padding: 6px 0; text-transform: uppercase; }
+    .cal-day {
+      width: 100%; aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 0.82rem; cursor: pointer; transition: var(--transition);
+      color: var(--color-text-muted); background: none; border: none; font-family: var(--font-sans);
+    }
+    .cal-day:hover:not(.cal-day--empty):not(.cal-day--past):not(.cal-day--unavailable) {
+      background: var(--color-accent); color: var(--color-primary); font-weight: 700;
+    }
+    .cal-day--today { border: 2px solid var(--color-accent); color: var(--color-accent); font-weight: 700; }
+    .cal-day--selected { background: var(--color-primary); color: white; font-weight: 700; }
+    .cal-day--available { color: var(--color-primary); font-weight: 600; }
+    .cal-day--past, .cal-day--unavailable { color: var(--color-border); cursor: not-allowed; }
+    .cal-day--empty { cursor: default; }
+
+    /* Time slots */
+    .time-slots { margin-bottom: 28px; }
+    .time-slots h4 { font-size: 0.9rem; font-weight: 700; color: var(--color-primary); margin-bottom: 14px; }
+    .slots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .slot-btn {
+      padding: 10px 8px; border: 1.5px solid var(--color-border); border-radius: var(--radius);
+      background: var(--color-white); font-size: 0.82rem; font-weight: 600;
+      color: var(--color-text-muted); cursor: pointer; transition: var(--transition);
+      font-family: var(--font-sans); text-align: center;
+    }
+    .slot-btn:hover { border-color: var(--color-accent); color: var(--color-primary); }
+    .slot-btn.selected { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-primary); }
+    .slot-btn.booked { background: var(--color-surface); color: var(--color-border); cursor: not-allowed; text-decoration: line-through; }
+
+    /* Formulaire infos */
+    .rdv-info-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .rdv-input {
+      padding: 13px 16px; border: 1.5px solid var(--color-border); border-radius: var(--radius);
+      font-size: 0.92rem; font-family: var(--font-sans); outline: none; background: var(--color-bg);
+      transition: var(--transition); width: 100%;
+    }
+    .rdv-input:focus { border-color: var(--color-accent); background: white; box-shadow: 0 0 0 3px rgba(200,169,110,0.12); }
+    textarea.rdv-input { resize: vertical; min-height: 90px; }
+    .rdv-submit {
+      background: var(--color-accent); color: var(--color-primary); border: none;
+      padding: 16px 28px; border-radius: var(--radius); font-size: 0.95rem;
+      font-weight: 700; cursor: pointer; transition: var(--transition);
+      font-family: var(--font-sans); display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .rdv-submit:hover { background: #b8954f; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(200,169,110,0.35); }
+
+    /* Confirmation */
+    .rdv-confirmation { display: none; text-align: center; padding: 40px 20px; }
+    .rdv-confirmation .confirm-icon { font-size: 4rem; margin-bottom: 20px; }
+    .rdv-confirmation h3 { color: var(--color-primary); margin-bottom: 12px; }
+    .rdv-confirmation p { color: var(--color-text-muted); margin-bottom: 24px; }
+    .confirm-details {
+      background: var(--color-surface); border-radius: var(--radius-lg); padding: 24px;
+      text-align: left; margin-bottom: 28px;
+    }
+    .confirm-row { display: flex; gap: 12px; margin-bottom: 10px; font-size: 0.9rem; }
+    .confirm-row:last-child { margin-bottom: 0; }
+
+    /* Sidebar */
+    .rdv-sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .rdv-side-card {
+      background: var(--color-white); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: 24px;
+    }
+    .rdv-side-card h5 { font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 14px; }
+    .rdv-side-card p { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.6; }
+    .rdv-contact-item { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 0.88rem; }
+    .rdv-contact-item svg { color: var(--color-accent); flex-shrink: 0; }
+    .rdv-contact-item a { color: var(--color-primary); font-weight: 600; }
+    .rdv-reassurances { display: flex; flex-direction: column; gap: 12px; }
+    .reassurance-item { display: flex; gap: 12px; align-items: flex-start; font-size: 0.83rem; }
+    .reassurance-item svg { color: var(--color-accent); flex-shrink: 0; margin-top: 2px; }
+    .reassurance-text strong { display: block; color: var(--color-primary); font-size: 0.85rem; }
+    .reassurance-text span { color: var(--color-text-muted); }
+
+    @media (max-width: 1024px) { .rdv-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) {
+      .rdv-form-wrap { padding: 28px 20px; }
+      .rdv-types { grid-template-columns: 1fr; }
+      .slots-grid { grid-template-columns: repeat(3, 1fr); }
+      .form-row-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="scrolled">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-main" style="color:var(--color-primary)">Maëlle Jean</span>
+        <span class="logo-sub" style="color:var(--color-text-muted)">Immobilier · Côte d'Azur</span>
+      </a>
+      <div class="nav-links">
+        <a href="../index.html#services">Services</a>
+        <a href="../index.html#home-staging">Home Staging</a>
+        <a href="../index.html#expertise">À propos</a>
+        <a href="vlog.html">Vlog</a>
+        <a href="estimation.html" class="nav-cta-link">Estimer mon bien</a>
+        <a href="rendez-vous.html" class="nav-cta">Prendre RDV</a>
+      </div>
+      <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container" style="position:relative;z-index:1">
+      <span class="section-tag section-tag--light">Consultation offerte</span>
+      <h1>Prenons rendez-vous</h1>
+      <p>Premier échange gratuit et sans engagement. Je vous donne une analyse honnête de votre bien et de son marché.</p>
+    </div>
+  </section>
+
+  <section class="rdv-section">
+    <div class="container">
+      <div class="rdv-layout">
+
+        <div class="rdv-form-wrap">
+          <h3>Choisissez votre créneau</h3>
+          <p>Consultation téléphonique, en visio ou à domicile — selon votre préférence.</p>
+
+          <!-- Type -->
+          <div class="rdv-types" id="rdvTypes">
+            <div class="rdv-type-card selected" onclick="selectType(this, 'telephone')">
+              <div class="rdv-type-icon">📞</div>
+              <h4>Téléphonique</h4>
+              <p>Rapide, efficace — idéal pour une première prise de contact</p>
+            </div>
+            <div class="rdv-type-card" onclick="selectType(this, 'visio')">
+              <div class="rdv-type-icon">💻</div>
+              <h4>Visio</h4>
+              <p>Zoom ou WhatsApp — je peux voir vos photos et documents</p>
+            </div>
+            <div class="rdv-type-card" onclick="selectType(this, 'domicile')">
+              <div class="rdv-type-icon">🏠</div>
+              <h4>À domicile</h4>
+              <p>Je viens chez vous — idéal pour l'estimation et le home staging</p>
+            </div>
+          </div>
+
+          <!-- Calendar -->
+          <div class="calendar-widget">
+            <div class="cal-header">
+              <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+              <h4 id="calTitle">Janvier 2025</h4>
+              <button class="cal-nav" onclick="changeMonth(1)">›</button>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+          </div>
+
+          <!-- Time slots -->
+          <div class="time-slots" id="timeSlots" style="display:none">
+            <h4 id="slotsTitle">Créneaux disponibles</h4>
+            <div class="slots-grid" id="slotsGrid"></div>
+          </div>
+
+          <!-- Form -->
+          <div id="rdvFormSection" style="display:none">
+            <div class="rdv-info-form" id="rdvInfoForm">
+              <h4 style="font-size:1rem;color:var(--color-primary);margin-bottom:4px">Vos coordonnées</h4>
+              <p style="font-size:0.83rem;color:var(--color-text-muted);margin-bottom:16px">Pour confirmer votre rendez-vous.</p>
+              <div class="form-row-2">
+                <input class="rdv-input" type="text" placeholder="Prénom *" required id="rdvPrenom">
+                <input class="rdv-input" type="text" placeholder="Nom *" required id="rdvNom">
+              </div>
+              <input class="rdv-input" type="tel" placeholder="Téléphone *" required id="rdvTel">
+              <input class="rdv-input" type="email" placeholder="Email *" required id="rdvEmail">
+              <textarea class="rdv-input" placeholder="Parlez-moi brièvement de votre projet (optionnel)..." id="rdvMessage"></textarea>
+              <button type="button" class="rdv-submit" onclick="confirmRdv()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                Confirmer mon rendez-vous
+              </button>
+              <p class="form-notice" style="text-align:center;margin-top:8px">Vous recevrez une confirmation par SMS et email dans les 30 minutes.</p>
+            </div>
+          </div>
+
+          <!-- Confirmation -->
+          <div class="rdv-confirmation" id="rdvConfirmation">
+            <div class="confirm-icon">🎉</div>
+            <h3>Rendez-vous confirmé !</h3>
+            <p>Maëlle vous attend. Vous recevrez un SMS de confirmation dans quelques minutes.</p>
+            <div class="confirm-details" id="confirmDetails"></div>
+            <a href="../index.html" class="btn btn-primary">Retour à l'accueil</a>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="rdv-sidebar">
+          <div class="rdv-side-card">
+            <h5>Contact direct</h5>
+            <div class="rdv-contact-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.11 6.11l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              <a href="tel:+33600000000">06 XX XX XX XX</a>
+            </div>
+            <div class="rdv-contact-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:contact@maeljean-immo.fr">contact@maeljean-immo.fr</a>
+            </div>
+            <div class="rdv-contact-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span style="color:var(--color-text-muted)">Lun – Sam · 9h – 19h</span>
+            </div>
+          </div>
+
+          <div class="rdv-side-card">
+            <h5>Pourquoi consulter Maëlle ?</h5>
+            <div class="rdv-reassurances">
+              <div class="reassurance-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                <div class="reassurance-text">
+                  <strong>100% gratuit, 0% engagement</strong>
+                  <span>Pas de pression commerciale. Je vous donne mon analyse honnête.</span>
+                </div>
+              </div>
+              <div class="reassurance-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                <div class="reassurance-text">
+                  <strong>Estimation DVF incluse</strong>
+                  <span>Je prépare une analyse de marché avant notre rencontre.</span>
+                </div>
+              </div>
+              <div class="reassurance-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                <div class="reassurance-text">
+                  <strong>+7 ans sur Cannes & Grasse</strong>
+                  <span>Je connais les micro-secteurs et les acheteurs actifs.</span>
+                </div>
+              </div>
+              <div class="reassurance-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                <div class="reassurance-text">
+                  <strong>Disponible 6j/7</strong>
+                  <span>Créneaux matin, midi, soir et week-end.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rdv-side-card" style="background:var(--color-primary);border-color:transparent;color:white">
+            <h5 style="color:var(--color-accent)">Ce que vous obtiendrez</h5>
+            <ul style="display:flex;flex-direction:column;gap:10px;font-size:0.83rem;color:rgba(255,255,255,0.8)">
+              <li>📋 Analyse complète de votre bien</li>
+              <li>💰 Fourchette de prix réaliste (DVF)</li>
+              <li>🏠 Conseils home staging personnalisés</li>
+              <li>📅 Stratégie de mise en vente</li>
+              <li>❓ Réponses à toutes vos questions</li>
+            </ul>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2024 Maëlle Jean Immobilier · <a href="../index.html">Accueil</a> · <a href="#">Mentions légales</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="chatbot-widget" id="chatbotWidget">
+    <button class="chatbot-toggle" id="chatbotToggle">
+      <div class="chatbot-avatar-ring"><div class="chatbot-avatar">MJ</div></div>
+    </button>
+    <div class="chatbot-panel" id="chatbotPanel">
+      <div class="chatbot-header">
+        <div class="chatbot-header-info">
+          <div class="chatbot-header-avatar">MJ</div>
+          <div><strong>Maëlle Jean</strong><span>Assistante IA</span></div>
+        </div>
+        <button class="chatbot-close" id="chatbotClose">×</button>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chat-msg"><div class="chat-avatar">MJ</div><div class="chat-bubble">Besoin d'aide pour choisir un créneau ? 😊</div></div>
+      </div>
+      <div class="chatbot-input-area">
+        <input type="text" id="chatInput" placeholder="Votre question..." onkeypress="handleChatKey(event)">
+        <button onclick="sendMessage()" class="chat-send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/chatbot.js"></script>
+  <script>
+    let selectedDate = null, selectedTime = null, selectedType = 'telephone';
+    let currentMonth, currentYear;
+
+    function init() {
+      const now = new Date();
+      currentMonth = now.getMonth();
+      currentYear = now.getFullYear();
+      renderCalendar();
+    }
+
+    function selectType(el, type) {
+      document.querySelectorAll('.rdv-type-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedType = type;
+    }
+
+    function changeMonth(dir) {
+      currentMonth += dir;
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+      document.getElementById('calTitle').textContent = `${months[currentMonth]} ${currentYear}`;
+      const grid = document.getElementById('calGrid');
+      const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+      grid.innerHTML = days.map(d => `<div class="cal-day-header">${d}</div>`).join('');
+      const first = new Date(currentYear, currentMonth, 1);
+      const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const today = new Date();
+      let startDow = first.getDay(); // 0=sun
+      startDow = startDow === 0 ? 6 : startDow - 1;
+      for (let i = 0; i < startDow; i++) {
+        grid.innerHTML += `<button class="cal-day cal-day--empty" disabled></button>`;
+      }
+      for (let d = 1; d <= lastDay; d++) {
+        const date = new Date(currentYear, currentMonth, d);
+        const dow = date.getDay();
+        const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const isUnavail = dow === 0;
+        const isToday = d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
+        const isSelected = selectedDate && d === selectedDate.getDate() && currentMonth === selectedDate.getMonth() && currentYear === selectedDate.getFullYear();
+        let cls = 'cal-day';
+        if (isPast) cls += ' cal-day--past';
+        else if (isUnavail) cls += ' cal-day--unavailable';
+        else cls += ' cal-day--available';
+        if (isToday) cls += ' cal-day--today';
+        if (isSelected) cls += ' cal-day--selected';
+        grid.innerHTML += `<button class="${cls}" onclick="selectDay(${d})">${d}</button>`;
+      }
+    }
+
+    function selectDay(d) {
+      selectedDate = new Date(currentYear, currentMonth, d);
+      renderCalendar();
+      renderSlots(selectedDate);
+    }
+
+    const timeSlotsList = ['9h00','9h30','10h00','10h30','11h00','11h30','14h00','14h30','15h00','15h30','16h00','16h30','17h00','17h30','18h00','18h30'];
+    const bookedSlots = ['10h00','14h30','16h00'];
+
+    function renderSlots(date) {
+      const daysArr = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+      const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+      document.getElementById('slotsTitle').textContent = `${daysArr[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]}`;
+      const grid = document.getElementById('slotsGrid');
+      grid.innerHTML = timeSlotsList.map(t => {
+        const isBooked = bookedSlots.includes(t);
+        return `<button class="slot-btn ${isBooked ? 'booked' : ''}" onclick="${!isBooked ? `selectSlot(this, '${t}')` : ''}" ${isBooked ? 'disabled' : ''}>${t}</button>`;
+      }).join('');
+      document.getElementById('timeSlots').style.display = 'block';
+      document.getElementById('rdvFormSection').style.display = 'none';
+      selectedTime = null;
+    }
+
+    function selectSlot(el, time) {
+      document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedTime = time;
+      document.getElementById('rdvFormSection').style.display = 'block';
+      document.getElementById('rdvFormSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function confirmRdv() {
+      const prenom = document.getElementById('rdvPrenom').value;
+      const nom = document.getElementById('rdvNom').value;
+      const tel = document.getElementById('rdvTel').value;
+      const email = document.getElementById('rdvEmail').value;
+      if (!prenom || !nom || !tel || !email) { showToast('⚠️ Merci de remplir tous les champs obligatoires'); return; }
+      if (!selectedDate || !selectedTime) { showToast('⚠️ Veuillez choisir une date et un créneau'); return; }
+
+      const typeLabels = { telephone: 'Téléphonique', visio: 'Visio (Zoom/WhatsApp)', domicile: 'À domicile' };
+      const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+      const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+      const dateStr = `${days[selectedDate.getDay()]} ${selectedDate.getDate()} ${months[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`;
+
+      document.getElementById('rdvInfoForm').style.display = 'none';
+      document.getElementById('rdvConfirmation').style.display = 'block';
+      document.getElementById('confirmDetails').innerHTML = `
+        <div class="confirm-row">📅 <strong>Date :</strong> ${dateStr} à ${selectedTime}</div>
+        <div class="confirm-row">📞 <strong>Type :</strong> ${typeLabels[selectedType]}</div>
+        <div class="confirm-row">👤 <strong>Nom :</strong> ${prenom} ${nom}</div>
+        <div class="confirm-row">📱 <strong>Tél :</strong> ${tel}</div>
+        <div class="confirm-row">📧 <strong>Email :</strong> ${email}</div>
+      `;
+      showToast('✅ Rendez-vous confirmé ! Maëlle vous contacte bientôt.');
+      if (typeof sendLeadNotification === 'function') {
+        sendLeadNotification({ type: 'rdv', prenom, nom, tel, email, date: dateStr, heure: selectedTime, rdvType: selectedType, timestamp: new Date().toISOString() });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
