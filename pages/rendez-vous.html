@@ -3,295 +3,284 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Prenez rendez-vous en ligne avec Maëlle Jean, conseillère immobilière sur la Côte d'Azur. Consultation gratuite et sans engagement à Cannes, Grasse et environs.">
-  <title>Prendre Rendez-vous · Maëlle Jean Immobilier</title>
+  <meta name="description" content="Prenez rendez-vous avec Maëlle Jean, experte immobilière 2.0 sur la Côte d'Azur. Consultation gratuite sans engagement.">
+  <title>Prendre Rendez-vous · Maëlle Jean — Agent Immo 2.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    .rdv-section { padding: 60px 0 100px; background: var(--color-bg); }
-    .rdv-layout { display: grid; grid-template-columns: 1fr 400px; gap: 60px; align-items: flex-start; }
-
-    /* Type RDV */
-    .rdv-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 36px; }
-    .rdv-type-card {
-      border: 2px solid var(--color-border); border-radius: var(--radius-lg);
-      padding: 20px 16px; text-align: center; cursor: pointer; transition: var(--transition);
-      background: var(--color-white);
-    }
-    .rdv-type-card:hover, .rdv-type-card.selected {
-      border-color: var(--color-accent); background: rgba(200,169,110,0.06);
-    }
-    .rdv-type-card.selected { border-width: 2px; box-shadow: 0 0 0 3px rgba(200,169,110,0.15); }
-    .rdv-type-icon { font-size: 2rem; margin-bottom: 10px; }
-    .rdv-type-card h4 { font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px; }
-    .rdv-type-card p { font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.4; }
-
-    /* Calendar */
-    .rdv-form-wrap {
-      background: var(--color-white); border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg); padding: 48px; box-shadow: var(--shadow-sm);
-    }
-    .rdv-form-wrap h3 { font-size: 1.6rem; margin-bottom: 8px; }
-    .rdv-form-wrap > p { color: var(--color-text-muted); margin-bottom: 32px; font-size: 0.93rem; }
-
-    /* Calendar widget */
-    .calendar-widget { margin-bottom: 28px; }
-    .cal-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 16px;
-    }
-    .cal-header h4 { font-size: 1rem; color: var(--color-primary); }
-    .cal-nav {
-      background: none; border: 1px solid var(--color-border); width: 32px; height: 32px;
-      border-radius: 50%; cursor: pointer; font-size: 1rem; color: var(--color-text-muted);
-      display: flex; align-items: center; justify-content: center; transition: var(--transition);
-    }
-    .cal-nav:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-primary); }
-    .cal-grid {
-      display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;
-    }
-    .cal-day-header { font-size: 0.72rem; font-weight: 700; color: var(--color-text-muted); padding: 6px 0; text-transform: uppercase; }
-    .cal-day {
-      width: 100%; aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center;
-      justify-content: center; font-size: 0.82rem; cursor: pointer; transition: var(--transition);
-      color: var(--color-text-muted); background: none; border: none; font-family: var(--font-sans);
-    }
-    .cal-day:hover:not(.cal-day--empty):not(.cal-day--past):not(.cal-day--unavailable) {
-      background: var(--color-accent); color: var(--color-primary); font-weight: 700;
-    }
-    .cal-day--today { border: 2px solid var(--color-accent); color: var(--color-accent); font-weight: 700; }
-    .cal-day--selected { background: var(--color-primary); color: white; font-weight: 700; }
-    .cal-day--available { color: var(--color-primary); font-weight: 600; }
-    .cal-day--past, .cal-day--unavailable { color: var(--color-border); cursor: not-allowed; }
-    .cal-day--empty { cursor: default; }
-
-    /* Time slots */
-    .time-slots { margin-bottom: 28px; }
-    .time-slots h4 { font-size: 0.9rem; font-weight: 700; color: var(--color-primary); margin-bottom: 14px; }
-    .slots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .slot-btn {
-      padding: 10px 8px; border: 1.5px solid var(--color-border); border-radius: var(--radius);
-      background: var(--color-white); font-size: 0.82rem; font-weight: 600;
-      color: var(--color-text-muted); cursor: pointer; transition: var(--transition);
-      font-family: var(--font-sans); text-align: center;
-    }
-    .slot-btn:hover { border-color: var(--color-accent); color: var(--color-primary); }
-    .slot-btn.selected { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-primary); }
-    .slot-btn.booked { background: var(--color-surface); color: var(--color-border); cursor: not-allowed; text-decoration: line-through; }
-
-    /* Formulaire infos */
-    .rdv-info-form { display: flex; flex-direction: column; gap: 16px; }
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .rdv-input {
-      padding: 13px 16px; border: 1.5px solid var(--color-border); border-radius: var(--radius);
-      font-size: 0.92rem; font-family: var(--font-sans); outline: none; background: var(--color-bg);
-      transition: var(--transition); width: 100%;
-    }
-    .rdv-input:focus { border-color: var(--color-accent); background: white; box-shadow: 0 0 0 3px rgba(200,169,110,0.12); }
-    textarea.rdv-input { resize: vertical; min-height: 90px; }
-    .rdv-submit {
-      background: var(--color-accent); color: var(--color-primary); border: none;
-      padding: 16px 28px; border-radius: var(--radius); font-size: 0.95rem;
-      font-weight: 700; cursor: pointer; transition: var(--transition);
-      font-family: var(--font-sans); display: flex; align-items: center; justify-content: center; gap: 10px;
-    }
-    .rdv-submit:hover { background: #b8954f; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(200,169,110,0.35); }
-
-    /* Confirmation */
-    .rdv-confirmation { display: none; text-align: center; padding: 40px 20px; }
-    .rdv-confirmation .confirm-icon { font-size: 4rem; margin-bottom: 20px; }
-    .rdv-confirmation h3 { color: var(--color-primary); margin-bottom: 12px; }
-    .rdv-confirmation p { color: var(--color-text-muted); margin-bottom: 24px; }
-    .confirm-details {
-      background: var(--color-surface); border-radius: var(--radius-lg); padding: 24px;
-      text-align: left; margin-bottom: 28px;
-    }
-    .confirm-row { display: flex; gap: 12px; margin-bottom: 10px; font-size: 0.9rem; }
-    .confirm-row:last-child { margin-bottom: 0; }
-
-    /* Sidebar */
-    .rdv-sidebar { display: flex; flex-direction: column; gap: 20px; }
-    .rdv-side-card {
-      background: var(--color-white); border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg); padding: 24px;
-    }
-    .rdv-side-card h5 { font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 14px; }
-    .rdv-side-card p { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.6; }
-    .rdv-contact-item { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 0.88rem; }
-    .rdv-contact-item svg { color: var(--color-accent); flex-shrink: 0; }
-    .rdv-contact-item a { color: var(--color-primary); font-weight: 600; }
-    .rdv-reassurances { display: flex; flex-direction: column; gap: 12px; }
-    .reassurance-item { display: flex; gap: 12px; align-items: flex-start; font-size: 0.83rem; }
-    .reassurance-item svg { color: var(--color-accent); flex-shrink: 0; margin-top: 2px; }
-    .reassurance-text strong { display: block; color: var(--color-primary); font-size: 0.85rem; }
-    .reassurance-text span { color: var(--color-text-muted); }
-
-    @media (max-width: 1024px) { .rdv-layout { grid-template-columns: 1fr; } }
-    @media (max-width: 768px) {
-      .rdv-form-wrap { padding: 28px 20px; }
-      .rdv-types { grid-template-columns: 1fr; }
-      .slots-grid { grid-template-columns: repeat(3, 1fr); }
-      .form-row-2 { grid-template-columns: 1fr; }
-    }
+    .rdv-section{padding:var(--section) 0 calc(var(--section)*1.2);background:var(--cream)}
+    .rdv-layout{display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:flex-start}
+    .quick-contact{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px}
+    .qc-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:var(--r);font-size:.9rem;font-weight:700;font-family:var(--font-body);cursor:pointer;border:none;transition:var(--ease);text-decoration:none;white-space:nowrap}
+    .qc-wa{background:#25D366;color:white;box-shadow:0 4px 16px rgba(37,211,102,.3)}
+    .qc-wa:hover{background:#1da851;transform:translateY(-2px)}
+    .qc-tel{background:var(--navy);color:white}
+    .qc-tel:hover{background:var(--navy-mid);transform:translateY(-2px)}
+    .rdv-block{background:var(--white);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-bottom:20px;box-shadow:var(--sh-sm)}
+    .rdv-block-head{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px}
+    .block-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+    .rdv-block-head h3{font-size:1rem;color:var(--navy);font-family:var(--font-body);font-weight:700;margin-bottom:2px}
+    .rdv-block-head p{font-size:.78rem;color:var(--muted)}
+    .rdv-block-body{padding:24px}
+    .gcal-placeholder{text-align:center;padding:36px 20px;background:var(--cream);border-radius:var(--r)}
+    .gcal-placeholder .icon{font-size:2.8rem;margin-bottom:12px}
+    .gcal-placeholder p{color:var(--muted);font-size:.88rem;margin-bottom:20px;line-height:1.65}
+    .rdv-types{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+    .rdv-type-card{border:2px solid var(--border);border-radius:var(--r);padding:16px 10px;text-align:center;cursor:pointer;transition:var(--ease);background:var(--white)}
+    .rdv-type-card:hover,.rdv-type-card.selected{border-color:var(--coral);background:rgba(255,85,51,.04)}
+    .rdv-type-card.selected{box-shadow:0 0 0 3px rgba(255,85,51,.12)}
+    .rdv-type-icon{font-size:1.7rem;margin-bottom:6px}
+    .rdv-type-card h4{font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:2px;font-family:var(--font-body)}
+    .rdv-type-card p{font-size:.68rem;color:var(--muted);line-height:1.3}
+    .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .cal-header h4{font-size:.92rem;color:var(--navy);font-family:var(--font-body);font-weight:700}
+    .cal-nav{background:none;border:1px solid var(--border);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:var(--ease)}
+    .cal-nav:hover{background:var(--coral);border-color:var(--coral);color:white}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;margin-bottom:20px}
+    .cal-day-header{font-size:.65rem;font-weight:700;color:var(--muted);padding:5px 0;text-transform:uppercase}
+    .cal-day{width:100%;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;cursor:pointer;transition:var(--ease);color:var(--muted);background:none;border:none;font-family:var(--font-body)}
+    .cal-day:hover:not(.cal-day--empty):not(.cal-day--past):not(.cal-day--unavailable){background:var(--coral);color:white;font-weight:700}
+    .cal-day--today{border:2px solid var(--coral);color:var(--coral);font-weight:700}
+    .cal-day--selected{background:var(--navy);color:white;font-weight:700}
+    .cal-day--available{color:var(--navy);font-weight:600}
+    .cal-day--past,.cal-day--unavailable{color:var(--border);cursor:not-allowed}
+    .cal-day--empty{cursor:default}
+    .slots-label{font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:10px;font-family:var(--font-body)}
+    .slots-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:22px}
+    .slot-btn{padding:9px 6px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--white);font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;transition:var(--ease);font-family:var(--font-body);text-align:center}
+    .slot-btn:hover{border-color:var(--coral);color:var(--navy)}
+    .slot-btn.selected{background:var(--coral);border-color:var(--coral);color:white}
+    .slot-btn.booked{background:var(--cream);color:var(--border);cursor:not-allowed;text-decoration:line-through}
+    .rdv-form{display:flex;flex-direction:column;gap:12px}
+    .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .rdv-input{padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--r);font-size:.88rem;font-family:var(--font-body);outline:none;background:var(--cream);transition:var(--ease);width:100%;color:var(--text)}
+    .rdv-input:focus{border-color:var(--coral);background:white;box-shadow:0 0 0 3px rgba(255,85,51,.08)}
+    textarea.rdv-input{resize:vertical;min-height:76px}
+    .form-divider{border-top:1px solid var(--border);padding-top:18px;margin-bottom:4px}
+    .form-divider h4{font-size:.92rem;font-weight:700;color:var(--navy);font-family:var(--font-body);margin-bottom:3px}
+    .form-divider p{font-size:.78rem;color:var(--muted);margin-bottom:14px}
+    .rdv-confirm{display:none;text-align:center;padding:32px 16px}
+    .rdv-confirm .ci{font-size:3rem;margin-bottom:14px}
+    .rdv-confirm h3{color:var(--navy);margin-bottom:8px;font-family:var(--font-body);font-size:1.2rem}
+    .rdv-confirm p{color:var(--muted);margin-bottom:20px;font-size:.88rem}
+    .cd{background:var(--cream);border-radius:var(--r);padding:18px;text-align:left;margin-bottom:20px}
+    .cd-row{display:flex;gap:8px;margin-bottom:7px;font-size:.85rem;color:var(--text)}
+    .rdv-sidebar{display:flex;flex-direction:column;gap:18px;position:sticky;top:96px}
+    .rdv-side-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-xl);padding:22px}
+    .rdv-side-card h5{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin-bottom:14px}
+    .side-wa-card{background:#f0fff5;border-color:#b7efd0}
+    .side-tel{display:block;font-size:1.15rem;font-weight:700;color:var(--navy);margin-bottom:14px;transition:var(--ease)}
+    .side-tel:hover{color:var(--coral)}
+    .side-row{display:flex;align-items:center;gap:9px;margin-bottom:10px;font-size:.84rem;color:var(--muted)}
+    .side-row svg{color:var(--coral);flex-shrink:0}
+    .rdv-reassurance{display:flex;flex-direction:column;gap:11px}
+    .ra-item{display:flex;gap:9px;align-items:flex-start;font-size:.8rem}
+    .ra-item svg{color:var(--coral);flex-shrink:0;margin-top:2px}
+    .ra-item strong{display:block;color:var(--navy);font-size:.83rem;margin-bottom:1px}
+    .ra-item span{color:var(--muted)}
+    .perks-list{display:flex;flex-direction:column;gap:8px}
+    .perks-list li{font-size:.82rem;color:rgba(255,255,255,.8)}
+    @media(max-width:1024px){.rdv-layout{grid-template-columns:1fr}.rdv-sidebar{position:static}}
+    @media(max-width:768px){.rdv-types{grid-template-columns:1fr}.slots-grid{grid-template-columns:repeat(3,1fr)}.form-row-2{grid-template-columns:1fr}.quick-contact{flex-direction:column}}
   </style>
 </head>
 <body>
 
   <nav id="navbar" class="scrolled">
-    <div class="nav-container">
-      <a href="../index.html" class="nav-logo">
-        <span class="logo-main" style="color:var(--color-primary)">Maëlle Jean</span>
-        <span class="logo-sub" style="color:var(--color-text-muted)">Immobilier · Côte d'Azur</span>
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand">
+        <span class="brand-name">Maëlle Jean</span>
+        <span class="brand-tag">Agent Immo 2.0 · Côte d'Azur</span>
       </a>
-      <div class="nav-links">
-        <a href="../index.html#services">Services</a>
-        <a href="../index.html#home-staging">Home Staging</a>
-        <a href="../index.html#expertise">À propos</a>
-        <a href="vlog.html">Vlog</a>
-        <a href="estimation.html" class="nav-cta-link">Estimer mon bien</a>
+      <div class="nav-menu" id="navLinks">
+        <a href="../index.html#agent20">Mon approche</a>
+        <a href="../index.html#tech">Technologies</a>
+        <a href="../index.html#staging">Home Staging</a>
+        <a href="vlog.html">Conseils</a>
+        <a href="estimation.html" class="nav-accent">Estimer mon bien</a>
         <a href="rendez-vous.html" class="nav-cta">Prendre RDV</a>
       </div>
-      <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+      <button class="hamburger" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
   <section class="page-hero">
     <div class="container" style="position:relative;z-index:1">
-      <span class="section-tag section-tag--light">Consultation offerte</span>
-      <h1>Prenons rendez-vous</h1>
+      <div class="stag stag--light">Consultation offerte</div>
+      <h1>Prenons<br><em>rendez-vous</em></h1>
       <p>Premier échange gratuit et sans engagement. Je vous donne une analyse honnête de votre bien et de son marché.</p>
     </div>
   </section>
 
   <section class="rdv-section">
     <div class="container">
+
+      <div class="quick-contact">
+        <a href="https://wa.me/33767632274?text=Bonjour%20Ma%C3%ABlle%20!%20Je%20souhaite%20prendre%20rendez-vous%20pour%20mon%20projet%20immobilier." target="_blank" rel="noopener" class="qc-btn qc-wa">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+          Écrire sur WhatsApp — réponse sous 1h
+        </a>
+        <a href="tel:+33767632274" class="qc-btn qc-tel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.11 6.11l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          Appeler : 07 67 63 22 74
+        </a>
+      </div>
+
       <div class="rdv-layout">
+        <div>
 
-        <div class="rdv-form-wrap">
-          <h3>Choisissez votre créneau</h3>
-          <p>Consultation téléphonique, en visio ou à domicile — selon votre préférence.</p>
-
-          <!-- Type -->
-          <div class="rdv-types" id="rdvTypes">
-            <div class="rdv-type-card selected" onclick="selectType(this, 'telephone')">
-              <div class="rdv-type-icon">📞</div>
-              <h4>Téléphonique</h4>
-              <p>Rapide, efficace — idéal pour une première prise de contact</p>
-            </div>
-            <div class="rdv-type-card" onclick="selectType(this, 'visio')">
-              <div class="rdv-type-icon">💻</div>
-              <h4>Visio</h4>
-              <p>Zoom ou WhatsApp — je peux voir vos photos et documents</p>
-            </div>
-            <div class="rdv-type-card" onclick="selectType(this, 'domicile')">
-              <div class="rdv-type-icon">🏠</div>
-              <h4>À domicile</h4>
-              <p>Je viens chez vous — idéal pour l'estimation et le home staging</p>
-            </div>
-          </div>
-
-          <!-- Calendar -->
-          <div class="calendar-widget">
-            <div class="cal-header">
-              <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
-              <h4 id="calTitle">Janvier 2025</h4>
-              <button class="cal-nav" onclick="changeMonth(1)">›</button>
-            </div>
-            <div class="cal-grid" id="calGrid"></div>
-          </div>
-
-          <!-- Time slots -->
-          <div class="time-slots" id="timeSlots" style="display:none">
-            <h4 id="slotsTitle">Créneaux disponibles</h4>
-            <div class="slots-grid" id="slotsGrid"></div>
-          </div>
-
-          <!-- Form -->
-          <div id="rdvFormSection" style="display:none">
-            <div class="rdv-info-form" id="rdvInfoForm">
-              <h4 style="font-size:1rem;color:var(--color-primary);margin-bottom:4px">Vos coordonnées</h4>
-              <p style="font-size:0.83rem;color:var(--color-text-muted);margin-bottom:16px">Pour confirmer votre rendez-vous.</p>
-              <div class="form-row-2">
-                <input class="rdv-input" type="text" placeholder="Prénom *" required id="rdvPrenom">
-                <input class="rdv-input" type="text" placeholder="Nom *" required id="rdvNom">
+          <!-- Bloc 1 : Google Agenda -->
+          <div class="rdv-block">
+            <div class="rdv-block-head">
+              <div class="block-icon" style="background:rgba(66,133,244,.1)">📅</div>
+              <div>
+                <h3>Réserver via Google Agenda</h3>
+                <p>Sélectionnez un créneau directement dans mon agenda en temps réel</p>
               </div>
-              <input class="rdv-input" type="tel" placeholder="Téléphone *" required id="rdvTel">
-              <input class="rdv-input" type="email" placeholder="Email *" required id="rdvEmail">
-              <textarea class="rdv-input" placeholder="Parlez-moi brièvement de votre projet (optionnel)..." id="rdvMessage"></textarea>
-              <button type="button" class="rdv-submit" onclick="confirmRdv()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
-                Confirmer mon rendez-vous
-              </button>
-              <p class="form-notice" style="text-align:center;margin-top:8px">Vous recevrez une confirmation par SMS et email dans les 30 minutes.</p>
+            </div>
+            <div class="rdv-block-body">
+              <div class="gcal-placeholder">
+                <div class="icon">📅</div>
+                <!--
+                  MAELLE : pour activer la réservation Google Agenda :
+                  1. Allez dans Google Agenda > Paramètres > Planification de rendez-vous
+                  2. Créez une page de réservation
+                  3. Copiez l'URL et remplacez l'iframe ci-dessous :
+                  <iframe src="VOTRE_URL_ICI" width="100%" height="550" frameborder="0"></iframe>
+                  Ou utilisez Calendly (gratuit) : https://calendly.com/VOTRE-COMPTE
+                -->
+                <p><strong>Agenda de réservation en cours de configuration</strong><br>En attendant, écrivez-moi directement sur WhatsApp ou utilisez le formulaire ci-dessous. Je vous confirme votre créneau sous 30 minutes.</p>
+                <a href="https://wa.me/33767632274?text=Bonjour%20Ma%C3%ABlle%20!%20Je%20souhaite%20prendre%20rendez-vous%20pour%20mon%20projet%20immobilier." target="_blank" rel="noopener" class="btn btn-wa" style="margin:0 auto">
+                  <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+                  WhatsApp — réponse &lt; 1h
+                </a>
+              </div>
             </div>
           </div>
 
-          <!-- Confirmation -->
-          <div class="rdv-confirmation" id="rdvConfirmation">
-            <div class="confirm-icon">🎉</div>
-            <h3>Rendez-vous confirmé !</h3>
-            <p>Maëlle vous attend. Vous recevrez un SMS de confirmation dans quelques minutes.</p>
-            <div class="confirm-details" id="confirmDetails"></div>
-            <a href="../index.html" class="btn btn-primary">Retour à l'accueil</a>
+          <!-- Bloc 2 : Formulaire manuel -->
+          <div class="rdv-block">
+            <div class="rdv-block-head">
+              <div class="block-icon" style="background:rgba(255,85,51,.1)">✍️</div>
+              <div>
+                <h3>Ou choisissez un créneau manuellement</h3>
+                <p>Je vous confirme par SMS sous 30 minutes</p>
+              </div>
+            </div>
+            <div class="rdv-block-body">
+              <div class="rdv-types" id="rdvTypes">
+                <div class="rdv-type-card selected" onclick="selectType(this,'telephone')">
+                  <div class="rdv-type-icon">📞</div>
+                  <h4>Téléphonique</h4>
+                  <p>Rapide, efficace</p>
+                </div>
+                <div class="rdv-type-card" onclick="selectType(this,'visio')">
+                  <div class="rdv-type-icon">💻</div>
+                  <h4>Visio</h4>
+                  <p>Zoom ou WhatsApp</p>
+                </div>
+                <div class="rdv-type-card" onclick="selectType(this,'domicile')">
+                  <div class="rdv-type-icon">🏡</div>
+                  <h4>À domicile</h4>
+                  <p>Idéal estimation</p>
+                </div>
+              </div>
+
+              <div class="cal-header">
+                <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
+                <h4 id="calTitle"></h4>
+                <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
+              </div>
+              <div class="cal-grid" id="calGrid"></div>
+
+              <div id="timeSlots" style="display:none">
+                <div class="slots-label" id="slotsTitle"></div>
+                <div class="slots-grid" id="slotsGrid"></div>
+              </div>
+
+              <div id="rdvFormSection" style="display:none">
+                <div id="rdvInfoForm" class="rdv-form">
+                  <div class="form-divider">
+                    <h4>Vos coordonnées</h4>
+                    <p>Pour confirmer votre rendez-vous.</p>
+                  </div>
+                  <div class="form-row-2">
+                    <input class="rdv-input" type="text" placeholder="Prénom *" id="rdvPrenom">
+                    <input class="rdv-input" type="text" placeholder="Nom *" id="rdvNom">
+                  </div>
+                  <input class="rdv-input" type="tel" placeholder="Téléphone *" id="rdvTel">
+                  <input class="rdv-input" type="email" placeholder="Email *" id="rdvEmail">
+                  <textarea class="rdv-input" placeholder="Votre projet en quelques mots (optionnel)..." id="rdvMessage"></textarea>
+                  <button type="button" class="btn btn-coral" style="width:100%;justify-content:center" onclick="confirmRdv()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                    Confirmer mon rendez-vous
+                  </button>
+                  <p style="text-align:center;font-size:.74rem;color:var(--muted)">Confirmation SMS dans les 30 minutes.</p>
+                </div>
+              </div>
+
+              <div class="rdv-confirm" id="rdvConfirmation">
+                <div class="ci">🎉</div>
+                <h3>Rendez-vous confirmé !</h3>
+                <p>Maëlle vous attend. Vous recevrez une confirmation sous 30 minutes.</p>
+                <div class="cd" id="confirmDetails"></div>
+                <a href="https://wa.me/33767632274" target="_blank" rel="noopener" class="btn btn-wa" style="margin:0 auto 14px">
+                  <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+                  Confirmer sur WhatsApp
+                </a>
+                <a href="../index.html" class="btn btn-outline">Retour à l'accueil</a>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Sidebar -->
         <aside class="rdv-sidebar">
-          <div class="rdv-side-card">
-            <h5>Contact direct</h5>
-            <div class="rdv-contact-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.11 6.11l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-              <a href="tel:+33767632274">07 67 63 22 74</a>
+          <div class="rdv-side-card side-wa-card">
+            <h5>Contact instantané</h5>
+            <a href="https://wa.me/33767632274?text=Bonjour%20Ma%C3%ABlle%20!%20Je%20souhaite%20prendre%20rendez-vous%20pour%20mon%20projet%20immobilier." target="_blank" rel="noopener" class="btn btn-wa" style="width:100%;justify-content:center;margin-bottom:12px">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+              WhatsApp — réponse &lt; 1h
+            </a>
+            <div class="side-row">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.11 6.11l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              <a href="tel:+33767632274" style="color:var(--navy);font-weight:700">07 67 63 22 74</a>
             </div>
-            <div class="rdv-contact-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              <a href="mailto:maelle.jean@liberkeys.com">maelle.jean@liberkeys.com</a>
-            </div>
-            <div class="rdv-contact-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              <span style="color:var(--color-text-muted)">Lun – Sam · 9h – 19h</span>
+            <div class="side-row">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span>Lun – Sam · 9h – 19h</span>
             </div>
           </div>
 
           <div class="rdv-side-card">
-            <h5>Pourquoi consulter Maëlle ?</h5>
-            <div class="rdv-reassurances">
-              <div class="reassurance-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
-                <div class="reassurance-text">
-                  <strong>100% gratuit, 0% engagement</strong>
-                  <span>Pas de pression commerciale. Je vous donne mon analyse honnête.</span>
-                </div>
+            <h5>Pourquoi Maëlle ?</h5>
+            <div class="rdv-reassurance">
+              <div class="ra-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                <div><strong>100% gratuit, 0% engagement</strong><span>Analyse honnête de votre bien sans pression.</span></div>
               </div>
-              <div class="reassurance-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
-                <div class="reassurance-text">
-                  <strong>Estimation DVF incluse</strong>
-                  <span>Je prépare une analyse de marché avant notre rencontre.</span>
-                </div>
+              <div class="ra-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                <div><strong>Estimation DVF incluse</strong><span>Données officielles, zéro approximation.</span></div>
               </div>
-              <div class="reassurance-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
-                <div class="reassurance-text">
-                  <strong>+7 ans sur Cannes & Grasse</strong>
-                  <span>Je connais les micro-secteurs et les acheteurs actifs.</span>
-                </div>
+              <div class="ra-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                <div><strong>+7 ans sur Cannes &amp; Grasse</strong><span>Je connais les micro-secteurs et les acheteurs actifs.</span></div>
               </div>
-              <div class="reassurance-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
-                <div class="reassurance-text">
-                  <strong>Disponible 6j/7</strong>
-                  <span>Créneaux matin, midi, soir et week-end.</span>
-                </div>
+              <div class="ra-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+                <div><strong>Disponible 6j/7</strong><span>Créneaux matin, midi, soir et week-end.</span></div>
               </div>
             </div>
           </div>
 
-          <div class="rdv-side-card" style="background:var(--color-primary);border-color:transparent;color:white">
-            <h5 style="color:var(--color-accent)">Ce que vous obtiendrez</h5>
-            <ul style="display:flex;flex-direction:column;gap:10px;font-size:0.83rem;color:rgba(255,255,255,0.8)">
+          <div class="rdv-side-card" style="background:var(--navy);border-color:transparent">
+            <h5 style="color:var(--coral)">Ce que vous obtenez</h5>
+            <ul class="perks-list">
               <li>📋 Analyse complète de votre bien</li>
               <li>💰 Fourchette de prix réaliste (DVF)</li>
               <li>🏠 Conseils home staging personnalisés</li>
@@ -300,37 +289,79 @@
             </ul>
           </div>
         </aside>
-
       </div>
     </div>
   </section>
 
-  <footer class="footer">
+  <footer class="site-footer">
     <div class="container">
-      <div class="footer-bottom">
-        <p>© 2024 Maëlle Jean Immobilier · <a href="../index.html">Accueil</a> · <a href="#">Mentions légales</a></p>
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-logo">Maëlle Jean</div>
+          <p>Experte immobilière 2.0 sur la Côte d'Azur.<br>Cannes · Grasse · Mougins · Antibes</p>
+          <div class="footer-socials">
+            <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+            <a href="https://www.instagram.com/azurimmo_maelle/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="https://wa.me/33767632274" target="_blank" rel="noopener" aria-label="WhatsApp" style="background:#25D366;border-color:#25D366;color:white"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-nav-col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="../index.html">Accueil</a></li>
+            <li><a href="estimation.html">Estimation gratuite</a></li>
+            <li><a href="vlog.html">Conseils &amp; Vlog</a></li>
+            <li><a href="ebook.html">E-book gratuit</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <h5>Zones</h5>
+          <ul><li>Cannes</li><li>Grasse</li><li>Mougins</li><li>Antibes · Mandelieu</li></ul>
+        </div>
+        <div class="footer-contact-col">
+          <h5>Contact</h5>
+          <a href="tel:+33767632274" class="ftr-phone">07 67 63 22 74</a>
+          <a href="https://wa.me/33767632274" target="_blank" rel="noopener" class="btn btn-wa btn-sm" style="justify-content:center">WhatsApp</a>
+        </div>
       </div>
+      <div class="footer-bar"><p>© 2025 Maëlle Jean · <a href="#">Mentions légales</a></p></div>
     </div>
   </footer>
 
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/33767632274?text=Bonjour%20Ma%C3%ABlle%20!%20Je%20souhaite%20discuter%20de%20mon%20projet%20immobilier." target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+    <span class="wa-float-label">Écrire sur WhatsApp</span>
+  </a>
+
   <div class="chatbot-widget" id="chatbotWidget">
-    <button class="chatbot-toggle" id="chatbotToggle">
-      <div class="chatbot-avatar-ring"><div class="chatbot-avatar">MJ</div></div>
+    <button class="chatbot-toggle" id="chatbotToggle" aria-label="Ouvrir le chat">
+      <div class="chatbot-avatar-ring">
+        <img src="../images/avatar-maelle.png" alt="Maëlle" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="chatbot-avatar" style="display:none">MJ</div>
+      </div>
     </button>
     <div class="chatbot-panel" id="chatbotPanel">
       <div class="chatbot-header">
         <div class="chatbot-header-info">
           <div class="chatbot-header-avatar">MJ</div>
-          <div><strong>Maëlle Jean</strong><span>Assistante IA</span></div>
+          <div><strong>Maëlle Jean</strong><span>Assistante IA · répond instantanément</span></div>
         </div>
         <button class="chatbot-close" id="chatbotClose">×</button>
       </div>
       <div class="chatbot-messages" id="chatbotMessages">
-        <div class="chat-msg"><div class="chat-avatar">MJ</div><div class="chat-bubble">Besoin d'aide pour choisir un créneau ? 😊</div></div>
+        <div class="chat-msg chat-msg--bot">
+          <div class="chat-avatar">MJ</div>
+          <div class="chat-bubble">Bonjour ! 👋 Besoin d'aide pour choisir un créneau ?</div>
+        </div>
+        <div class="chat-suggestions" id="chatSuggestions">
+          <button onclick="sendSuggestion('Je veux estimer mon bien')">🏠 Estimer mon bien</button>
+          <button onclick="sendSuggestion('Comment se déroule une vente ?')">❓ Comment ça marche ?</button>
+        </div>
       </div>
       <div class="chatbot-input-area">
         <input type="text" id="chatInput" placeholder="Votre question..." onkeypress="handleChatKey(event)">
-        <button onclick="sendMessage()" class="chat-send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg></button>
+        <button onclick="sendMessage()" class="chat-send"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg></button>
       </div>
     </div>
   </div>
@@ -339,120 +370,77 @@
   <script src="../js/main.js"></script>
   <script src="../js/chatbot.js"></script>
   <script>
-    let selectedDate = null, selectedTime = null, selectedType = 'telephone';
-    let currentMonth, currentYear;
-
-    function init() {
-      const now = new Date();
-      currentMonth = now.getMonth();
-      currentYear = now.getFullYear();
-      renderCalendar();
-    }
-
-    function selectType(el, type) {
-      document.querySelectorAll('.rdv-type-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedType = type;
-    }
-
-    function changeMonth(dir) {
-      currentMonth += dir;
-      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-      renderCalendar();
-    }
-
-    function renderCalendar() {
-      const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-      document.getElementById('calTitle').textContent = `${months[currentMonth]} ${currentYear}`;
-      const grid = document.getElementById('calGrid');
-      const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-      grid.innerHTML = days.map(d => `<div class="cal-day-header">${d}</div>`).join('');
-      const first = new Date(currentYear, currentMonth, 1);
-      const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
-      const today = new Date();
-      let startDow = first.getDay(); // 0=sun
-      startDow = startDow === 0 ? 6 : startDow - 1;
-      for (let i = 0; i < startDow; i++) {
-        grid.innerHTML += `<button class="cal-day cal-day--empty" disabled></button>`;
-      }
-      for (let d = 1; d <= lastDay; d++) {
-        const date = new Date(currentYear, currentMonth, d);
-        const dow = date.getDay();
-        const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-        const isUnavail = dow === 0;
-        const isToday = d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
-        const isSelected = selectedDate && d === selectedDate.getDate() && currentMonth === selectedDate.getMonth() && currentYear === selectedDate.getFullYear();
-        let cls = 'cal-day';
-        if (isPast) cls += ' cal-day--past';
-        else if (isUnavail) cls += ' cal-day--unavailable';
-        else cls += ' cal-day--available';
-        if (isToday) cls += ' cal-day--today';
-        if (isSelected) cls += ' cal-day--selected';
-        grid.innerHTML += `<button class="${cls}" onclick="selectDay(${d})">${d}</button>`;
+    let selectedDate=null,selectedTime=null,selectedType='telephone';
+    let currentMonth,currentYear;
+    function init(){const n=new Date();currentMonth=n.getMonth();currentYear=n.getFullYear();renderCalendar();}
+    function selectType(el,type){document.querySelectorAll('.rdv-type-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');selectedType=type;}
+    function changeMonth(dir){currentMonth+=dir;if(currentMonth>11){currentMonth=0;currentYear++;}if(currentMonth<0){currentMonth=11;currentYear--;}renderCalendar();}
+    function renderCalendar(){
+      const months=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+      document.getElementById('calTitle').textContent=`${months[currentMonth]} ${currentYear}`;
+      const grid=document.getElementById('calGrid');
+      const days=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+      grid.innerHTML=days.map(d=>`<div class="cal-day-header">${d}</div>`).join('');
+      const first=new Date(currentYear,currentMonth,1);
+      const lastDay=new Date(currentYear,currentMonth+1,0).getDate();
+      const today=new Date();
+      let startDow=first.getDay();startDow=startDow===0?6:startDow-1;
+      for(let i=0;i<startDow;i++)grid.innerHTML+=`<button class="cal-day cal-day--empty" disabled></button>`;
+      for(let d=1;d<=lastDay;d++){
+        const date=new Date(currentYear,currentMonth,d);
+        const dow=date.getDay();
+        const isPast=date<new Date(today.getFullYear(),today.getMonth(),today.getDate());
+        const isUnavail=dow===0;
+        const isToday=d===today.getDate()&&currentMonth===today.getMonth()&&currentYear===today.getFullYear();
+        const isSel=selectedDate&&d===selectedDate.getDate()&&currentMonth===selectedDate.getMonth()&&currentYear===selectedDate.getFullYear();
+        let cls='cal-day';
+        if(isPast)cls+=' cal-day--past';else if(isUnavail)cls+=' cal-day--unavailable';else cls+=' cal-day--available';
+        if(isToday)cls+=' cal-day--today';
+        if(isSel)cls+=' cal-day--selected';
+        grid.innerHTML+=`<button class="${cls}" onclick="selectDay(${d})">${d}</button>`;
       }
     }
-
-    function selectDay(d) {
-      selectedDate = new Date(currentYear, currentMonth, d);
-      renderCalendar();
-      renderSlots(selectedDate);
+    function selectDay(d){selectedDate=new Date(currentYear,currentMonth,d);renderCalendar();renderSlots(selectedDate);}
+    const slots=['9h00','9h30','10h00','10h30','11h00','11h30','14h00','14h30','15h00','15h30','16h00','16h30','17h00','17h30','18h00','18h30'];
+    const booked=['10h00','14h30','16h00'];
+    function renderSlots(date){
+      const da=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+      const mo=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+      document.getElementById('slotsTitle').textContent=`${da[date.getDay()]} ${date.getDate()} ${mo[date.getMonth()]}`;
+      const g=document.getElementById('slotsGrid');
+      g.innerHTML=slots.map(t=>{const b=booked.includes(t);return`<button class="slot-btn${b?' booked':''}" onclick="${!b?`selectSlot(this,'${t}')`:''}" ${b?'disabled':''}>${t}</button>`;}).join('');
+      document.getElementById('timeSlots').style.display='block';
+      document.getElementById('rdvFormSection').style.display='none';
+      selectedTime=null;
     }
-
-    const timeSlotsList = ['9h00','9h30','10h00','10h30','11h00','11h30','14h00','14h30','15h00','15h30','16h00','16h30','17h00','17h30','18h00','18h30'];
-    const bookedSlots = ['10h00','14h30','16h00'];
-
-    function renderSlots(date) {
-      const daysArr = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-      const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-      document.getElementById('slotsTitle').textContent = `${daysArr[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]}`;
-      const grid = document.getElementById('slotsGrid');
-      grid.innerHTML = timeSlotsList.map(t => {
-        const isBooked = bookedSlots.includes(t);
-        return `<button class="slot-btn ${isBooked ? 'booked' : ''}" onclick="${!isBooked ? `selectSlot(this, '${t}')` : ''}" ${isBooked ? 'disabled' : ''}>${t}</button>`;
-      }).join('');
-      document.getElementById('timeSlots').style.display = 'block';
-      document.getElementById('rdvFormSection').style.display = 'none';
-      selectedTime = null;
+    function selectSlot(el,time){
+      document.querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('selected'));
+      el.classList.add('selected');selectedTime=time;
+      document.getElementById('rdvFormSection').style.display='block';
+      document.getElementById('rdvFormSection').scrollIntoView({behavior:'smooth',block:'nearest'});
     }
-
-    function selectSlot(el, time) {
-      document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedTime = time;
-      document.getElementById('rdvFormSection').style.display = 'block';
-      document.getElementById('rdvFormSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    function confirmRdv() {
-      const prenom = document.getElementById('rdvPrenom').value;
-      const nom = document.getElementById('rdvNom').value;
-      const tel = document.getElementById('rdvTel').value;
-      const email = document.getElementById('rdvEmail').value;
-      if (!prenom || !nom || !tel || !email) { showToast('⚠️ Merci de remplir tous les champs obligatoires'); return; }
-      if (!selectedDate || !selectedTime) { showToast('⚠️ Veuillez choisir une date et un créneau'); return; }
-
-      const typeLabels = { telephone: 'Téléphonique', visio: 'Visio (Zoom/WhatsApp)', domicile: 'À domicile' };
-      const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-      const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-      const dateStr = `${days[selectedDate.getDay()]} ${selectedDate.getDate()} ${months[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`;
-
-      document.getElementById('rdvInfoForm').style.display = 'none';
-      document.getElementById('rdvConfirmation').style.display = 'block';
-      document.getElementById('confirmDetails').innerHTML = `
-        <div class="confirm-row">📅 <strong>Date :</strong> ${dateStr} à ${selectedTime}</div>
-        <div class="confirm-row">📞 <strong>Type :</strong> ${typeLabels[selectedType]}</div>
-        <div class="confirm-row">👤 <strong>Nom :</strong> ${prenom} ${nom}</div>
-        <div class="confirm-row">📱 <strong>Tél :</strong> ${tel}</div>
-        <div class="confirm-row">📧 <strong>Email :</strong> ${email}</div>
-      `;
+    function confirmRdv(){
+      const p=document.getElementById('rdvPrenom').value;
+      const n=document.getElementById('rdvNom').value;
+      const t=document.getElementById('rdvTel').value;
+      const e=document.getElementById('rdvEmail').value;
+      if(!p||!n||!t||!e){showToast('⚠️ Merci de remplir tous les champs obligatoires');return;}
+      if(!selectedDate||!selectedTime){showToast('⚠️ Veuillez choisir une date et un créneau');return;}
+      const tl={telephone:'Téléphonique',visio:'Visio (Zoom/WhatsApp)',domicile:'À domicile'};
+      const da=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+      const mo=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+      const ds=`${da[selectedDate.getDay()]} ${selectedDate.getDate()} ${mo[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`;
+      document.getElementById('rdvInfoForm').style.display='none';
+      document.getElementById('rdvConfirmation').style.display='block';
+      document.getElementById('confirmDetails').innerHTML=`
+        <div class="cd-row">📅 <strong>Date :</strong> ${ds} à ${selectedTime}</div>
+        <div class="cd-row">📞 <strong>Type :</strong> ${tl[selectedType]}</div>
+        <div class="cd-row">👤 <strong>Nom :</strong> ${p} ${n}</div>
+        <div class="cd-row">📱 <strong>Tél :</strong> ${t}</div>`;
       showToast('✅ Rendez-vous confirmé ! Maëlle vous contacte bientôt.');
-      if (typeof sendLeadNotification === 'function') {
-        sendLeadNotification({ type: 'rdv', prenom, nom, tel, email, date: dateStr, heure: selectedTime, rdvType: selectedType, timestamp: new Date().toISOString() });
-      }
+      if(typeof sendLeadNotification==='function')sendLeadNotification({type:'rdv',prenom:p,nom:n,tel:t,email:e,date:ds,heure:selectedTime,rdvType:selectedType});
     }
-
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded',init);
   </script>
 </body>
 </html>
