@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kit Canva · Maëlle Jean Immobilier · Côte d'Azur</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --or:     #b8955a;
+      --or-lt:  #d4af7a;
+      --dark:   #1a1614;
+      --dark2:  #2a2320;
+      --beige:  #faf8f5;
+      --beige2: #f0ece4;
+      --text:   #2c2825;
+      --muted:  #7a7168;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--beige);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--dark);
+      color: #fff;
+      padding: 3.5rem 2rem 3rem;
+      text-align: center;
+    }
+    header .eyebrow {
+      font-size: .7rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--or);
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: .9rem;
+    }
+    header h1 em { font-style: italic; color: var(--or-lt); }
+    header p {
+      font-size: .95rem;
+      color: #c0b9b0;
+      max-width: 580px;
+      margin: 0 auto;
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+    section { padding: 4rem 0; }
+    section + section { border-top: 1px solid var(--beige2); }
+
+    .section-label {
+      font-size: .68rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--or);
+      margin-bottom: .6rem;
+      font-family: 'Arial', sans-serif;
+    }
+    .section-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 400;
+      margin-bottom: .5rem;
+    }
+    .section-desc {
+      font-size: .9rem;
+      color: var(--muted);
+      font-family: 'Arial', sans-serif;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── BRAND STRIP ── */
+    .brand-strip {
+      background: var(--dark2);
+      border-radius: var(--radius);
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      align-items: flex-start;
+    }
+    .brand-block { flex: 1; min-width: 160px; }
+    .brand-block h4 {
+      font-size: .68rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--or);
+      margin-bottom: .9rem;
+      font-family: 'Arial', sans-serif;
+    }
+    .swatch-row { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .swatch {
+      width: 44px; height: 44px;
+      border-radius: 8px;
+      position: relative;
+    }
+    .swatch span {
+      position: absolute;
+      bottom: -1.4rem;
+      left: 0;
+      font-size: .6rem;
+      color: var(--muted);
+      white-space: nowrap;
+      font-family: 'Arial', sans-serif;
+    }
+    .font-sample {
+      color: #fff;
+      margin-bottom: .4rem;
+    }
+    .font-sample .f1 { font-size: 1.4rem; font-style: italic; }
+    .font-sample .f2 { font-size: .85rem; font-family: 'Arial', sans-serif; color: #c0b9b0; letter-spacing: .08em; }
+
+    /* ── TEMPLATE GRID ── */
+    .tpl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* ── INSTAGRAM POST (1080×1080) ── */
+    .tpl-card {
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    }
+    .tpl-meta {
+      padding: .75rem 1rem .5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tpl-name { font-size: .75rem; font-family: 'Arial', sans-serif; color: var(--muted); }
+    .tpl-badge {
+      font-size: .6rem;
+      font-family: 'Arial', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      background: var(--beige2);
+      color: var(--or);
+      padding: .15rem .5rem;
+      border-radius: 20px;
+    }
+    .tpl-preview {
+      aspect-ratio: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .tpl-footer {
+      padding: .7rem 1rem;
+      border-top: 1px solid var(--beige2);
+    }
+    .tpl-footer p { font-size: .72rem; color: var(--muted); font-family: 'Arial', sans-serif; line-height: 1.5; }
+    .tpl-dims { font-size: .65rem; color: #aaa; margin-top: .2rem; font-family: 'Arial', sans-serif; }
+
+    /* Template designs */
+    .tpl-listing {
+      background: linear-gradient(160deg, #1a1614 0%, #2e2520 55%, #1a1614 100%);
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.2rem;
+    }
+    .tpl-listing .tag {
+      font-size: .55rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--or); background: rgba(184,149,90,.15);
+      border: 1px solid rgba(184,149,90,.3);
+      display: inline-block; padding: .2rem .6rem; border-radius: 20px;
+      margin-bottom: .6rem; font-family: 'Arial', sans-serif;
+    }
+    .tpl-listing h3 { color: #fff; font-size: 1rem; font-weight: 400; margin-bottom: .25rem; line-height: 1.2; }
+    .tpl-listing .price { color: var(--or-lt); font-size: .8rem; font-family: 'Arial', sans-serif; }
+    .tpl-listing .line { width: 28px; height: 2px; background: var(--or); margin-bottom: .5rem; }
+    .tpl-listing .logo-sm { margin-top: .5rem; font-size: .55rem; letter-spacing: .15em; color: #888; text-transform: uppercase; font-family: 'Arial', sans-serif; }
+    .tpl-listing .dots {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(circle, rgba(184,149,90,.08) 1px, transparent 1px);
+      background-size: 18px 18px;
+      pointer-events: none;
+    }
+    .tpl-listing .img-placeholder {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 50%;
+      background: linear-gradient(135deg, #2a2420 0%, #3d3028 50%, #2a2420 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .photo-icon { font-size: 2rem; opacity: .25; }
+
+    .tpl-sold {
+      background: var(--dark);
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .tpl-sold .ribbon {
+      font-size: 1.1rem; font-style: italic; color: var(--or-lt);
+      margin-bottom: .4rem;
+    }
+    .tpl-sold .big { font-size: 2rem; color: #fff; font-weight: 400; line-height: 1; }
+    .tpl-sold .sub { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: #888; margin-top: .3rem; font-family: 'Arial', sans-serif; }
+    .tpl-sold .area { margin-top: .7rem; font-size: .75rem; color: var(--muted); font-family: 'Arial', sans-serif; }
+    .tpl-sold .bar { width: 40px; height: 2px; background: var(--or); margin: .5rem auto; }
+
+    .tpl-tip {
+      background: var(--beige2);
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      justify-content: center; padding: 1.2rem;
+      position: relative;
+    }
+    .tpl-tip .num { font-size: 4rem; color: rgba(184,149,90,.15); position: absolute; top: .3rem; right: .8rem; line-height: 1; }
+    .tpl-tip .eyebrow { font-size: .55rem; letter-spacing: .2em; text-transform: uppercase; color: var(--or); margin-bottom: .5rem; font-family: 'Arial', sans-serif; }
+    .tpl-tip h3 { font-size: .95rem; line-height: 1.3; color: var(--dark); margin-bottom: .4rem; }
+    .tpl-tip p { font-size: .7rem; color: var(--muted); font-family: 'Arial', sans-serif; line-height: 1.5; }
+    .tpl-tip .sig { margin-top: .7rem; font-size: .65rem; color: var(--or); font-family: 'Arial', sans-serif; }
+
+    .tpl-stat {
+      background: linear-gradient(145deg, #1a1614, #2e2520);
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      justify-content: center; padding: 1.2rem;
+    }
+    .tpl-stat .eyebrow { font-size: .55rem; letter-spacing: .2em; text-transform: uppercase; color: var(--or); margin-bottom: .7rem; font-family: 'Arial', sans-serif; }
+    .stat-row { display: flex; justify-content: space-around; margin-bottom: .7rem; }
+    .stat-item { text-align: center; }
+    .stat-item .val { font-size: 1.4rem; color: var(--or-lt); display: block; }
+    .stat-item .lbl { font-size: .55rem; color: #888; font-family: 'Arial', sans-serif; text-transform: uppercase; letter-spacing: .1em; }
+    .tpl-stat .zone { font-size: .6rem; color: #666; text-align: center; font-family: 'Arial', sans-serif; margin-top: .3rem; }
+
+    .tpl-story {
+      background: linear-gradient(175deg, #1a1614 0%, #2e2520 60%, #1a1614 100%);
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 1.2rem;
+      position: relative;
+    }
+    .tpl-story .img-top {
+      position: absolute; top: 0; left: 0; right: 0; height: 55%;
+      background: linear-gradient(135deg, #2a2420 0%, #3d3028 50%, #2a2420 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tpl-story::after {
+      content: '';
+      position: absolute; top: 45%; left: 0; right: 0; height: 15%;
+      background: linear-gradient(to bottom, transparent, var(--dark));
+    }
+    .tpl-story .body { position: relative; z-index: 1; }
+    .tpl-story .cat { font-size: .55rem; letter-spacing: .18em; text-transform: uppercase; color: var(--or); font-family: 'Arial', sans-serif; margin-bottom: .3rem; }
+    .tpl-story h3 { font-size: .9rem; color: #fff; line-height: 1.3; margin-bottom: .3rem; }
+    .tpl-story .swipe { font-size: .6rem; color: #999; font-family: 'Arial', sans-serif; margin-top: .4rem; }
+
+    .tpl-quote {
+      background: var(--dark2);
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 1.4rem; text-align: center;
+    }
+    .tpl-quote .qmark { font-size: 2.5rem; color: var(--or); opacity: .5; line-height: .8; margin-bottom: .5rem; }
+    .tpl-quote blockquote { font-size: .8rem; color: #ddd; font-style: italic; line-height: 1.5; margin-bottom: .6rem; }
+    .tpl-quote cite { font-size: .6rem; color: var(--or); font-style: normal; font-family: 'Arial', sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+    .tpl-quote .stars { color: var(--or-lt); font-size: .8rem; margin-bottom: .5rem; }
+
+    /* ── STORY GRID (9:16) ── */
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.5rem;
+    }
+    .story-card .tpl-preview { aspect-ratio: 9/16; }
+
+    /* ── USAGE SPECS ── */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .spec-item {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      border-left: 3px solid var(--or);
+    }
+    .spec-item h4 {
+      font-size: .8rem;
+      letter-spacing: .06em;
+      margin-bottom: .6rem;
+      color: var(--dark);
+      font-family: 'Arial', sans-serif;
+    }
+    .spec-item ul {
+      list-style: none;
+      font-size: .78rem;
+      color: var(--muted);
+      font-family: 'Arial', sans-serif;
+      line-height: 2;
+    }
+    .spec-item ul li::before { content: '→ '; color: var(--or); }
+
+    /* ── WORKFLOW ── */
+    .steps {
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .step {
+      flex: 1;
+      min-width: 180px;
+      padding: 1.5rem 1.8rem;
+      background: #fff;
+      border-radius: 0;
+      position: relative;
+    }
+    .step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+    .step:last-child  { border-radius: 0 var(--radius) var(--radius) 0; }
+    .step + .step { border-left: 1px solid var(--beige2); }
+    .step-num {
+      font-size: 2rem;
+      color: rgba(184,149,90,.2);
+      line-height: 1;
+      margin-bottom: .4rem;
+    }
+    .step h4 { font-size: .85rem; margin-bottom: .3rem; font-family: 'Arial', sans-serif; }
+    .step p  { font-size: .75rem; color: var(--muted); font-family: 'Arial', sans-serif; line-height: 1.5; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: #888;
+      text-align: center;
+      padding: 2rem;
+      font-size: .75rem;
+      font-family: 'Arial', sans-serif;
+    }
+    footer span { color: var(--or); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .steps { flex-direction: column; }
+      .step:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+      .step:last-child  { border-radius: 0 0 var(--radius) var(--radius); }
+      .step + .step { border-left: none; border-top: 1px solid var(--beige2); }
+      .brand-strip { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <p class="eyebrow">Maëlle Jean · Immobilier Côte d'Azur</p>
+    <h1>Kit Canva<br><em>Marketing Immobilier</em></h1>
+    <p>
+      Templates prêts à l'emploi pour alimenter vos réseaux sociaux avec
+      une identité visuelle cohérente, élégante et professionnelle.
+    </p>
+  </header>
+
+  <div class="page">
+
+    <!-- IDENTITÉ VISUELLE -->
+    <section>
+      <p class="section-label">Charte graphique</p>
+      <h2 class="section-title">Identité visuelle</h2>
+      <p class="section-desc">
+        Reproduire fidèlement ces couleurs et typographies dans chaque template Canva
+        pour assurer une cohérence de marque sur tous vos visuels.
+      </p>
+
+      <div class="brand-strip">
+        <!-- Couleurs -->
+        <div class="brand-block">
+          <h4>Couleurs principales</h4>
+          <div class="swatch-row" style="margin-bottom:1.8rem">
+            <div style="position:relative">
+              <div class="swatch" style="background:#1a1614"><span>#1A1614</span></div>
+            </div>
+            <div style="position:relative">
+              <div class="swatch" style="background:#2a2320"><span>#2A2320</span></div>
+            </div>
+            <div style="position:relative">
+              <div class="swatch" style="background:#b8955a"><span>#B8955A</span></div>
+            </div>
+            <div style="position:relative">
+              <div class="swatch" style="background:#d4af7a"><span>#D4AF7A</span></div>
+            </div>
+          </div>
+          <h4 style="margin-top:1.6rem">Couleurs secondaires</h4>
+          <div class="swatch-row" style="margin-bottom:.5rem">
+            <div style="position:relative">
+              <div class="swatch" style="background:#faf8f5"><span>#FAF8F5</span></div>
+            </div>
+            <div style="position:relative">
+              <div class="swatch" style="background:#f0ece4"><span>#F0ECE4</span></div>
+            </div>
+            <div style="position:relative">
+              <div class="swatch" style="background:#7a7168"><span>#7A7168</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typographies -->
+        <div class="brand-block">
+          <h4>Typographies</h4>
+          <div class="font-sample">
+            <p class="f1">Cormorant Garamond</p>
+            <p class="f2">Inter / Arial · Corps de texte</p>
+          </div>
+          <div style="margin-top:1rem; font-size:.7rem; color:#666; font-family:Arial,sans-serif; line-height:1.8">
+            <strong style="color:#c0b9b0">Titres :</strong> Cormorant Garamond Italic 300–400<br>
+            <strong style="color:#c0b9b0">Sous-titres :</strong> Inter 500 · espacement 0.08em<br>
+            <strong style="color:#c0b9b0">Corps :</strong> Inter 300–400<br>
+            <strong style="color:#c0b9b0">Labels :</strong> Arial · MAJUSCULES · 0.2em<br>
+          </div>
+        </div>
+
+        <!-- Logo -->
+        <div class="brand-block">
+          <h4>Signature de marque</h4>
+          <div style="padding:.8rem; background:rgba(255,255,255,.04); border-radius:8px; border:1px solid rgba(184,149,90,.2)">
+            <p style="color:#fff; font-size:1.1rem">Maëlle Jean</p>
+            <p style="color:#888; font-size:.6rem; letter-spacing:.15em; text-transform:uppercase; font-family:Arial,sans-serif">Immobilier · Côte d'Azur</p>
+            <p style="color:var(--or); font-size:.55rem; margin-top:.4rem; font-family:Arial,sans-serif">Conseillère · Liberkeys</p>
+          </div>
+          <p style="font-size:.65rem; color:#666; margin-top:.7rem; font-family:Arial,sans-serif; line-height:1.6">
+            Toujours placer la signature en bas à gauche ou en bas à droite de chaque visuel, en blanc ou en or selon le fond.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- POSTS INSTAGRAM (carré) -->
+    <section>
+      <p class="section-label">Instagram · Facebook</p>
+      <h2 class="section-title">Posts carrés · 1080 × 1080 px</h2>
+      <p class="section-desc">
+        Six templates pour les situations les plus fréquentes.
+        Dupliquer chaque template dans Canva et remplacer uniquement le texte et la photo.
+      </p>
+
+      <div class="tpl-grid">
+
+        <!-- Template 1 : Annonce bien -->
+        <div class="tpl-card">
+          <div class="tpl-meta">
+            <span class="tpl-name">Annonce · Bien à vendre</span>
+            <span class="tpl-badge">Post</span>
+          </div>
+          <div class="tpl-preview">
+            <div class="tpl-listing">
+              <div class="dots"></div>
+              <div class="img-placeholder"><span class="photo-icon">🏡</span></div>
+              <span class="tag">Nouveau</span>
+              <div class="line"></div>
+              <h3>Villa contemporaine<br>vue mer · 4 pièces</h3>
+              <p class="price">895 000 €</p>
+              <p style="font-size:.6rem;color:#888;font-family:Arial,sans-serif;margin-top:.2rem">Cannes · Californie</p>
+              <p class="logo-sm">Maëlle Jean · Liberkeys</p>
+            </div>
+          </div>
+          <div class="tpl-footer">
+            <p>Remplacer : photo de fond, titre, prix, ville</p>
+            <p class="tpl-dims">1080 × 1080 px · fond sombre + or</p>
+          </div>
+        </div>
+
+        <!-- Template 2 : Vendu -->
+        <div class="tpl-card">
+          <div class="tpl-meta">
+            <span class="tpl-name">Sold · Vendu avec succès</span>
+            <span class="tpl-badge">Post</span>
+          </div>
+          <div class="tpl-preview">
+            <div class="tpl-sold">
+              <p class="ribbon">Vendu !</p>
+              <p class="big">✓</p>
+              <p class="sub">Mission accomplie</p>
+              <div class="bar"></div>
+              <p class="area">Appartement T3 · Grasse</p>
+              <p style="font-size:.6rem;color:#666;font-family:Arial,sans-serif;margin-top:.5rem">En 18 jours · Prix demandé atteint</p>
+            </div>
+          </div>
+          <div class="tpl-footer">
+            <p>Remplacer : type de bien, ville, délai, résultat</p>
+            <p class="tpl-dims">1080 × 1080 px · fond très sombre</p>
+          </div>
+        </div>
+
+        <!-- Template 3 : Conseil vendeur -->
+        <div class="tpl-card">
+          <div class="tpl-meta">
+            <span class="tpl-name">Conseil vendeur</span>
+            <span class="tpl-badge">Post</span>
+          </div>
+          <div class="tpl-preview">
+            <div class="tpl-tip">
+              <span class="num">3</span>
+              <p class="eyebrow">Conseil · Home Staging</p>
+              <h3>Désencombrez avant les visites</h3>
+              <p>Un espace épuré permet aux acheteurs de se projeter et peut augmenter la valeur perçue de 5 à 15 %.</p>
+              <p class="sig">— Maëlle Jean · Conseillère Côte d'Azur</p>
+            </div>
+          </div>
+          <div class="tpl-footer">
+            <p>Remplacer : numéro, catégorie, titre, texte</p>
+            <p class="tpl-dims">1080 × 1080 px · fond beige clair</p>
+          </div>
+        </div>
+
+        <!-- Template 4 : Stats marché -->
+        <div class="tpl-card">
+          <div class="tpl-meta">
+            <span class="tpl-name">Chiffres du marché</span>
+            <span class="tpl-badge">Post</span>
+          </div>
+          <div class="tpl-preview">
+            <div class="tpl-stat">
+              <p class="eyebrow">Marché immobilier · Cannes · Juin 2025</p>
+              <div class="stat-row">
+                <div class="stat-item">
+                  <span class="val">+4,2 %</span>
+                  <span class="lbl">Prix m²</span>
+                </div>
+                <div class="stat-item">
+                  <span class="val">72 j</span>
+                  <span class="lbl">Délai moyen</span>
+                </div>
+                <div class="stat-item">
+                  <span class="val">89 %</span>
+                  <span class="lbl">Prix obtenu</span>
+                </div>
+              </div>
+              <div style="width:80%;height:1px;background:rgba(184,149,90,.2);margin:.5rem auto"></div>
+              <p class="zone">Source : DVF · Analyse Maëlle Jean Immobilier</p>
+            </div>
+          </div>
+          <div class="tpl-footer">
+            <p>Remplacer : zone, date, 3 indicateurs clés</p>
+            <p class="tpl-dims">1080 × 1080 px · fond sombre + chiffres or</p>
+          </div>
+        </div>
+
+        <!-- Template 5 : Témoignage -->
+        <div class="tpl-card">
+          <div class="tpl-meta">
+            <span class="tpl-name">Avis client</span>
+            <span class="tpl-badge">Post</span>
+          </div>
+          <div class="tpl-preview">
+            <div class="tpl-quote">
+              <p class="stars">★★★★★</p>
+              <p class="qmark">"</p>
+              <blockquote>Maëlle a vendu notre appartement en 3 semaines au prix demandé. Professionnalisme et écoute exemplaires.</blockquote>
+              <cite>Sophie &amp; Marc T. · Cannes</cite>
+            </div>
+          </div>
+          <div class="tpl-footer">
+            <p>Remplacer : citation, prénom·nom, ville</p>
+            <p class="tpl-dims">1080 × 1080 px · fond sombre + guillemets or</p>
+          </div>
+        </div>
+
+        <!-- Template 6 : Avant / Après home staging -->
+        <div class="tpl-card">
+          <div class="tpl-meta">
+            <span class="tpl-name">Avant / Après staging</span>
+            <span class="tpl-badge">Post</span>
+          </div>
+          <div class="tpl-preview">
+            <div style="background:var(--dark);width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;gap:.5rem">
+              <p style="font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);font-family:Arial,sans-serif">Home Staging</p>
+              <div style="display:flex;gap:.5rem;width:100%">
+                <div style="flex:1;background:linear-gradient(135deg,#2a2420,#3d3028);border-radius:6px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:.4rem">
+                  <span style="font-size:1.5rem;opacity:.3">📷</span>
+                  <p style="font-size:.5rem;color:#666;font-family:Arial,sans-serif;margin-top:.2rem">AVANT</p>
+                </div>
+                <div style="display:flex;align-items:center;font-size:.8rem;color:var(--or)">→</div>
+                <div style="flex:1;background:linear-gradient(135deg,#3d3028,#4d3f2e);border-radius:6px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:.4rem;border:1px solid rgba(184,149,90,.3)">
+                  <span style="font-size:1.5rem;opacity:.5">✨</span>
+                  <p style="font-size:.5rem;color:var(--or);font-family:Arial,sans-serif;margin-top:.2rem">APRÈS</p>
+                </div>
+              </div>
+              <p style="font-size:.6rem;color:#888;font-family:Arial,sans-serif;text-align:center;margin-top:.3rem">Résultat : +12 % valeur perçue</p>
+              <p style="font-size:.5rem;color:var(--or);font-family:Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase">Maëlle Jean · Home Staging</p>
+            </div>
+          </div>
+          <div class="tpl-footer">
+            <p>Remplacer : 2 photos, % d'amélioration estimé</p>
+            <p class="tpl-dims">1080 × 1080 px · double visuel côte à côte</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STORIES (9:16) -->
+    <section>
+      <p class="section-label">Instagram · Stories &amp; Reels cover</p>
+      <h2 class="section-title">Stories verticales · 1080 × 1920 px</h2>
+      <p class="section-desc">
+        Format vertical pour les stories et les couvertures de Reels.
+        Même logique : dupliquer, remplacer texte et visuel, publier.
+      </p>
+
+      <div class="story-grid">
+
+        <!-- Story 1 -->
+        <div class="tpl-card story-card">
+          <div class="tpl-meta">
+            <span class="tpl-name">Annonce bien · Story</span>
+            <span class="tpl-badge">Story</span>
+          </div>
+          <div class="tpl-preview">
+            <div class="tpl-story">
+              <div class="img-top"><span class="photo-icon">🏡</span></div>
+              <div class="body">
+                <p class="cat">Nouveau · Cannes</p>
+                <h3>Villa vue mer<br>895 000 €</h3>
+                <p style="font-size:.6rem;color:#aaa;font-family:Arial,sans-serif">4 pièces · 140 m² · Garage</p>
+                <p class="swipe">↑ Swiper pour découvrir</p>
+              </div>
+            </div>
+          </div>
+          <div class="tpl-footer">
+            <p>Photo plein fond + détails bien en bas</p>
+            <p class="tpl-dims">1080 × 1920 px</p>
+          </div>
+        </div>
+
+        <!-- Story 2 -->
+        <div class="tpl-card story-card">
+          <div class="tpl-meta">
+            <span class="tpl-name">Question / Sondage</span>
+            <span class="tpl-badge">Story</span>
+          </div>
+          <div class="tpl-preview">
+            <div style="background:var(--dark2);width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;text-align:center;gap:.6rem">
+              <p style="font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);font-family:Arial,sans-serif">Votre avis compte</p>
+              <p style="color:#fff;font-size:.9rem;line-height:1.3">Connaissez-vous la valeur réelle de votre bien ?</p>
+              <div style="display:flex;gap:.5rem;margin-top:.3rem">
+                <div style="background:rgba(184,149,90,.2);border:1px solid var(--or);border-radius:20px;padding:.3rem .8rem;font-size:.6rem;color:var(--or-lt);font-family:Arial,sans-serif">Oui, je pense</div>
+                <div style="background:rgba(255,255,255,.05);border:1px solid #555;border-radius:20px;padding:.3rem .8rem;font-size:.6rem;color:#999;font-family:Arial,sans-serif">Pas sûr·e</div>
+              </div>
+              <p style="font-size:.55rem;color:#666;font-family:Arial,sans-serif;margin-top:.4rem">→ Lien en bio : estimation gratuite</p>
+            </div>
+          </div>
+          <div class="tpl-footer">
+            <p>Question + 2 options + CTA vers lien bio</p>
+            <p class="tpl-dims">1080 × 1920 px</p>
+          </div>
+        </div>
+
+        <!-- Story 3 -->
+        <div class="tpl-card story-card">
+          <div class="tpl-meta">
+            <span class="tpl-name">Conseil rapide · Tip</span>
+            <span class="tpl-badge">Story</span>
+          </div>
+          <div class="tpl-preview">
+            <div style="background:var(--beige2);width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:1.1rem;gap:.4rem">
+              <p style="font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);font-family:Arial,sans-serif">Tip du jour</p>
+              <p style="font-size:.95rem;color:var(--dark);line-height:1.3">Nettoyez les fenêtres avant les visites</p>
+              <div style="width:24px;height:2px;background:var(--or)"></div>
+              <p style="font-size:.68rem;color:var(--muted);font-family:Arial,sans-serif;line-height:1.5">La lumière naturelle est le meilleur argument de vente. Des vitres propres la multiplient par deux.</p>
+              <p style="font-size:.6rem;color:var(--or);font-family:Arial,sans-serif;margin-top:.5rem">— Maëlle Jean</p>
+            </div>
+          </div>
+          <div class="tpl-footer">
+            <p>Texte seul · fond beige · lisible sans son</p>
+            <p class="tpl-dims">1080 × 1920 px</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SPECS D'UTILISATION -->
+    <section>
+      <p class="section-label">Spécifications</p>
+      <h2 class="section-title">Paramètres par format</h2>
+      <p class="section-desc">
+        Utiliser ces réglages pour créer chaque template dans Canva Pro ou Canva gratuit.
+      </p>
+
+      <div class="specs-grid">
+        <div class="spec-item">
+          <h4>Post Instagram / Facebook carré</h4>
+          <ul>
+            <li>Format : 1080 × 1080 px</li>
+            <li>Fond : #1A1614 (sombre) ou #FAF8F5 (clair)</li>
+            <li>Titre : Cormorant Garamond Italic · 48–64 pt</li>
+            <li>Corps : Inter / Lato · 22–28 pt</li>
+            <li>Accent or : #B8955A</li>
+            <li>Marge interne : 60 px de chaque côté</li>
+          </ul>
+        </div>
+        <div class="spec-item">
+          <h4>Story / Reels cover vertical</h4>
+          <ul>
+            <li>Format : 1080 × 1920 px</li>
+            <li>Zone sécurisée : laisser 250 px en haut et en bas</li>
+            <li>Photo : plein fond, opacité 60 % si texte par-dessus</li>
+            <li>Titre : 56–72 pt</li>
+            <li>CTA : bouton arrondi, couleur or #B8955A</li>
+            <li>Swipe-up : toujours mentionner le lien bio</li>
+          </ul>
+        </div>
+        <div class="spec-item">
+          <h4>Flyer A4 · Bien à vendre</h4>
+          <ul>
+            <li>Format : 210 × 297 mm · 300 dpi</li>
+            <li>Photo principale : 2/3 de la hauteur</li>
+            <li>Bande de titre : fond sombre + texte blanc/or</li>
+            <li>Infos clés : icônes + valeurs en Inter 500</li>
+            <li>QR code : vers page estimation ou annonce</li>
+            <li>Logo + coordonnées en pied de page</li>
+          </ul>
+        </div>
+        <div class="spec-item">
+          <h4>Bannière LinkedIn / Facebook Cover</h4>
+          <ul>
+            <li>LinkedIn : 1584 × 396 px</li>
+            <li>Facebook cover : 820 × 312 px</li>
+            <li>Zone texte : 60 % gauche (droite rognée sur mobile)</li>
+            <li>Accroche : 1 ligne · Cormorant Garamond</li>
+            <li>Sous-titre + zone géo : Inter 300</li>
+            <li>Ne pas centrer : privilégier alignement à gauche</li>
+          </ul>
+        </div>
+        <div class="spec-item">
+          <h4>Carrousel Instagram (jusqu'à 10 slides)</h4>
+          <ul>
+            <li>Slide 1 : accroche forte (question ou stat)</li>
+            <li>Slides 2–8 : 1 conseil ou fait par slide</li>
+            <li>Slide finale : CTA + coordonnées</li>
+            <li>Bordure droite visible → invite à swiper</li>
+            <li>Cohérence de fond sur toutes les slides</li>
+            <li>Format : 1080 × 1080 px par slide</li>
+          </ul>
+        </div>
+        <div class="spec-item">
+          <h4>Guide PDF téléchargeable</h4>
+          <ul>
+            <li>Format : A4 · paysage ou portrait</li>
+            <li>Page de couverture : fond sombre + titre en or</li>
+            <li>Pages intérieures : fond beige #FAF8F5</li>
+            <li>Titres de section : or #B8955A + ligne décorative</li>
+            <li>Exporter en PDF standard · poids &lt; 5 Mo</li>
+            <li>Pied de page : URL site + numéro de page</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKFLOW -->
+    <section>
+      <p class="section-label">Mode d'emploi</p>
+      <h2 class="section-title">Publier un visuel en 5 étapes</h2>
+      <p class="section-desc">
+        Du template Canva à la publication sur les réseaux en moins de 10 minutes.
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h4>Choisir le template</h4>
+          <p>Ouvrir le dossier Canva "Maëlle Jean Immobilier" et dupliquer le template adapté à votre contenu.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h4>Remplacer le contenu</h4>
+          <p>Modifier uniquement le texte, la photo et les chiffres. Ne jamais toucher aux couleurs ni aux polices.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h4>Vérifier l'identité</h4>
+          <p>Contrôler : logo présent, couleurs conformes, aucune faute. Faire relire par un proche si besoin.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <h4>Exporter</h4>
+          <p>Télécharger en PNG (posts) ou MP4 (animations). Résolution : 1× pour réseaux sociaux.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">05</div>
+          <h4>Planifier la publication</h4>
+          <p>Utiliser Meta Business Suite ou Buffer pour publier aux horaires optimaux : mar–jeu 18h–20h.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>Kit Canva · <span>Maëlle Jean Immobilier</span> · Côte d'Azur · Usage interne</p>
+  </footer>
+
+</body>
+</html>
