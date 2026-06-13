@@ -1,6 +1,6 @@
 /* =====================================================
    MAËLLE JEAN — Agent Immo 2.0
-   Design System v3.0
+   Design System v3.1 — WhatsApp update
    ===================================================== */
 
 :root {
@@ -19,6 +19,7 @@
   --fb-blue:    #1877F2;
   --ig-grad:    linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
   --yt-red:     #FF0000;
+  --wa-green:   #25D366;
   --font-display: 'Fraunces', Georgia, serif;
   --font-body:    'Outfit', system-ui, sans-serif;
   --section:  96px;
@@ -86,6 +87,8 @@ em{font-style:italic;color:var(--coral)}
 .btn-glass-dark:hover{background:rgba(255,255,255,.25)}
 .btn-white{background:var(--white);color:var(--coral)}
 .btn-white:hover{background:var(--navy);color:var(--white);transform:translateY(-2px)}
+.btn-wa{background:var(--wa-green);color:var(--white)}
+.btn-wa:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.4)}
 .btn-lg{padding:17px 36px;font-size:1rem}
 .btn-sm{padding:10px 20px;font-size:.82rem}
 
@@ -98,6 +101,13 @@ em{font-style:italic;color:var(--coral)}
 .fb-pill:hover{transform:translateY(-50%) translateX(0)}
 .fb-pill-inner{display:flex;align-items:center;gap:12px;background:var(--fb-blue);color:var(--white);padding:14px 20px 14px 14px;border-radius:10px 0 0 10px;box-shadow:var(--sh-md);min-width:210px;font-size:.84rem;font-weight:600}
 .fb-arrow{margin-left:auto;opacity:.7}
+
+/* === WHATSAPP FLOAT === */
+.wa-float{position:fixed;bottom:100px;left:24px;z-index:900;display:flex;align-items:center;gap:10px;background:var(--wa-green);color:white;border-radius:50px;padding:15px;max-width:58px;overflow:hidden;transition:max-width .35s cubic-bezier(.4,0,.2,1),padding .35s ease,box-shadow .35s ease;box-shadow:0 4px 20px rgba(37,211,102,.5);text-decoration:none}
+.wa-float:hover{max-width:260px;padding:15px 22px;box-shadow:0 6px 30px rgba(37,211,102,.65)}
+.wa-float svg{flex-shrink:0}
+.wa-float-label{white-space:nowrap;font-size:.84rem;font-weight:700;font-family:var(--font-body);opacity:0;transition:opacity .15s ease .2s}
+.wa-float:hover .wa-float-label{opacity:1}
 
 /* === NAVBAR === */
 #navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 0;transition:var(--ease)}
@@ -239,6 +249,7 @@ em{font-style:italic;color:var(--coral)}
 .kpi-lbl{font-size:.78rem;color:var(--muted);margin-top:4px;font-weight:500}
 .stxt-list{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
 .stxt-list li{font-size:.92rem;font-weight:500;color:var(--text)}
+.staging-ctas{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
 .staging-visual{border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-lg)}
 .hs-wrap{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;cursor:ew-resize;user-select:none}
 .hs-before,.hs-after{position:absolute;inset:0;overflow:hidden}
@@ -420,4 +431,5 @@ em{font-style:italic;color:var(--coral)}
   .chatbot-panel{width:calc(100vw - 36px);right:0}
   .fb-pill{display:none}
   .compare-grid{grid-template-columns:1fr}
+  .wa-float{bottom:90px;left:14px}
 }
