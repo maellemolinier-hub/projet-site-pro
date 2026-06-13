@@ -32,6 +32,23 @@
   --sh-lg:    0 24px 64px rgba(0,0,0,.18);
   --sh-coral: 0 12px 40px rgba(255,85,51,.35);
   --ease:     0.3s cubic-bezier(.4,0,.2,1);
+  /* ── backward-compat aliases (sub-pages + estimation.css) ── */
+  --color-primary:       var(--navy);
+  --color-primary-light: var(--navy-mid);
+  --color-azure:         var(--navy-mid);
+  --color-white:         var(--white);
+  --color-bg:            var(--cream);
+  --color-surface:       var(--cream);
+  --color-border:        var(--border);
+  --color-text:          var(--text);
+  --color-text-muted:    var(--muted);
+  --radius:              var(--r);
+  --radius-lg:           var(--r-lg);
+  --shadow-sm:           var(--sh-sm);
+  --shadow-md:           var(--sh-md);
+  --transition:          var(--ease);
+  --font-sans:           var(--font-body);
+  --font-serif:          var(--font-display);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
