@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Maëlle Jean - Conseillère immobilière experte sur Cannes, Grasse et la Côte d'Azur. Spécialiste en home staging, valeur vénale et nouvelles technologies. Vendez mieux, vendez plus vite.">
-  <meta name="keywords" content="vendre maison Cannes, estimation immobilière Grasse, home staging Côte d'Azur, conseiller immobilier Cannes, valeur vénale, vente immobilière 06, agent immobilier Grasse, estimation gratuite appartement Cannes">
+  <meta name="description" content="Maëlle Jean — Conseillère immobilière experte sur Cannes, Grasse et la Côte d'Azur. Spécialiste en home staging, valeur vénale et nouvelles technologies. Vendez mieux, vendez plus vite.">
+  <meta name="keywords" content="vendre maison Cannes, estimation immobilière Grasse, home staging Côte d'Azur, conseiller immobilier Cannes, valeur vénale, vente immobilière 06, agent immobilier Grasse">
   <meta property="og:title" content="Maëlle Jean | Experte Immobilier Côte d'Azur">
   <meta property="og:description" content="Vendez votre bien au meilleur prix sur la Côte d'Azur avec une experte en home staging et valeur vénale.">
   <meta property="og:type" content="website">
@@ -17,7 +17,7 @@
 </head>
 <body>
 
-  <!-- ===== NAVIGATION ===== -->
+  <!-- ===================== NAVIGATION ===================== -->
   <nav id="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo">
@@ -27,8 +27,8 @@
       <div class="nav-links" id="navLinks">
         <a href="#services">Services</a>
         <a href="#home-staging">Home Staging</a>
-        <a href="#expertise">Expertise</a>
-        <a href="pages/vlog.html">Vlog</a>
+        <a href="#expertise">À propos</a>
+        <a href="pages/vlog.html">Conseils</a>
         <a href="pages/estimation.html" class="nav-cta-link">Estimer mon bien</a>
         <a href="pages/rendez-vous.html" class="nav-cta">Prendre RDV</a>
       </div>
@@ -38,134 +38,169 @@
     </div>
   </nav>
 
-  <!-- ===== HERO ===== -->
+  <!-- ===================== HERO — split texte + vidéo ===================== -->
   <section class="hero" id="hero">
-    <div class="hero-bg">
-      <div class="hero-overlay"></div>
-      <!-- Vidéo de présentation Maëlle Jean -->
-      <video class="hero-video" autoplay muted loop playsinline poster="">
-        <source src="images/maelle-presentation.mp4" type="video/mp4">
-        <div class="hero-video-fallback"></div>
+    <!-- Côté gauche : message d'accueil -->
+    <div class="hero-left">
+      <div class="hero-content">
+        <div class="hero-badge">Conseillère · Cannes · Grasse · Côte d'Azur</div>
+        <h1 class="hero-title">
+          Vendre votre bien,<br>
+          <em>c'est une stratégie</em>
+        </h1>
+        <p class="hero-subtitle">
+          Estimation précise, home staging, technologies d'avant-garde —
+          tout pour vendre au bon prix, au bon moment.
+        </p>
+        <div class="hero-ctas">
+          <a href="pages/estimation.html" class="btn btn-primary btn-lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+            Estimer mon bien gratuitement
+          </a>
+          <a href="pages/rendez-vous.html" class="btn btn-outline--light">Consultation offerte</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number">+7 ans</span>
+            <span class="stat-label">d'expertise locale</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number">Cannes<br>& Grasse</span>
+            <span class="stat-label">marchés maîtrisés</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number">Liberkeys</span>
+            <span class="stat-label">réseau national</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Côté droit : vidéo d'accueil (son coupé) -->
+    <div class="hero-right">
+      <video class="hero-portrait-video" autoplay muted loop playsinline>
+        <source src="images/video-accueil.mp4" type="video/mp4">
       </video>
-    </div>
-    <div class="hero-content">
-      <div class="hero-badge">Experte · Cannes · Grasse · Côte d'Azur</div>
-      <h1 class="hero-title">
-        Votre bien mérite<br>
-        <em>l'excellence</em>
-      </h1>
-      <p class="hero-subtitle">Vendre au bon prix, au bon moment, sans stress.<br>Une conseillère à votre service — pas à la course.</p>
-      <div class="hero-ctas">
-        <a href="pages/estimation.html" class="btn btn-primary">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-          Estimer mon bien gratuitement
-        </a>
-        <a href="pages/rendez-vous.html" class="btn btn-outline">
-          Consultation offerte
-        </a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-number">+7 ans</span>
-          <span class="stat-label">d'expertise locale</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-number">Cannes<br>&amp; Grasse</span>
-          <span class="stat-label">marchés maîtrisés</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-number">Expert</span>
-          <span class="stat-label">valeur vénale certifiée</span>
-        </div>
-      </div>
-    </div>
-    <div class="hero-scroll-hint">
-      <span>Découvrir</span>
-      <div class="scroll-line"></div>
+      <div class="hero-right-overlay"></div>
     </div>
   </section>
 
-  <!-- ===== BANDE DE CONFIANCE ===== -->
+  <!-- ===================== BANDE DE CONFIANCE ===================== -->
   <section class="trust-bar">
     <div class="container">
       <div class="trust-items">
         <div class="trust-item">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span>Expert en valeur vénale</span>
         </div>
         <div class="trust-item">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
-          <span>Formatrice certifiée</span>
-        </div>
-        <div class="trust-item">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
           <span>Home Staging intégré</span>
         </div>
         <div class="trust-item">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           <span>Réponse en 2h</span>
         </div>
         <div class="trust-item">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
           <span>Accompagnement personnalisé</span>
+        </div>
+        <div class="trust-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+          <span>Réseau Liberkeys</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== PROPOSITION DE VALEUR ===== -->
-  <section class="value-prop" id="services">
+  <!-- ===================== INTRO CONSEIL ÉDITORIAL ===================== -->
+  <section class="conseil-intro" id="services">
+    <div class="container">
+      <div class="conseil-grid">
+        <div class="conseil-image">
+          <img src="images/villa-drone.png" alt="Vue aérienne d'une propriété sur la Côte d'Azur" loading="lazy">
+          <span class="conseil-image-badge">Côte d'Azur · Cannes & Grasse</span>
+        </div>
+        <div class="conseil-text">
+          <span class="section-tag">Mon approche</span>
+          <h2>Vendre sur la Côte d'Azur<br><em>demande de l'expertise</em></h2>
+          <p class="conseil-lead">Le marché immobilier de Cannes et Grasse est exigeant. Les acheteurs sont informés, les prix sensibles. Un mauvais positionnement dès le départ peut vous coûter des mois et des dizaines de milliers d'euros.</p>
+          <p class="conseil-body">C'est pourquoi je construis chaque vente comme un projet : une estimation fondée sur les données réelles, une mise en valeur professionnelle du bien, et une diffusion ciblée vers les bons acheteurs. Mon rôle n'est pas de vendre vite — c'est de vendre bien.</p>
+          <div class="conseil-points">
+            <div class="conseil-point">
+              <div class="conseil-point-dot"></div>
+              Estimation basée sur les données DVF et le marché local
+            </div>
+            <div class="conseil-point">
+              <div class="conseil-point-dot"></div>
+              Home staging et shooting photo professionnel inclus
+            </div>
+            <div class="conseil-point">
+              <div class="conseil-point-dot"></div>
+              Diffusion multi-portails + réseau Liberkeys national
+            </div>
+            <div class="conseil-point">
+              <div class="conseil-point-dot"></div>
+              Suivi personnalisé de la mise en vente à l'acte notarié
+            </div>
+          </div>
+          <a href="pages/estimation.html" class="btn btn-primary">Découvrir mon approche →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVICES ===================== -->
+  <section class="value-prop">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">Mon approche</span>
+        <span class="section-tag">Ce que j'apporte</span>
         <h2>Pourquoi les propriétaires me font confiance</h2>
-        <p>Pas d'agence classique. Une experte qui travaille pour vous, avec vous.</p>
+        <p>Pas une agence anonyme — une experte qui s'engage personnellement sur votre vente.</p>
       </div>
-
       <div class="value-grid">
         <div class="value-card value-card--large">
           <div class="value-icon">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
           </div>
-          <h3>Mise en valeur de votre bien</h3>
-          <p>Home staging professionnel, photos HD, visite virtuelle 360° et plans 3D. Votre bien se démarque dès les premières secondes sur les portails.</p>
-          <a href="#home-staging" class="value-link">En savoir plus →</a>
+          <h3>Mise en valeur professionnelle de votre bien</h3>
+          <p>Home staging, photos HD, visite virtuelle 360° et plans 3D. Votre bien crée le coup de cœur dès les premières secondes — en ligne comme lors des visites.</p>
+          <a href="#home-staging" class="value-link">Voir mes réalisations →</a>
         </div>
         <div class="value-card">
           <div class="value-icon">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           </div>
           <h3>Prix juste, vente rapide</h3>
-          <p>Estimation fondée sur la base DVF et mon expertise terrain depuis 2018. Vous vendez au vrai prix, sans brader.</p>
+          <p>Estimation fondée sur la base DVF et mon expertise terrain. Vous vendez au vrai prix du marché, sans brader, sans attendre.</p>
         </div>
         <div class="value-card">
           <div class="value-icon">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
           </div>
           <h3>Suivi en temps réel</h3>
-          <p>Accès à votre espace vendeur, comptes-rendus de visites instantanés, et moi disponible 6j/7 pour vous informer.</p>
+          <p>Comptes-rendus de visites instantanés et disponibilité 6j/7. Vous savez toujours où en est votre vente.</p>
         </div>
         <div class="value-card">
           <div class="value-icon">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
           </div>
-          <h3>Relation humaine d'abord</h3>
-          <p>Vendre une maison, c'est tourner une page. Je l'accompagne avec respect, transparence et bienveillance — pas avec de la pression.</p>
+          <h3>Une relation humaine avant tout</h3>
+          <p>Vendre une maison, c'est tourner une page. Je vous accompagne avec respect et transparence, sans pression commerciale.</p>
         </div>
-        <div class="value-card value-card--accent">
+        <div class="value-card">
           <div class="value-icon">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
           </div>
-          <h3>Nouvelles technologies</h3>
-          <p>IA, visites virtuelles, diffusion multi-portails automatisée, signature électronique. Je mobilise les meilleurs outils pour accélérer votre vente.</p>
+          <h3>Technologies au service de votre vente</h3>
+          <p>IA, visite virtuelle, multi-portails, signature électronique. Les meilleurs outils pour accélérer chaque étape.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== HOME STAGING ===== -->
+  <!-- ===================== HOME STAGING ===================== -->
   <section class="home-staging" id="home-staging">
     <div class="hs-visual">
       <div class="hs-before-after">
@@ -184,8 +219,8 @@
     </div>
     <div class="hs-content">
       <span class="section-tag">Home Staging</span>
-      <h2>La première impression est la seule qui compte</h2>
-      <p>90% des acheteurs décident en moins de 90 secondes. Je vous aide à déclencher le coup de cœur — même avant la visite.</p>
+      <h2>La première impression<br>est la seule qui compte</h2>
+      <p>90 % des acheteurs décident en moins de 90 secondes. Je prépare votre bien pour déclencher le coup de cœur — avant même la visite physique.</p>
       <ul class="hs-benefits">
         <li>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
@@ -193,7 +228,7 @@
         </li>
         <li>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
-          Shooting photo professionnel et retouches
+          Shooting photo professionnel HD + retouches
         </li>
         <li>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
@@ -205,12 +240,12 @@
         </li>
         <li>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
-          Conseils décoration personnalisés (sans frais de travaux)
+          Conseils décoration personnalisés (sans travaux)
         </li>
       </ul>
       <div class="hs-result">
         <div class="hs-result-item">
-          <span class="hs-result-number">-30%</span>
+          <span class="hs-result-number">−30%</span>
           <span class="hs-result-label">de temps sur le marché</span>
         </div>
         <div class="hs-result-item">
@@ -222,96 +257,81 @@
     </div>
   </section>
 
-  <!-- ===== VIDÉO DE PRÉSENTATION ===== -->
-  <section class="video-presentation" id="video-presentation">
+  <!-- ===================== BIEN EN VENTE ===================== -->
+  <section class="bien-vente">
     <div class="container">
-      <div class="vp-layout">
-        <div class="vp-video-wrap">
-          <div class="vp-video-frame">
-            <video class="vp-video" controls poster="" preload="metadata">
-              <source src="images/maelle-presentation.mp4" type="video/mp4">
+      <div class="bv-layout">
+        <div>
+          <div class="bv-video-frame">
+            <video class="bv-video" controls preload="metadata" muted>
+              <source src="images/bien-vente.mp4" type="video/mp4">
             </video>
-            <div class="vp-video-overlay" id="vpOverlay" onclick="playVP()">
-              <div class="vp-play-btn">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-              </div>
-              <p>Regarder la présentation</p>
-            </div>
-          </div>
-          <div class="vp-badge-row">
-            <span class="vp-badge">📍 Cannes & Grasse</span>
-            <span class="vp-badge">⏱ 2 min</span>
-            <span class="vp-badge">🎯 Experte depuis 2018</span>
+            <span class="bv-badge">Bien en vente</span>
           </div>
         </div>
-        <div class="vp-content">
-          <span class="section-tag">Qui suis-je ?</span>
-          <h2>Maëlle Jean,<br><em>à votre service</em></h2>
-          <p class="vp-lead">Je ne suis pas une agence anonyme. Je suis Maëlle — une conseillère qui prend le temps, explique tout, et met son expertise à votre disposition pour que vous vendiez dans les meilleures conditions.</p>
-          <div class="vp-points">
-            <div class="vp-point">
-              <div class="vp-point-icon">🏆</div>
-              <div>
-                <strong>Experte certifiée valeur vénale</strong>
-                <p>L'estimation que je vous fournis résiste aux contre-propositions des acheteurs et des banques.</p>
+        <div class="bv-content">
+          <span class="section-tag">Exemple de réalisation</span>
+          <h2>Un bien <em>en vente</em><br>en ce moment</h2>
+          <p class="bv-lead">Voici un exemple concret de la mise en valeur que je propose : vidéo professionnelle, présentation soignée, diffusion ciblée. Contactez-moi pour savoir comment je peux faire de même pour votre bien.</p>
+          <div class="bv-details">
+            <div class="bv-detail">
+              <div class="bv-detail-icon">📍</div>
+              <div class="bv-detail-text">
+                <strong>Secteur Cannes / Grasse</strong>
+                Côte d'Azur, Alpes-Maritimes (06)
               </div>
             </div>
-            <div class="vp-point">
-              <div class="vp-point-icon">🏠</div>
-              <div>
-                <strong>Home staging inclus dans ma mission</strong>
-                <p>Je prépare votre bien pour qu'il crée un coup de cœur dès les premières photos.</p>
+            <div class="bv-detail">
+              <div class="bv-detail-icon">📸</div>
+              <div class="bv-detail-text">
+                <strong>Mise en valeur complète</strong>
+                Photos HD + vidéo + visite virtuelle 360°
               </div>
             </div>
-            <div class="vp-point">
-              <div class="vp-point-icon">📚</div>
-              <div>
-                <strong>Formatrice pour les pros de l'immo</strong>
-                <p>Je transmets mes méthodes aux agents — autant dire que vous bénéficiez du meilleur niveau.</p>
+            <div class="bv-detail">
+              <div class="bv-detail-icon">📞</div>
+              <div class="bv-detail-text">
+                <strong>Renseignements</strong>
+                07 67 63 22 74 · maelle.jean@liberkeys.com
               </div>
             </div>
           </div>
-          <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:32px">
-            <a href="pages/rendez-vous.html" class="btn btn-primary">Me rencontrer →</a>
-            <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener" class="btn btn-outline">
-              Azur Immo sur Facebook
-            </a>
-          </div>
+          <a href="pages/rendez-vous.html" class="btn btn-primary">Me contacter pour ce bien →</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== EXPERTISE & PARCOURS ===== -->
+  <!-- ===================== À PROPOS ===================== -->
   <section class="expertise" id="expertise">
     <div class="container">
       <div class="expertise-grid">
         <div class="expertise-portrait">
           <div class="portrait-frame">
-            <div class="portrait-img"></div>
+            <img src="images/avatar-maelle.png" alt="Maëlle Jean — Conseillère immobilière Côte d'Azur" style="width:100%;height:100%;object-fit:cover;display:block;">
           </div>
           <div class="portrait-badges">
-            <div class="pbadge">Expert<br>Valeur Vénale</div>
-            <div class="pbadge pbadge--accent">Formatrice<br>certifiée</div>
+            <div class="pbadge pbadge--accent">Expert<br>Valeur Vénale</div>
+            <div class="pbadge">Réseau<br>Liberkeys</div>
           </div>
         </div>
         <div class="expertise-content">
           <span class="section-tag">À propos</span>
-          <h2>Maëlle Jean<br><em>Plus qu'une conseillère</em></h2>
-          <p class="expertise-lead">Depuis 2018, j'accompagne les propriétaires de Cannes, Grasse et de la Côte d'Azur dans leurs projets immobiliers avec une promesse : votre intérêt avant tout.</p>
-          <p>Experte en <strong>valeur vénale</strong>, je produis des estimations qui tiennent la route — données DVF, marché local, caractéristiques intrinsèques. Formatrice reconnue, je transmets ce savoir aux professionnels de l'immobilier. Sur le terrain, je combine cette rigueur technique avec une vraie empathie pour vous accompagner sereinement.</p>
+          <h2>Maëlle Jean<br><em>À votre service</em></h2>
+          <p class="expertise-lead">Depuis 2018, j'accompagne les propriétaires de Cannes, Grasse et de la Côte d'Azur dans leurs projets immobiliers avec une promesse simple : votre intérêt avant tout.</p>
+          <p>Experte en <strong>valeur vénale</strong>, je produis des estimations qui tiennent la route face aux acheteurs et aux banques. Sur le terrain, je combine rigueur technique et vraie empathie pour vous accompagner sereinement, de la mise en vente à la signature chez le notaire.</p>
           <div class="expertise-milestones">
             <div class="milestone">
               <span class="milestone-year">2018</span>
-              <span class="milestone-text">Débuts sur Grasse & Cannes — spécialisation vente premium</span>
+              <span class="milestone-text">Débuts sur Grasse & Cannes — spécialisation vente premium Côte d'Azur</span>
             </div>
             <div class="milestone">
               <span class="milestone-year">2021</span>
-              <span class="milestone-text">Certification expert en valeur vénale</span>
+              <span class="milestone-text">Certification expert en valeur vénale — estimation DVF et données de marché</span>
             </div>
             <div class="milestone">
               <span class="milestone-year">2024</span>
-              <span class="milestone-text">Lancement de l'activité formatrice pour les pros de l'immo</span>
+              <span class="milestone-text">Rejoins le réseau Liberkeys — diffusion nationale, outils tech de pointe</span>
             </div>
           </div>
           <div class="expertise-ctas">
@@ -326,7 +346,42 @@
     </div>
   </section>
 
-  <!-- ===== TECHNOLOGIES ===== -->
+  <!-- ===================== MES FORMATIONS À VENIR ===================== -->
+  <section class="formations">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Partage d'expertise</span>
+        <h2>Mes formations à venir</h2>
+        <p>7 ans de terrain, des certifications solides, des méthodes qui fonctionnent — je vais les partager. Pour vendeurs exigeants et professionnels de l'immobilier.</p>
+      </div>
+      <div class="formations-grid">
+        <div class="formation-card formation-card--coming">
+          <div class="formation-icon">🏠</div>
+          <h4>Vendre son bien au meilleur prix</h4>
+          <p>Une formation pratique pour les propriétaires qui veulent comprendre le marché, préparer leur bien et négocier efficacement.</p>
+        </div>
+        <div class="formation-card formation-card--coming">
+          <div class="formation-icon">📊</div>
+          <h4>Maîtriser la valeur vénale</h4>
+          <p>Pour les professionnels de l'immobilier : méthodes d'estimation avancées, exploitation des données DVF, argumentation face aux objections.</p>
+        </div>
+        <div class="formation-card formation-card--coming">
+          <div class="formation-icon">✨</div>
+          <h4>Home Staging & Mise en scène</h4>
+          <p>Les techniques concrètes pour valoriser n'importe quel bien sans budget travaux, et déclencher le coup de cœur acheteur.</p>
+        </div>
+      </div>
+      <div class="formations-cta">
+        <div class="formations-cta-text">
+          <h3>Soyez informé en priorité</h3>
+          <p>Les programmes sont en cours de préparation. Inscrivez-vous pour être parmi les premiers à y avoir accès.</p>
+        </div>
+        <a href="pages/rendez-vous.html" class="btn btn-primary">M'inscrire sur la liste →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TECHNOLOGIES ===================== -->
   <section class="technologies">
     <div class="container">
       <div class="section-header section-header--light">
@@ -338,44 +393,44 @@
         <div class="tech-card">
           <div class="tech-icon">🏠</div>
           <h4>Visite Virtuelle 3D</h4>
-          <p>Matterport & Ricoh Theta — vos acheteurs visitent 24h/24 depuis le monde entier.</p>
+          <p>Matterport & Ricoh Theta — vos acheteurs visitent 24h/24 depuis le monde entier, sans se déplacer.</p>
         </div>
         <div class="tech-card">
           <div class="tech-icon">🤖</div>
-          <h4>IA & Data</h4>
-          <p>Analyse DVF, tendances de marché, scoring acquéreur. La donnée au service de votre prix.</p>
+          <h4>IA & Data DVF</h4>
+          <p>Analyse des données de transactions, tendances de marché, scoring acquéreur. La donnée au service de votre prix.</p>
         </div>
         <div class="tech-card">
           <div class="tech-icon">📱</div>
           <h4>Diffusion Multi-portails</h4>
-          <p>SeLoger, Leboncoin, PAP, Logic-Immo, Rightmove — votre annonce partout simultanément.</p>
+          <p>SeLoger, Leboncoin, PAP, Logic-Immo, Rightmove — votre annonce partout, simultanément, automatiquement.</p>
         </div>
         <div class="tech-card">
           <div class="tech-icon">✍️</div>
           <h4>Signature Électronique</h4>
-          <p>Compromis signé en quelques clics, depuis n'importe où. Fini les allers-retours.</p>
+          <p>Compromis signé en quelques clics, depuis n'importe où dans le monde. Fini les allers-retours.</p>
         </div>
         <div class="tech-card">
           <div class="tech-icon">📊</div>
           <h4>Rapport DVF Personnalisé</h4>
-          <p>Votre estimation s'appuie sur les vraies transactions enregistrées dans votre quartier.</p>
+          <p>Votre estimation s'appuie sur les vraies transactions récentes dans votre quartier, issues du registre officiel.</p>
         </div>
         <div class="tech-card">
           <div class="tech-icon">💬</div>
-          <h4>Chatbot IA 24/7</h4>
-          <p>Mon assistant intelligent répond à vos questions à toute heure, instantanément.</p>
+          <h4>Assistant IA 24/7</h4>
+          <p>Mon chatbot répond à vos questions à toute heure, instantanément. Une question à minuit ? Il est là.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== VLOG PREVIEW ===== -->
+  <!-- ===================== VLOG PREVIEW ===================== -->
   <section class="vlog-preview">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Vlog & Conseils</span>
-        <h2>Tout ce que vous devez savoir avant de vendre</h2>
-        <p>Jurisprudences, tips pratiques, nouveautés du marché — je partage mon expertise sans retenue.</p>
+        <h2>Tout ce que vous devez savoir<br>avant de vendre</h2>
+        <p>Jurisprudences, tips pratiques, analyse du marché local — je partage mon expertise sans retenue.</p>
       </div>
       <div class="vlog-grid">
         <article class="vlog-card vlog-card--featured">
@@ -384,8 +439,8 @@
             <span class="vlog-category">Conseil pratique</span>
           </div>
           <div class="vlog-info">
-            <h3>5 erreurs qui font baisser votre prix de vente</h3>
-            <p>Découvrez les pièges les plus courants et comment les éviter pour maximiser votre transaction.</p>
+            <h3>5 erreurs qui font baisser votre prix de vente de 10%</h3>
+            <p>Découvrez les pièges les plus courants et comment les éviter pour maximiser votre transaction sur la Côte d'Azur.</p>
             <a href="pages/vlog.html" class="vlog-link">Voir la vidéo →</a>
           </div>
         </article>
@@ -395,8 +450,8 @@
           </div>
           <div class="vlog-info">
             <span class="vlog-category-sm">Juridique</span>
-            <h4>Jurisprudence 2024 : vices cachés, ce qui change</h4>
-            <a href="pages/vlog.html" class="vlog-link">Lire →</a>
+            <h4>Vices cachés 2024 : ce qui change pour les vendeurs</h4>
+            <a href="pages/vlog.html" class="vlog-link">Lire l'article →</a>
           </div>
         </article>
         <article class="vlog-card">
@@ -405,8 +460,8 @@
           </div>
           <div class="vlog-info">
             <span class="vlog-category-sm">Marché</span>
-            <h4>Immobilier Cannes 2024 : les prix résistent</h4>
-            <a href="pages/vlog.html" class="vlog-link">Lire →</a>
+            <h4>Immobilier Cannes & Grasse 2024 : les prix résistent</h4>
+            <a href="pages/vlog.html" class="vlog-link">Lire l'article →</a>
           </div>
         </article>
         <article class="vlog-card">
@@ -415,18 +470,18 @@
           </div>
           <div class="vlog-info">
             <span class="vlog-category-sm">Home Staging</span>
-            <h4>Home staging : 3 tips pour vendre en 30 jours</h4>
-            <a href="pages/vlog.html" class="vlog-link">Lire →</a>
+            <h4>3 tips home staging pour vendre en moins de 30 jours</h4>
+            <a href="pages/vlog.html" class="vlog-link">Lire l'article →</a>
           </div>
         </article>
       </div>
       <div class="vlog-cta">
-        <a href="pages/vlog.html" class="btn btn-outline">Voir tous les épisodes</a>
+        <a href="pages/vlog.html" class="btn btn-outline">Voir tous les articles et vidéos</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== EBOOK CTA ===== -->
+  <!-- ===================== EBOOK ===================== -->
   <section class="ebook-cta">
     <div class="container">
       <div class="ebook-grid">
@@ -444,10 +499,10 @@
         </div>
         <div class="ebook-content">
           <span class="section-tag">E-book gratuit</span>
-          <h2>Vendre malin :<br>les 5 conseils qui changent tout</h2>
+          <h2>Vendre malin : les 5 conseils<br><em>qui changent tout</em></h2>
           <ul class="ebook-list">
             <li>Comment fixer le bon prix dès le premier jour</li>
-            <li>Le home staging qui fait la différence (sans budget)</li>
+            <li>Le home staging qui fait la différence (sans gros budget)</li>
             <li>Quels diagnostics anticiper pour rassurer l'acheteur</li>
             <li>Négocier sans céder sur l'essentiel</li>
             <li>Les pièges juridiques à éviter absolument</li>
@@ -455,9 +510,7 @@
           <form class="ebook-form" id="ebookForm" onsubmit="submitEbook(event)">
             <input type="text" placeholder="Prénom" required>
             <input type="email" placeholder="Email" required>
-            <button type="submit" class="btn btn-primary">
-              Recevoir mon e-book gratuit
-            </button>
+            <button type="submit" class="btn btn-primary">Recevoir mon e-book gratuit</button>
             <p class="form-notice">Aucun spam. Désabonnement en 1 clic.</p>
           </form>
         </div>
@@ -465,7 +518,7 @@
     </div>
   </section>
 
-  <!-- ===== TÉMOIGNAGES ===== -->
+  <!-- ===================== TÉMOIGNAGES ===================== -->
   <section class="testimonials">
     <div class="container">
       <div class="section-header">
@@ -475,7 +528,7 @@
       <div class="testimonials-grid">
         <div class="testi-card">
           <div class="testi-stars">★★★★★</div>
-          <p>"Maëlle a vendu notre appartement à Cannes en 3 semaines, au prix que nous souhaitions. Son home staging a fait la différence. Je recommande sans hésiter."</p>
+          <p>"Maëlle a vendu notre appartement à Cannes en 3 semaines, au prix que nous souhaitions. Son home staging a fait toute la différence. Je recommande sans hésiter."</p>
           <div class="testi-author">
             <div class="testi-avatar">SL</div>
             <div>
@@ -510,7 +563,50 @@
     </div>
   </section>
 
-  <!-- ===== CTA FINAL ===== -->
+  <!-- ===================== FACEBOOK FEED ===================== -->
+  <section class="fb-section">
+    <div class="container">
+      <div class="fb-layout">
+        <div class="fb-intro">
+          <span class="section-tag">Sur les réseaux</span>
+          <h2>Suivez <em>azurimmo by Maëlle</em><br>sur Facebook</h2>
+          <p class="fb-intro-lead">Actualités du marché immobilier, conseils vendeurs, avant/après home staging, nouveaux biens en vente — rejoignez la communauté pour ne rien manquer.</p>
+          <div class="fb-highlights">
+            <div class="fb-highlight">
+              <div class="fb-highlight-icon">🏡</div>
+              <span>Nouveaux biens en vente chaque semaine</span>
+            </div>
+            <div class="fb-highlight">
+              <div class="fb-highlight-icon">📊</div>
+              <span>Analyses du marché Cannes & Grasse</span>
+            </div>
+            <div class="fb-highlight">
+              <div class="fb-highlight-icon">✨</div>
+              <span>Avant/après home staging en photos</span>
+            </div>
+          </div>
+          <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            Suivre la page
+          </a>
+        </div>
+        <div class="fb-widget-wrap">
+          <iframe
+            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAzurImmoByMaelle&tabs=timeline&width=500&height=600&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false"
+            width="500"
+            height="600"
+            scrolling="no"
+            frameborder="0"
+            allowfullscreen="true"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            title="Publications Facebook azurimmo by Maëlle">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA FINAL ===================== -->
   <section class="cta-final">
     <div class="container">
       <div class="cta-final-content">
@@ -518,7 +614,7 @@
         <p>Consultation offerte, sans engagement. Je vous dis la vérité sur votre bien et son marché.</p>
         <div class="cta-final-actions">
           <a href="pages/rendez-vous.html" class="btn btn-primary btn-lg">Prendre rendez-vous</a>
-          <a href="pages/estimation.html" class="btn btn-outline btn-lg">Estimer mon bien</a>
+          <a href="pages/estimation.html" class="btn btn-outline--light btn-lg">Estimer mon bien</a>
         </div>
         <p class="cta-contact">
           Ou appelez directement :
@@ -528,25 +624,25 @@
     </div>
   </section>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- ===================== FOOTER ===================== -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-logo">Maëlle Jean</div>
-          <p>Conseillère immobilière experte sur la Côte d'Azur depuis 2018. Cannes, Grasse et environs.</p>
+          <p>Conseillère immobilière experte sur la Côte d'Azur depuis 2018. Cannes, Grasse et environs. Réseau Liberkeys.</p>
           <div class="footer-social">
+            <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener" aria-label="Facebook" class="social-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            </a>
             <a href="#" aria-label="Instagram" class="social-link">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
             </a>
             <a href="#" aria-label="LinkedIn" class="social-link">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             </a>
             <a href="#" aria-label="YouTube" class="social-link">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02"/></svg>
-            </a>
-            <a href="#" aria-label="TikTok" class="social-link">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.77 1.52V6.76a4.85 4.85 0 01-1-.07z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98"/></svg>
             </a>
           </div>
         </div>
@@ -556,7 +652,7 @@
             <li><a href="#services">Services</a></li>
             <li><a href="#home-staging">Home Staging</a></li>
             <li><a href="#expertise">À propos</a></li>
-            <li><a href="pages/vlog.html">Vlog</a></li>
+            <li><a href="pages/vlog.html">Conseils & Vlog</a></li>
             <li><a href="pages/estimation.html">Estimation gratuite</a></li>
             <li><a href="pages/rendez-vous.html">Prendre RDV</a></li>
             <li><a href="pages/ebook.html">E-book gratuit</a></li>
@@ -582,26 +678,29 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2024 Maëlle Jean Immobilier · Carte professionnelle T n°XXXXXXXXX · <a href="#">Mentions légales</a> · <a href="#">Politique de confidentialité</a></p>
+        <p>© 2025 Maëlle Jean · Réseau Liberkeys · <a href="#">Mentions légales</a> · <a href="#">Politique de confidentialité</a></p>
       </div>
     </div>
   </footer>
 
-  <!-- ===== CHATBOT ===== -->
+  <!-- ===================== CHATBOT ===================== -->
   <div class="chatbot-widget" id="chatbotWidget">
     <button class="chatbot-toggle" id="chatbotToggle" aria-label="Ouvrir le chat">
       <div class="chatbot-avatar-ring">
-        <div class="chatbot-avatar">MJ</div>
+        <img src="images/avatar-maelle.png" alt="Maëlle" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="chatbot-avatar" style="display:none">MJ</div>
       </div>
       <div class="chatbot-bubble-hint" id="chatbotHint">
         <p>Bonjour ! Une question sur votre projet ?</p>
-        <button class="chatbot-hint-close" onclick="dismissHint()">×</button>
+        <button class="chatbot-hint-close" onclick="dismissHint(event)">×</button>
       </div>
     </button>
     <div class="chatbot-panel" id="chatbotPanel">
       <div class="chatbot-header">
         <div class="chatbot-header-info">
-          <div class="chatbot-header-avatar">MJ</div>
+          <div class="chatbot-header-avatar">
+            <img src="images/avatar-maelle.png" alt="Maëlle" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.outerHTML='<span style=\'font-weight:800;font-size:.85rem;color:white\'>MJ</span>'">
+          </div>
           <div>
             <strong>Maëlle Jean</strong>
             <span>Assistante IA · répond instantanément</span>
@@ -631,7 +730,7 @@
     </div>
   </div>
 
-  <!-- ===== NOTIFICATION TOAST ===== -->
+  <!-- ===================== TOAST ===================== -->
   <div class="toast" id="toast"></div>
 
   <script src="js/main.js"></script>

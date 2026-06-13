@@ -109,7 +109,8 @@ function sendLeadNotification(data) {
 }
 
 // Dismiss chatbot hint
-function dismissHint() {
+function dismissHint(e) {
+  if (e) { e.stopPropagation(); e.preventDefault(); }
   const hint = document.getElementById('chatbotHint');
   if (hint) hint.style.display = 'none';
 }
