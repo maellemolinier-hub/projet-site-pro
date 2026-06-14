@@ -147,34 +147,3 @@ function submitEbook(e) {
 // Lead notification stub
 function sendLeadNotification(data) { console.log('[LEAD]', data); }
 
-// Son hero : active la vidéo + le message vocal simultanément
-function activateHeroSound() {
-  const video = document.getElementById('heroVideo');
-  const btn = document.getElementById('heroSoundBtn');
-  const audio = document.getElementById('welcomeAudio');
-
-  // Unmute et repart depuis le début
-  if (video) {
-    video.muted = false;
-    video.currentTime = 0;
-    video.play().catch(() => {});
-  }
-
-  // Message vocal en parallèle
-  if (audio && !audioPlaying) {
-    audio.play().then(() => {
-      audioPlaying = true;
-      const ab = document.getElementById('audioBtn');
-      if (ab) ab.classList.add('playing');
-      audio.onended = () => {
-        audioPlaying = false;
-        if (ab) ab.classList.remove('playing');
-      };
-    }).catch(() => {});
-  }
-
-  if (btn) {
-    btn.classList.add('on');
-    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg> Son activé';
-  }
-}
