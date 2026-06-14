@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "ImmoExpert",
+    "slug": "immoexpert",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a3a6b"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "fr.immoexpert.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "ImmoExpert utilise votre position pour afficher les prix immobiliers autour de vous.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "ImmoExpert utilise votre position pour la prospection terrain en arrière-plan.",
+        "NSCameraUsageDescription": "ImmoExpert utilise votre caméra pour scanner des QR codes."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a3a6b"
+      },
+      "package": "fr.immoexpert.app",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-location",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Autoriser ImmoExpert à accéder à votre caméra."
+        }
+      ]
+    ],
+    "scheme": "immoexpert",
+    "extra": {
+      "apiUrl": "http://localhost:8000",
+      "webUrl": "http://localhost:3000",
+      "eas": {
+        "projectId": "immoexpert-app"
+      }
+    }
+  }
+}

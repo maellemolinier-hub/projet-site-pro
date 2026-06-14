@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "buildCommand": "cd ../.. && pnpm --filter @immoexpert/db exec prisma generate && pnpm --filter @immoexpert/web build",
+  "outputDirectory": "apps/web/.next",
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/api/geo/:path*",
+      "destination": "https://api.immoexpert.fr/api/geo/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/widget/:path*",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "ALLOWALL" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/api/widget/:path*",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" }
+      ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/dvf-refresh",
+      "schedule": "0 3 * * *"
+    }
+  ]
+}
