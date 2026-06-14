@@ -190,11 +190,12 @@ def _refresh_department(engine, dept: str, year: int, cutoff_days: int | None) -
     upserted = 0
     chunk_size = 500
 
+    # Prisma génère les colonnes en camelCase → snake_case en base
     insert_sql = text("""
         INSERT INTO "PricePoint" (
-            id, mutation_id, sale_date, price, surface_area,
-            price_per_sqm, property_type, latitude, longitude,
-            postal_code, city, street_name, room_count,
+            id, "mutationId", "saleDate", price, "surfaceArea",
+            "pricePerSqm", "propertyType", latitude, longitude,
+            "postalCode", city, "streetName", "roomCount",
             "createdAt", "updatedAt"
         ) VALUES (
             gen_random_uuid(),
@@ -203,8 +204,8 @@ def _refresh_department(engine, dept: str, year: int, cutoff_days: int | None) -
             :postal_code, :city, :street_name, :room_count,
             NOW(), NOW()
         )
-        ON CONFLICT (mutation_id) DO UPDATE SET
-            price_per_sqm = EXCLUDED.price_per_sqm,
+        ON CONFLICT ("mutationId") DO UPDATE SET
+            "pricePerSqm" = EXCLUDED."pricePerSqm",
             "updatedAt" = NOW()
     """)
 

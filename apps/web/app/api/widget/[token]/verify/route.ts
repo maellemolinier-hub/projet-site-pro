@@ -7,19 +7,27 @@ export async function GET(
 ) {
   const expert = await db.expertProfile.findFirst({
     where: { widgetToken: params.token },
-    include: {
-      certification: true,
-      user: { select: { firstName: true, lastName: true } },
-    },
+    include: { user: { select: { firstName: true, lastName: true } } },
   });
 
-  if (!expert?.certification) {
+  if (!expert) {
     return NextResponse.redirect(
-      new URL(`/verifier/invalid`, process.env.NEXTAUTH_URL!)
+      new URL("/verifier/invalid", process.env.NEXTAUTH_URL!)
+    );
+  }
+
+  const certification = await db.certification.findUnique({
+    where: { userId: expert.userId },
+    select: { certificateId: true },
+  });
+
+  if (!certification?.certificateId) {
+    return NextResponse.redirect(
+      new URL("/verifier/invalid", process.env.NEXTAUTH_URL!)
     );
   }
 
   return NextResponse.redirect(
-    new URL(`/verifier/${expert.certification.certificateId}`, process.env.NEXTAUTH_URL!)
+    new URL(`/verifier/${certification.certificateId}`, process.env.NEXTAUTH_URL!)
   );
 }

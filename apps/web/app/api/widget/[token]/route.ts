@@ -5,13 +5,18 @@ export async function GET(
   _req: Request,
   { params }: { params: { token: string } }
 ) {
-  const { token } = params;
-
   const expert = await db.expertProfile.findFirst({
-    where: { widgetToken: token },
+    where: { widgetToken: params.token },
     include: {
       user: { select: { firstName: true, lastName: true, email: true } },
-      certification: { select: { status: true, issuedAt: true, expiresAt: true, certificateId: true } },
+      certification: {
+        select: {
+          status: true,
+          issuedAt: true,
+          expiresAt: true,
+          certificateId: true,
+        },
+      },
     },
   });
 
@@ -19,19 +24,32 @@ export async function GET(
     return NextResponse.json({ error: "Token invalide" }, { status: 404 });
   }
 
-  const cert = expert.certification;
-  const isValid = cert?.status === "ACTIVE" && (!cert.expiresAt || cert.expiresAt > new Date());
+  const cert = expert.user.certification
+    ?? (expert as any).certification
+    ?? null;
+
+  // Requête séparée pour la certification via userId
+  const certification = await db.certification.findUnique({
+    where: { userId: expert.userId },
+    select: { status: true, issuedAt: true, expiresAt: true, certificateId: true },
+  });
+
+  const isValid =
+    certification?.status === "CERTIFIED" &&
+    (!certification.expiresAt || certification.expiresAt > new Date());
 
   return NextResponse.json({
     name: [expert.user.firstName, expert.user.lastName].filter(Boolean).join(" "),
     specialties: expert.specialties,
     city: expert.city,
     certified: isValid,
-    certifiedSince: cert?.issuedAt ?? null,
-    certExpires: cert?.expiresAt ?? null,
-    certificateId: cert?.certificateId ?? null,
-    verifyUrl: `${process.env.NEXTAUTH_URL}/verifier/${cert?.certificateId}`,
-    rating: expert.averageRating,
+    certifiedSince: certification?.issuedAt ?? null,
+    certExpires: certification?.expiresAt ?? null,
+    certificateId: certification?.certificateId ?? null,
+    verifyUrl: certification?.certificateId
+      ? `${process.env.NEXTAUTH_URL}/verifier/${certification.certificateId}`
+      : null,
+    averageRating: expert.averageRating,
     reviewCount: expert.reviewCount,
   });
 }
