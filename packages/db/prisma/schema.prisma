@@ -1,0 +1,358 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── USERS & AUTH ───────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  phone     String?
+  avatarUrl String?
+  role      UserRole @default(AGENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  agency        AgencyMember[]
+  subscription  Subscription?
+  certification Certification?
+  expertProfile ExpertProfile?
+  prospects     Prospect[]
+  reports       Report[]
+
+  @@index([clerkId])
+  @@index([email])
+}
+
+enum UserRole {
+  AGENT
+  AGENCY_ADMIN
+  PROMOTEUR
+  ADMIN
+}
+
+// ─── AGENCIES ────────────────────────────────────────────────────────────────
+
+model Agency {
+  id          String   @id @default(cuid())
+  name        String
+  siret       String?  @unique
+  address     String?
+  city        String?
+  postalCode  String?
+  website     String?
+  logoUrl     String?
+  brandColor  String?  @default("#4449e7")
+  widgetToken String   @unique @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members      AgencyMember[]
+  subscription Subscription?
+
+  @@index([widgetToken])
+}
+
+model AgencyMember {
+  id       String      @id @default(cuid())
+  userId   String
+  agencyId String
+  role     AgencyRole  @default(MEMBER)
+  joinedAt DateTime    @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agency Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, agencyId])
+}
+
+enum AgencyRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+// ─── SUBSCRIPTIONS ───────────────────────────────────────────────────────────
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  stripeSubscriptionId String             @unique
+  stripeCustomerId     String
+  stripePriceId        String
+  plan                 Plan
+  status               SubscriptionStatus
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  userId   String? @unique
+  agencyId String? @unique
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agency Agency? @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+
+  @@index([stripeCustomerId])
+  @@index([status])
+}
+
+enum Plan {
+  STARTER
+  EXPERT
+  AGENCE_PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  UNPAID
+}
+
+// ─── CERTIFICATIONS & EXPERT DIRECTORY ───────────────────────────────────────
+
+model Certification {
+  id          String              @id @default(cuid())
+  userId      String              @unique
+  status      CertificationStatus @default(IN_PROGRESS)
+  score       Int?
+  completedAt DateTime?
+  expiresAt   DateTime?
+  pdfUrl      String?
+  qrCode      String?             @unique @default(cuid())
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progress CourseProgress[]
+
+  @@index([qrCode])
+  @@index([status])
+}
+
+enum CertificationStatus {
+  IN_PROGRESS
+  EXAM_READY
+  CERTIFIED
+  EXPIRED
+}
+
+model ExpertProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  slug        String   @unique
+  bio         String?
+  city        String
+  postalCode  String
+  latitude    Float?
+  longitude   Float?
+  specialties String[] @default([])
+  languages   String[] @default(["fr"])
+  websiteUrl  String?
+  linkedinUrl String?
+  avgRating   Float    @default(0)
+  totalReviews Int     @default(0)
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviews ExpertReview[]
+
+  @@index([slug])
+  @@index([city])
+  @@index([latitude, longitude])
+}
+
+model ExpertReview {
+  id        String   @id @default(cuid())
+  profileId String
+  rating    Int
+  comment   String?
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  profile ExpertProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+// ─── E-LEARNING ──────────────────────────────────────────────────────────────
+
+model Course {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  thumbnailUrl String?
+  durationMin Int
+  order       Int
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+
+  modules  Module[]
+  progress CourseProgress[]
+}
+
+model Module {
+  id       String       @id @default(cuid())
+  courseId String
+  title    String
+  order    Int
+  type     ModuleType
+
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons  Lesson[]
+
+  @@index([courseId])
+}
+
+enum ModuleType {
+  VIDEO
+  QUIZ
+  DOCUMENT
+  CASE_STUDY
+}
+
+model Lesson {
+  id         String  @id @default(cuid())
+  moduleId   String
+  title      String
+  order      Int
+  durationMin Int?
+  muxAssetId String?
+  muxPlaybackId String?
+  content    Json?
+
+  module   Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  progress LessonProgress[]
+
+  @@index([moduleId])
+}
+
+model CourseProgress {
+  id              String    @id @default(cuid())
+  certificationId String
+  courseId        String
+  completedAt     DateTime?
+  score           Int?
+  createdAt       DateTime  @default(now())
+
+  certification Certification @relation(fields: [certificationId], references: [id], onDelete: Cascade)
+  course        Course        @relation(fields: [courseId], references: [id])
+  lessonProgress LessonProgress[]
+
+  @@unique([certificationId, courseId])
+}
+
+model LessonProgress {
+  id               String    @id @default(cuid())
+  courseProgressId String
+  lessonId         String
+  completedAt      DateTime?
+  watchedSeconds   Int       @default(0)
+
+  courseProgress CourseProgress @relation(fields: [courseProgressId], references: [id], onDelete: Cascade)
+  lesson         Lesson        @relation(fields: [lessonId], references: [id])
+
+  @@unique([courseProgressId, lessonId])
+}
+
+// ─── PROSPECTS (TERRAIN) ─────────────────────────────────────────────────────
+
+model Prospect {
+  id            String        @id @default(cuid())
+  userId        String
+  address       String
+  city          String
+  postalCode    String
+  latitude      Float
+  longitude     Float
+  ownerName     String?
+  ownerPhone    String?
+  ownerEmail    String?
+  saleScore     Float
+  lastDetection DateTime
+  status        ProspectStatus @default(NEW)
+  notes         String?
+  contactedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([latitude, longitude])
+  @@index([status])
+  @@index([saleScore])
+}
+
+enum ProspectStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  CONVERTED
+  LOST
+}
+
+// ─── PRICE DATA ──────────────────────────────────────────────────────────────
+
+model PricePoint {
+  id         String   @id @default(cuid())
+  source     String
+  address    String
+  street     String
+  city       String
+  postalCode String
+  latitude   Float
+  longitude  Float
+  priceSqm   Float
+  priceTotal Float?
+  surface    Float?
+  rooms      Int?
+  type       PropertyType
+  soldAt     DateTime?
+  listedAt   DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([latitude, longitude])
+  @@index([postalCode])
+  @@index([street, city])
+  @@index([soldAt])
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  LAND
+  COMMERCIAL
+  PARKING
+}
+
+// ─── REPORTS ─────────────────────────────────────────────────────────────────
+
+model Report {
+  id         String   @id @default(cuid())
+  userId     String
+  title      String
+  zone       String
+  pdfUrl     String?
+  data       Json
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
