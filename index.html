@@ -59,7 +59,6 @@
     <div class="orb orb--3"></div>
 
     <div class="hero-layout">
-      <!-- Gauche : texte -->
       <div class="hero-content">
         <div class="hero-live-badge">
           <span class="live-dot"></span>
@@ -74,10 +73,9 @@
           Pour vendre mieux. Pour vendre vite.
         </p>
 
-        <!-- Bouton audio -->
         <button class="audio-cta" id="audioBtn" onclick="toggleAudio()" type="button">
           <div class="audio-portrait">
-            <img src="images/avatar-maelle.png" alt="Maëlle" class="audio-img" onerror="this.style.display='none'">
+            <img src="images/avatar-maelle.jpg" alt="Maëlle" class="audio-img" onerror="this.style.display='none'">
             <span class="audio-initials">MJ</span>
             <div class="audio-ring"></div>
           </div>
@@ -94,7 +92,9 @@
             </div>
           </div>
         </button>
-        <audio id="welcomeAudio" src="images/audio-accueil.mp3" preload="none"></audio>
+        <audio id="welcomeAudio" preload="none">
+          <source src="images/audio-accueil.m4a" type="audio/mp4">
+        </audio>
 
         <div class="hero-actions">
           <a href="pages/estimation.html" class="btn btn-coral btn-lg">
@@ -102,9 +102,12 @@
             Estimer mon bien gratuitement
           </a>
           <a href="pages/rendez-vous.html" class="btn btn-glass">Consultation offerte</a>
+          <a href="https://wa.me/33767632274?text=Bonjour%20Ma%C3%ABlle%20!%20Je%20souhaite%20discuter%20de%20mon%20projet%20immobilier." target="_blank" rel="noopener" class="btn btn-wa">
+            <svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+            WhatsApp
+          </a>
         </div>
 
-        <!-- Compteurs -->
         <div class="hero-counters">
           <div class="counter">
             <div class="ctr-val"><span class="ctr-num" data-target="7">0</span><span class="ctr-unit">+</span></div>
@@ -123,12 +126,11 @@
         </div>
       </div>
 
-      <!-- Droite : portrait animé -->
       <div class="hero-portrait-col">
         <div class="portrait-outer">
           <div class="portrait-glow"></div>
           <div class="portrait-card">
-            <img src="images/avatar-maelle.png" alt="Maëlle Jean — Agent Immo 2.0 Côte d'Azur" class="portrait-photo">
+            <img src="images/avatar-maelle.jpg" alt="Maëlle Jean — Agent Immo 2.0 Côte d'Azur" class="portrait-photo">
             <div class="portrait-placeholder">MJ</div>
           </div>
           <div class="badge-float badge-float--tl">
@@ -219,9 +221,9 @@
       </div>
       <div class="tech-grid">
         <div class="tech-card reveal"><div class="tc-icon">🏠</div><h4>Visite Virtuelle 3D</h4><p>Matterport — vos acheteurs visitent 24h/24 depuis n'importe où dans le monde</p></div>
-        <div class="tech-card reveal" style="--delay:0.08s"><div class="tc-icon">🤖</div><h4>IA & Data DVF</h4><p>Estimation basée sur les vraies transactions du registre officiel — zéro approximation</p></div>
+        <div class="tech-card reveal" style="--delay:0.08s"><div class="tc-icon">🤖</div><h4>IA &amp; Data DVF</h4><p>Estimation basée sur les vraies transactions du registre officiel — zéro approximation</p></div>
         <div class="tech-card reveal" style="--delay:0.16s"><div class="tc-icon">📱</div><h4>Multi-portails</h4><p>SeLoger, Leboncoin, PAP, Rightmove — votre annonce partout, simultanément</p></div>
-        <div class="tech-card reveal" style="--delay:0.24s"><div class="tc-icon">🎬</div><h4>Vidéo Professionnelle</h4><p>Shooting cinématographique — votre bien mis en scène comme une œuvre</p></div>
+        <div class="tech-card reveal" style="--delay:0.24s"><div class="tc-icon">🎦</div><h4>Vidéo Professionnelle</h4><p>Shooting cinématographique — votre bien mis en scène comme une œuvre</p></div>
         <div class="tech-card reveal" style="--delay:0.32s"><div class="tc-icon">✍️</div><h4>Signature Électronique</h4><p>Compromis signé en 3 clics, depuis n'importe où dans le monde</p></div>
         <div class="tech-card reveal" style="--delay:0.40s"><div class="tc-icon">💬</div><h4>Chatbot IA 24/7</h4><p>Réponses expertes à toute heure — une question à minuit ? Je suis là.</p></div>
       </div>
@@ -247,7 +249,13 @@
             <li>✓ Plans 3D &amp; rendu d'ambiance</li>
             <li>✓ Conseils décoration personnalisés</li>
           </ul>
-          <a href="pages/rendez-vous.html" class="btn btn-coral">Demander un audit gratuit →</a>
+          <div class="staging-ctas">
+            <a href="pages/rendez-vous.html" class="btn btn-coral">Demander un audit gratuit →</a>
+            <a href="https://wa.me/33767632274?text=Bonjour%20Ma%C3%ABlle%20!%20Je%20souhaite%20un%20audit%20home%20staging%20de%20mon%20bien." target="_blank" rel="noopener" class="btn btn-wa">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+              WhatsApp
+            </a>
+          </div>
         </div>
         <div class="staging-visual reveal" style="--delay:0.15s">
           <div class="hs-wrap" id="hsContainer">
@@ -326,7 +334,6 @@
         <h2>Suivez <em>azurimmo by Maëlle</em></h2>
       </div>
       <div class="social-grid">
-        <!-- Facebook -->
         <div class="soc-block">
           <div class="soc-head soc-head--fb">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
@@ -340,38 +347,6 @@
             Suivre la page Facebook
           </a>
         </div>
-        <!-- Instagram -->
-        <div class="soc-block">
-          <div class="soc-head soc-head--ig">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-            <span>Instagram</span>
-          </div>
-          <div class="soc-embed">
-            <div class="ig-card">
-              <div class="ig-top">
-                <div class="ig-av-wrap">
-                  <img src="images/avatar-maelle.png" alt="Maëlle" onerror="this.style.display='none'">
-                  <span>MJ</span>
-                </div>
-                <div>
-                  <strong>@azurimmo_maelle</strong><!-- ⚠️ Mettez à jour avec votre vrai handle Instagram -->
-                  <p>Experte immo 2.0 · Côte d'Azur</p>
-                </div>
-              </div>
-              <div class="ig-posts">
-                <div class="ig-post">🏡<span>Ventes</span></div>
-                <div class="ig-post">✨<span>Staging</span></div>
-                <div class="ig-post">📊<span>Marché</span></div>
-              </div>
-              <p class="ig-bio">Conseils immo · Avant/Après home staging · Actualités du marché Côte d'Azur · Ventes exclusives</p>
-            </div>
-          </div>
-          <a href="https://www.instagram.com/azurimmo_maelle/" target="_blank" rel="noopener" class="soc-btn soc-btn--ig"><!-- ⚠️ Mettez à jour l'URL Instagram -->
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-            Suivre sur Instagram
-          </a>
-        </div>
-        <!-- YouTube -->
         <div class="soc-block">
           <div class="soc-head soc-head--yt">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98" fill="#FF0000" stroke="none"/></svg>
@@ -382,7 +357,7 @@
               <div class="yt-header">
                 <div class="yt-logo">▶</div>
                 <div>
-                  <strong>azurimmo by Maëlle</strong><!-- ⚠️ Mettez à jour avec votre nom de chaîne -->
+                  <strong>azurimmo by Maëlle</strong>
                   <p>Conseils immo · Vlog Côte d'Azur</p>
                 </div>
               </div>
@@ -393,7 +368,7 @@
               </div>
             </div>
           </div>
-          <a href="https://www.youtube.com/@maellejean" target="_blank" rel="noopener" class="soc-btn soc-btn--yt"><!-- ⚠️ Mettez à jour l'URL de votre chaîne YouTube -->
+          <a href="https://www.youtube.com/@azurimmobymaelle" target="_blank" rel="noopener" class="soc-btn soc-btn--yt">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98" fill="currentColor" stroke="none"/></svg>
             S'abonner à la chaîne
           </a>
@@ -412,6 +387,10 @@
         </div>
         <div class="cta-btns">
           <a href="pages/rendez-vous.html" class="btn btn-white btn-lg">Prendre rendez-vous</a>
+          <a href="https://wa.me/33767632274?text=Bonjour%20Ma%C3%ABlle%20!%20Je%20souhaite%20discuter%20de%20mon%20projet%20immobilier." target="_blank" rel="noopener" class="btn btn-wa btn-lg">
+            <svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+            WhatsApp direct
+          </a>
           <a href="pages/estimation.html" class="btn btn-glass-dark btn-lg">Estimer mon bien</a>
           <a href="tel:+33767632274" class="cta-tel">📞 07 67 63 22 74</a>
         </div>
@@ -430,11 +409,11 @@
             <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener" aria-label="Facebook">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
             </a>
-            <a href="https://www.instagram.com/azurimmo_maelle/" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-            </a>
-            <a href="https://www.youtube.com/@maellejean" target="_blank" rel="noopener" aria-label="YouTube">
+            <a href="https://www.youtube.com/@azurimmobymaelle" target="_blank" rel="noopener" aria-label="YouTube">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/></svg>
+            </a>
+            <a href="https://wa.me/33767632274" target="_blank" rel="noopener" aria-label="WhatsApp" style="background:#25D366;border-color:#25D366;color:white">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
             </a>
           </div>
         </div>
@@ -462,6 +441,10 @@
         <div class="footer-contact-col">
           <h5>Contact</h5>
           <a href="tel:+33767632274" class="ftr-phone">07 67 63 22 74</a>
+          <a href="https://wa.me/33767632274" target="_blank" rel="noopener" class="btn btn-wa btn-sm" style="justify-content:center;margin-bottom:10px">
+            <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+            WhatsApp
+          </a>
           <a href="pages/rendez-vous.html" class="btn btn-coral btn-sm">RDV en ligne</a>
         </div>
       </div>
@@ -471,11 +454,17 @@
     </div>
   </footer>
 
+  <!-- ===== WHATSAPP FLOAT ===== -->
+  <a href="https://wa.me/33767632274?text=Bonjour%20Ma%C3%ABlle%20!%20Je%20souhaite%20discuter%20de%20mon%20projet%20immobilier." target="_blank" rel="noopener" class="wa-float" aria-label="Contacter Maëlle sur WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+    <span class="wa-float-label">Écrire sur WhatsApp</span>
+  </a>
+
   <!-- ===== CHATBOT ===== -->
   <div class="chatbot-widget" id="chatbotWidget">
     <button class="chatbot-toggle" id="chatbotToggle" aria-label="Ouvrir le chat">
       <div class="chatbot-avatar-ring">
-        <img src="images/avatar-maelle.png" alt="Maëlle" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="images/avatar-maelle.jpg" alt="Maëlle" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="chatbot-avatar" style="display:none">MJ</div>
       </div>
       <div class="chatbot-bubble-hint" id="chatbotHint" style="display:none">
@@ -498,7 +487,7 @@
         </div>
         <div class="chat-suggestions" id="chatSuggestions">
           <button onclick="sendSuggestion('Je veux estimer mon bien')">🏠 Estimer mon bien</button>
-          <button onclick="sendSuggestion('Comment se déroule une vente ?')">❓ Comment ça marche ?</button>
+          <button onclick="sendSuggestion('Comment se déroule une vente ?')">&#10067; Comment ça marche ?</button>
           <button onclick="sendSuggestion('Je veux un rendez-vous')">📅 Prendre RDV</button>
         </div>
       </div>
@@ -512,6 +501,25 @@
   </div>
 
   <div class="toast" id="toast"></div>
+
+  <!-- ===== WELCOME AUDIO BAR ===== -->
+  <div class="welcome-bar" id="welcomeBar" role="dialog" aria-label="Message de bienvenue de Maëlle">
+    <div class="welcome-bar-inner">
+      <div class="welcome-bar-avatar">
+        <img src="images/avatar-maelle.jpg" alt="Maëlle" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span>MJ</span>
+      </div>
+      <div class="welcome-bar-text">
+        <strong>Message de bienvenue</strong>
+        <span>Maëlle Jean · Côte d'Azur</span>
+      </div>
+      <button class="welcome-bar-play" onclick="playWelcomeAudio()" type="button">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+        Écouter
+      </button>
+      <button class="welcome-bar-close" onclick="dismissWelcomeBar()" type="button" aria-label="Fermer">×</button>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
   <script src="js/chatbot.js"></script>
