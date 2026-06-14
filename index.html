@@ -92,7 +92,9 @@
             </div>
           </div>
         </button>
-        <audio id="welcomeAudio" src="images/audio-accueil.mp3" preload="none"></audio>
+        <audio id="welcomeAudio" preload="none">
+          <source src="images/audio-accueil.m4a" type="audio/mp4">
+        </audio>
 
         <div class="hero-actions">
           <a href="pages/estimation.html" class="btn btn-coral btn-lg">
@@ -499,6 +501,25 @@
   </div>
 
   <div class="toast" id="toast"></div>
+
+  <!-- ===== WELCOME AUDIO BAR ===== -->
+  <div class="welcome-bar" id="welcomeBar" role="dialog" aria-label="Message de bienvenue de Maëlle">
+    <div class="welcome-bar-inner">
+      <div class="welcome-bar-avatar">
+        <img src="images/avatar-maelle.png" alt="Maëlle" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span>MJ</span>
+      </div>
+      <div class="welcome-bar-text">
+        <strong>Message de bienvenue</strong>
+        <span>Maëlle Jean · Côte d'Azur</span>
+      </div>
+      <button class="welcome-bar-play" onclick="playWelcomeAudio()" type="button">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+        Écouter
+      </button>
+      <button class="welcome-bar-close" onclick="dismissWelcomeBar()" type="button" aria-label="Fermer">×</button>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
   <script src="js/chatbot.js"></script>

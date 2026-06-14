@@ -146,3 +146,27 @@ function submitEbook(e) {
 
 // Lead notification stub
 function sendLeadNotification(data) { console.log('[LEAD]', data); }
+
+// Welcome audio bar
+let _welcomeDismissed = false;
+setTimeout(() => {
+  if (_welcomeDismissed) return;
+  const bar = document.getElementById('welcomeBar');
+  if (bar) {
+    bar.classList.add('visible');
+    setTimeout(() => dismissWelcomeBar(), 14000);
+  }
+}, 2200);
+
+function playWelcomeAudio() {
+  dismissWelcomeBar();
+  toggleAudio();
+  const hero = document.getElementById('hero');
+  if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function dismissWelcomeBar() {
+  _welcomeDismissed = true;
+  const bar = document.getElementById('welcomeBar');
+  if (bar) bar.classList.remove('visible');
+}
