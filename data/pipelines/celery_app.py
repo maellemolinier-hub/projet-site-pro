@@ -23,16 +23,29 @@ app.conf.update(
     task_track_started=True,
     task_acks_late=True,
     worker_prefetch_multiplier=1,
+    # Timeout 30 min par tâche (un département peut peser ~50 MB)
+    task_soft_time_limit=1800,
+    task_time_limit=2100,
 )
 
 app.conf.beat_schedule = {
-    # Ingest DVF data every night at 3:00 AM
-    "dvf-daily-refresh": {
-        "task": "data.pipelines.tasks.daily_refresh.refresh_dvf",
+    # ── Nightly : batch rotatif (~15 depts/nuit, France entière en 7 jours) ──
+    # batch_index=None → calculé automatiquement depuis le jour de l'année
+    "dvf-nightly-batch": {
+        "task": "data.pipelines.tasks.daily_refresh.refresh_dvf_batch",
         "schedule": crontab(hour=3, minute=0),
-        "kwargs": {"departments": ["75", "69", "13", "33", "59", "67", "31", "06"]},
+        "kwargs": {"batch_index": None},
     },
-    # Retrain ML model every Sunday at 4:00 AM
+
+    # ── Mensuel (1er du mois à 2h) : ingestion complète France entière ───────
+    # Recharge le fichier DVF annuel complet pour les 101 départements
+    "dvf-monthly-full-france": {
+        "task": "data.pipelines.tasks.daily_refresh.refresh_all_france",
+        "schedule": crontab(hour=2, minute=0, day_of_month=1),
+        "kwargs": {},  # year=None → année N-1 automatiquement
+    },
+
+    # ── Hebdomadaire (dimanche 4h) : réentraînement modèle ML ────────────────
     "ml-weekly-retrain": {
         "task": "data.pipelines.tasks.ml_retrain.retrain_model",
         "schedule": crontab(hour=4, minute=0, day_of_week=0),

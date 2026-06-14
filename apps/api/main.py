@@ -42,7 +42,19 @@ async def health():
 
 
 class DVFRefreshRequest(BaseModel):
-    departments: Optional[List[str]] = None
+    departments: Optional[List[str]] = None  # None = France entière (101 depts)
+    year: Optional[int] = None               # None = année N-1
+
+
+def _get_celery():
+    from data.pipelines.celery_app import app as celery_app
+    return celery_app
+
+
+def _require_admin(secret: str):
+    expected = os.environ.get("ADMIN_SECRET", "")
+    if not expected or secret != expected:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 
 @app.post("/admin/refresh-dvf", tags=["Admin"])
@@ -50,17 +62,45 @@ async def trigger_dvf_refresh(
     body: DVFRefreshRequest,
     x_admin_secret: str = Header(alias="X-Admin-Secret", default=""),
 ):
-    expected = os.environ.get("ADMIN_SECRET", "")
-    if not expected or x_admin_secret != expected:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
+    """Lance refresh_dvf pour les départements demandés (tous si non précisé)."""
+    _require_admin(x_admin_secret)
     try:
-        from data.pipelines.celery_app import app as celery_app  # noqa
-        task = celery_app.send_task(
+        task = _get_celery().send_task(
             "data.pipelines.tasks.daily_refresh.refresh_dvf",
-            kwargs={"departments": body.departments},
+            kwargs={"departments": body.departments, "year": body.year},
         )
-        return {"status": "queued", "task_id": task.id}
+        dept_count = len(body.departments) if body.departments else 101
+        return {"status": "queued", "task_id": task.id, "departments": dept_count}
     except Exception as exc:
-        # Celery may not be available in all environments — degrade gracefully
         return {"status": "error", "detail": str(exc)}
+
+
+@app.post("/admin/refresh-all-france", tags=["Admin"])
+async def trigger_full_france(
+    body: DVFRefreshRequest,
+    x_admin_secret: str = Header(alias="X-Admin-Secret", default=""),
+):
+    """Lance l'ingestion complète France entière (101 départements)."""
+    _require_admin(x_admin_secret)
+    try:
+        task = _get_celery().send_task(
+            "data.pipelines.tasks.daily_refresh.refresh_all_france",
+            kwargs={"year": body.year},
+        )
+        return {"status": "queued", "task_id": task.id, "departments": 101}
+    except Exception as exc:
+        return {"status": "error", "detail": str(exc)}
+
+
+@app.get("/admin/departments", tags=["Admin"])
+async def list_departments(
+    x_admin_secret: str = Header(alias="X-Admin-Secret", default=""),
+):
+    """Retourne la liste des 101 départements et leur répartition en batches."""
+    _require_admin(x_admin_secret)
+    from data.pipelines.tasks.daily_refresh import ALL_DEPARTMENTS, DEPARTMENT_BATCHES
+    return {
+        "total": len(ALL_DEPARTMENTS),
+        "departments": ALL_DEPARTMENTS,
+        "batches": {str(i): b for i, b in enumerate(DEPARTMENT_BATCHES)},
+    }
