@@ -126,25 +126,17 @@
         </div>
       </div>
 
-      <div class="hero-portrait-col">
-        <div class="portrait-outer">
-          <div class="portrait-glow"></div>
-          <div class="portrait-card">
-            <img src="images/avatar-maelle.jpg" alt="Maëlle Jean — Agent Immo 2.0 Côte d'Azur" class="portrait-photo">
-            <div class="portrait-placeholder">MJ</div>
-          </div>
-          <div class="badge-float badge-float--tl">
-            <span>🏡</span>
-            <div><b>Vente conclue</b><small>Cannes · 3 sem.</small></div>
-          </div>
-          <div class="badge-float badge-float--tr">
-            <span>⚡</span>
-            <div><b>Réponse &lt; 2h</b><small>7 jours / 7</small></div>
-          </div>
-          <div class="badge-float badge-float--br">
-            <span>📈</span>
-            <div><b>+8% sur le prix</b><small>vs estimation</small></div>
-          </div>
+      <div class="hero-video-col">
+        <div class="hero-video-wrap" id="heroVideoWrap">
+          <video id="heroVideo" muted playsinline autoplay loop preload="auto">
+            <source src="images/video-pub.mp4" type="video/mp4">
+          </video>
+          <button class="hero-video-play" onclick="playHeroVideo()" aria-label="Voir la présentation" type="button">
+            <div class="hvp-circle">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><polygon points="6,4 20,12 6,20"/></svg>
+            </div>
+            <span>Visionner avec le son</span>
+          </button>
         </div>
       </div>
     </div>

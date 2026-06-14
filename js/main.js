@@ -147,36 +147,17 @@ function submitEbook(e) {
 // Lead notification stub
 function sendLeadNotification(data) { console.log('[LEAD]', data); }
 
-// Audio auto-play : essai immédiat, sinon au premier geste
-(function() {
-  const audio = document.getElementById('welcomeAudio');
-  if (!audio) return;
-
-  function startAudio() {
-    if (audioPlaying) return;
-    audio.play().then(() => {
-      audioPlaying = true;
-      const btn = document.getElementById('audioBtn');
-      if (btn) btn.classList.add('playing');
-      audio.onended = () => {
-        audioPlaying = false;
-        if (btn) btn.classList.remove('playing');
-      };
-    }).catch(() => {});
-  }
-
-  // Tentative immédiate (fonctionne si le navigateur l'autorise)
-  window.addEventListener('load', () => {
-    startAudio();
-    // Fallback : premier geste utilisateur
-    const onInteract = () => {
-      startAudio();
-      window.removeEventListener('scroll', onInteract);
-      window.removeEventListener('touchstart', onInteract);
-      window.removeEventListener('click', onInteract);
-    };
-    window.addEventListener('scroll', onInteract, { once: true, passive: true });
-    window.addEventListener('touchstart', onInteract, { once: true, passive: true });
-    window.addEventListener('click', onInteract, { once: true });
+// Hero video : clic = son activé
+function playHeroVideo() {
+  const video = document.getElementById('heroVideo');
+  const wrap = document.getElementById('heroVideoWrap');
+  if (!video) return;
+  video.muted = false;
+  video.loop = false;
+  video.currentTime = 0;
+  video.play().catch(() => {
+    video.muted = true;
+    video.play();
   });
-})();
+  if (wrap) wrap.classList.add('playing');
+}
