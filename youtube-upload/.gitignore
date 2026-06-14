@@ -1,0 +1,10 @@
+config.json
+.youtube-tokens.json
+.quota-usage.json
+node_modules/
+*.mp4
+*.mov
+*.avi
+*.jpg
+*.jpeg
+*.png

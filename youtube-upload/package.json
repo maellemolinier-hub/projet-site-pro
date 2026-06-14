@@ -1,0 +1,17 @@
+{
+  "name": "youtube-upload-automation",
+  "version": "1.0.0",
+  "description": "Automatisation upload YouTube pour @azurimmobymaelle",
+  "type": "module",
+  "scripts": {
+    "upload": "node upload.js",
+    "validate": "node validate.js list",
+    "publish": "node validate.js publish"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
