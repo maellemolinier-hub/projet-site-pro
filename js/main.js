@@ -147,13 +147,13 @@ function submitEbook(e) {
 // Lead notification stub
 function sendLeadNotification(data) { console.log('[LEAD]', data); }
 
-// Intro overlay
-function enterSite() {
-  const overlay = document.getElementById('introOverlay');
-  if (!overlay) return;
-  overlay.classList.add('leaving');
+// Audio auto-play : essai immédiat, sinon au premier geste
+(function() {
   const audio = document.getElementById('welcomeAudio');
-  if (audio) {
+  if (!audio) return;
+
+  function startAudio() {
+    if (audioPlaying) return;
     audio.play().then(() => {
       audioPlaying = true;
       const btn = document.getElementById('audioBtn');
@@ -164,5 +164,19 @@ function enterSite() {
       };
     }).catch(() => {});
   }
-  setTimeout(() => overlay.classList.add('gone'), 850);
-}
+
+  // Tentative immédiate (fonctionne si le navigateur l'autorise)
+  window.addEventListener('load', () => {
+    startAudio();
+    // Fallback : premier geste utilisateur
+    const onInteract = () => {
+      startAudio();
+      window.removeEventListener('scroll', onInteract);
+      window.removeEventListener('touchstart', onInteract);
+      window.removeEventListener('click', onInteract);
+    };
+    window.addEventListener('scroll', onInteract, { once: true, passive: true });
+    window.addEventListener('touchstart', onInteract, { once: true, passive: true });
+    window.addEventListener('click', onInteract, { once: true });
+  });
+})();
