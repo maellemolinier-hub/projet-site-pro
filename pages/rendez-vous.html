@@ -298,7 +298,6 @@
           <p>Experte immobilière 2.0 sur la Côte d'Azur.<br>Cannes · Grasse · Mougins · Antibes</p>
           <div class="footer-socials">
             <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-            <a href="https://www.instagram.com/azurimmo_maelle/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
             <a href="https://wa.me/33767632274" target="_blank" rel="noopener" aria-label="WhatsApp" style="background:#25D366;border-color:#25D366;color:white"><svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg></a>
           </div>
         </div>
@@ -352,7 +351,7 @@
         </div>
         <div class="chat-suggestions" id="chatSuggestions">
           <button onclick="sendSuggestion('Je veux estimer mon bien')">🏠 Estimer mon bien</button>
-          <button onclick="sendSuggestion('Comment se déroule une vente ?')">❓ Comment ça marche ?</button>
+          <button onclick="sendSuggestion('Comment se déroule une vente ?')">&#10067; Comment ça marche ?</button>
         </div>
       </div>
       <div class="chatbot-input-area">
@@ -404,7 +403,7 @@
       const mo=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
       document.getElementById('slotsTitle').textContent=`${da[date.getDay()]} ${date.getDate()} ${mo[date.getMonth()]}`;
       const g=document.getElementById('slotsGrid');
-      g.innerHTML=slots.map(t=>{const b=booked.includes(t);return`<button class="slot-btn${b?' booked':''}" onclick="${!b?`selectSlot(this,'${t}')`:''}" ${b?'disabled':''}>${t}</button>`;}).join('');
+      g.innerHTML=slots.map(t=>{const b=booked.includes(t);return`<button class="slot-btn${b?' booked':''}" onclick="${!b?`selectSlot(this,'${t}')`:''} " ${b?'disabled':''}>${t}</button>`;}).join('');
       document.getElementById('timeSlots').style.display='block';
       document.getElementById('rdvFormSection').style.display='none';
       selectedTime=null;
