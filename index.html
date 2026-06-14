@@ -19,6 +19,16 @@
 </head>
 <body>
 
+  <!-- ===== TAB STRIP (mobile/tablette) ===== -->
+  <div class="nav-tab-strip">
+    <a href="pages/apropos.html">À propos</a>
+    <a href="#about">Mon approche</a>
+    <a href="#staging">Home Staging</a>
+    <a href="pages/vlog.html">Conseils</a>
+    <a href="pages/estimation.html" class="tab-accent">Estimation</a>
+    <a href="pages/rendez-vous.html" class="tab-cta">Prendre RDV</a>
+  </div>
+
   <!-- ===== FACEBOOK STICKY PILL ===== -->
   <div class="fb-pill" id="fbPill">
     <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener">
@@ -53,11 +63,21 @@
 
   <!-- ===== HERO ===== -->
   <section class="hero" id="hero">
-    <div class="hero-grid-bg"></div>
-    <div class="orb orb--1"></div>
-    <div class="orb orb--2"></div>
-    <div class="orb orb--3"></div>
+    <!-- Vidéo fond plein écran -->
+    <div class="hero-video-bg">
+      <video id="heroVideo" muted playsinline autoplay loop preload="auto">
+        <source src="images/video-pub.mp4" type="video/mp4">
+      </video>
+      <div class="hero-overlay"></div>
+    </div>
 
+    <!-- Bouton son -->
+    <button class="hero-sound-btn" id="heroSoundBtn" onclick="activateHeroSound()" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+      Activer le son
+    </button>
+
+    <!-- Contenu -->
     <div class="hero-layout">
       <div class="hero-content">
         <div class="hero-live-badge">
@@ -125,23 +145,9 @@
           </div>
         </div>
       </div>
-
-      <div class="hero-video-col">
-        <div class="hero-video-wrap" id="heroVideoWrap">
-          <video id="heroVideo" muted playsinline autoplay loop preload="auto">
-            <source src="images/video-pub.mp4" type="video/mp4">
-          </video>
-          <button class="hero-video-play" onclick="playHeroVideo()" aria-label="Voir la présentation" type="button">
-            <div class="hvp-circle">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><polygon points="6,4 20,12 6,20"/></svg>
-            </div>
-            <span>Visionner avec le son</span>
-          </button>
-        </div>
-      </div>
     </div>
 
-    <a href="#agent20" class="scroll-arrow">
+    <a href="#about" class="scroll-arrow">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </a>
   </section>
@@ -295,19 +301,7 @@
           </div>
         </div>
         <div class="staging-visual reveal" style="--delay:0.15s">
-          <div class="hs-wrap" id="hsContainer">
-            <div class="hs-before">
-              <div class="hs-lbl">Avant</div>
-              <div class="hs-bg hs-bg--before"></div>
-            </div>
-            <div class="hs-after" id="hsAfter">
-              <div class="hs-lbl hs-lbl--right">Après</div>
-              <div class="hs-bg hs-bg--after"></div>
-            </div>
-            <div class="hs-bar" id="hsSlider">
-              <div class="hs-handle">⟺</div>
-            </div>
-          </div>
+          <img src="images/bien-exemple.jpg" alt="Home staging — bien immobilier Côte d'Azur" style="width:100%;border-radius:var(--r-xl);box-shadow:var(--sh-lg);display:block;object-fit:cover">
         </div>
       </div>
     </div>
