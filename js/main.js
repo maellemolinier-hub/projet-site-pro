@@ -147,26 +147,22 @@ function submitEbook(e) {
 // Lead notification stub
 function sendLeadNotification(data) { console.log('[LEAD]', data); }
 
-// Welcome audio bar
-let _welcomeDismissed = false;
-setTimeout(() => {
-  if (_welcomeDismissed) return;
-  const bar = document.getElementById('welcomeBar');
-  if (bar) {
-    bar.classList.add('visible');
-    setTimeout(() => dismissWelcomeBar(), 14000);
+// Intro overlay
+function enterSite() {
+  const overlay = document.getElementById('introOverlay');
+  if (!overlay) return;
+  overlay.classList.add('leaving');
+  const audio = document.getElementById('welcomeAudio');
+  if (audio) {
+    audio.play().then(() => {
+      audioPlaying = true;
+      const btn = document.getElementById('audioBtn');
+      if (btn) btn.classList.add('playing');
+      audio.onended = () => {
+        audioPlaying = false;
+        if (btn) btn.classList.remove('playing');
+      };
+    }).catch(() => {});
   }
-}, 2200);
-
-function playWelcomeAudio() {
-  dismissWelcomeBar();
-  toggleAudio();
-  const hero = document.getElementById('hero');
-  if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function dismissWelcomeBar() {
-  _welcomeDismissed = true;
-  const bar = document.getElementById('welcomeBar');
-  if (bar) bar.classList.remove('visible');
+  setTimeout(() => overlay.classList.add('gone'), 850);
 }

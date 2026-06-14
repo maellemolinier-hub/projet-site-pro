@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Maëlle Jean — Experte immobilière 2.0 sur la Côte d'Azur. Découvrez son parcours, sa philosophie et ce qu'elle peut faire concrètement pour vous.">
+  <meta name="keywords" content="Maëlle Jean immobilier Cannes, agent immobilier Grasse, experte immo Côte d'Azur, vendre appartement Cannes">
+  <title>À propos · Maëlle Jean Immobilier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .apropos-hero{background:linear-gradient(135deg,var(--navy) 0%,#0D2240 100%);padding:140px 0 80px;position:relative;overflow:hidden;text-align:center}
+    .apropos-hero::before{content:'';position:absolute;inset:0;background:url('../images/grasse-ville.jpg') center/cover no-repeat;opacity:.12}
+    .apropos-hero-inner{position:relative;z-index:1}
+    .apropos-hero h1{color:white;margin-bottom:16px;font-size:clamp(2.4rem,5vw,3.8rem)}
+    .apropos-hero p{color:rgba(255,255,255,.65);max-width:580px;margin:0 auto;font-size:1.05rem;line-height:1.75}
+
+    .apropos-main{padding:var(--section) 0;background:var(--white)}
+    .apropos-layout{display:grid;grid-template-columns:420px 1fr;gap:80px;align-items:start}
+    .apropos-photo-wrap{position:sticky;top:100px}
+    .apropos-photo{border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-lg);margin-bottom:24px}
+    .apropos-photo img{width:100%;display:block;object-fit:cover}
+    .apropos-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .apropos-stat{background:var(--cream);border-radius:var(--r-lg);padding:18px;text-align:center;border-top:3px solid var(--coral)}
+    .apropos-stat strong{display:block;font-family:var(--font-display);font-size:2rem;color:var(--navy);line-height:1}
+    .apropos-stat span{font-size:.78rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+
+    .apropos-content h2{margin-bottom:20px;font-size:clamp(1.6rem,3vw,2.2rem)}
+    .apropos-content p{color:var(--muted);line-height:1.8;margin-bottom:20px;font-size:.98rem}
+    .apropos-content h3{color:var(--navy);font-size:1.15rem;margin:36px 0 14px;font-family:var(--font-display)}
+    .apropos-divider{width:48px;height:3px;background:var(--coral);border-radius:2px;margin:32px 0}
+
+    .apropos-values{display:flex;flex-direction:column;gap:18px;margin:28px 0 36px}
+    .apropos-val{display:flex;align-items:flex-start;gap:16px;padding:20px 22px;background:var(--cream);border-radius:var(--r-lg);border-left:3px solid var(--coral)}
+    .apropos-val span{font-size:1.6rem;flex-shrink:0;line-height:1}
+    .apropos-val strong{display:block;color:var(--navy);font-size:.93rem;font-weight:700;margin-bottom:5px}
+    .apropos-val p{font-size:.84rem;color:var(--muted);margin:0;line-height:1.6}
+
+    .territory-section{padding:var(--section) 0;background:var(--cream)}
+    .territory-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .territory-img{border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-lg)}
+    .territory-img img{width:100%;display:block;object-fit:cover;max-height:420px}
+    .territory-text h2{margin-bottom:18px}
+    .territory-text p{color:var(--muted);line-height:1.8;margin-bottom:20px}
+    .territory-zones{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0 32px}
+    .zone-tag{background:white;border:1.5px solid var(--border);border-radius:var(--r-lg);padding:10px 14px;font-size:.85rem;font-weight:600;color:var(--navy);text-align:center;transition:var(--ease)}
+    .zone-tag:hover{border-color:var(--coral);color:var(--coral)}
+
+    .apropos-cta{background:var(--navy);padding:var(--section) 0;text-align:center;position:relative;overflow:hidden}
+    .apropos-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,85,51,.15) 0%,transparent 60%)}
+    .apropos-cta-inner{position:relative;z-index:1}
+    .apropos-cta h2{color:white;margin-bottom:14px}
+    .apropos-cta p{color:rgba(255,255,255,.6);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto}
+    .apropos-cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+    @media (max-width:1024px){
+      .apropos-layout{grid-template-columns:1fr;gap:48px}
+      .apropos-photo-wrap{position:static}
+      .apropos-photo{max-width:380px}
+      .territory-layout{grid-template-columns:1fr;gap:40px}
+    }
+    @media (max-width:768px){
+      .apropos-stat-row{grid-template-columns:1fr 1fr}
+      .territory-zones{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="fb-pill" id="fbPill">
+    <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener">
+      <div class="fb-pill-inner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        <span>azurimmo by Maëlle</span>
+        <span class="fb-arrow">→</span>
+      </div>
+    </a>
+  </div>
+
+  <nav id="navbar" class="scrolled">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand">
+        <span class="brand-name">Maëlle Jean</span>
+        <span class="brand-tag">Agent Immo 2.0 · Côte d'Azur</span>
+      </a>
+      <div class="nav-menu" id="navLinks">
+        <a href="apropos.html" style="color:var(--coral)!important">À propos</a>
+        <a href="../index.html#agent20">Mon approche</a>
+        <a href="../index.html#staging">Home Staging</a>
+        <a href="vlog.html">Conseils</a>
+        <a href="estimation.html" class="nav-accent">Estimer mon bien</a>
+        <a href="rendez-vous.html" class="nav-cta">Prendre RDV</a>
+      </div>
+      <button class="hamburger" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="apropos-hero">
+    <div class="container apropos-hero-inner">
+      <div class="stag stag--light" style="margin-bottom:24px">À propos de Maëlle</div>
+      <h1>Ce que je fais<br><em>pour vous</em></h1>
+      <p>Pas un discours sur mon parcours. Une promesse concrète : tout ce que j'ai appris, toutes les technologies que j'utilise, toute mon énergie — au service de votre projet immobilier.</p>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <section class="apropos-main">
+    <div class="container">
+      <div class="apropos-layout">
+
+        <div class="apropos-photo-wrap reveal">
+          <div class="apropos-photo">
+            <img src="../images/photo-about.png" alt="Maëlle Jean — Experte immobilière Côte d'Azur">
+          </div>
+          <div class="apropos-stat-row">
+            <div class="apropos-stat"><strong>7+</strong><span>ans d'expertise</span></div>
+            <div class="apropos-stat"><strong>98%</strong><span>satisfaits</span></div>
+            <div class="apropos-stat"><strong>30j</strong><span>délai moyen</span></div>
+            <div class="apropos-stat"><strong>+8%</strong><span>sur le prix</span></div>
+          </div>
+        </div>
+
+        <div class="apropos-content reveal" style="--delay:0.1s">
+          <div class="stag">Mon histoire</div>
+          <h2>Pourquoi l'immobilier<br><em>et pourquoi vous</em></h2>
+          <p>J'ai choisi l'immobilier parce que c'est le secteur où je pouvais avoir le plus d'impact réel sur la vie des gens. Vendre ou acheter un bien, c'est souvent la décision la plus importante d'une vie — et je voulais être celle qui la rend plus simple, plus rentable, moins stressante.</p>
+          <p>Depuis plus de 7 ans sur la Côte d'Azur, j'ai accompagné des centaines de propriétaires à traverser ce moment crucial. Et ce que j'ai appris, c'est une chose simple : <strong>vous avez besoin de quelqu'un qui vous comprend, pas de quelqu'un qui se met en avant.</strong></p>
+
+          <div class="apropos-divider"></div>
+
+          <h3>Ma plus-value pour vous</h3>
+          <div class="apropos-values">
+            <div class="apropos-val">
+              <span>📊</span>
+              <div>
+                <strong>L'estimation qui dit la vérité</strong>
+                <p>Je base chaque évaluation sur les données DVF officielles (transactions réelles enregistrées) croisées avec mon expertise locale. Vous savez exactement ce que vaut votre bien — avant de signer quoi que ce soit.</p>
+              </div>
+            </div>
+            <div class="apropos-val">
+              <span>🎨</span>
+              <div>
+                <strong>La mise en valeur qui fait la différence</strong>
+                <p>Home staging, shooting photo HD, vidéo professionnelle, visite virtuelle 3D. Je transforme votre bien en coup de cœur avant la première visite physique. Résultat : −30% de temps sur le marché et +8% sur le prix final.</p>
+              </div>
+            </div>
+            <div class="apropos-val">
+              <span>🌐</span>
+              <div>
+                <strong>La visibilité maximale pour votre bien</strong>
+                <p>SeLoger, Leboncoin, PAP, Rightmove, réseaux sociaux — votre annonce est diffusée simultanément partout où se trouvent vos acheteurs potentiels, y compris à l'international.</p>
+              </div>
+            </div>
+            <div class="apropos-val">
+              <span>🤝</span>
+              <div>
+                <strong>Un suivi humain, du début à la clé</strong>
+                <p>Disponible 7j/7, réponse sous 2h. Je gère les visites, la négociation et la coordination avec le notaire. Vous n'avez qu'une chose à faire : être au rendez-vous final.</p>
+              </div>
+            </div>
+          </div>
+
+          <a href="rendez-vous.html" class="btn btn-coral btn-lg">Parlons de votre projet →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TERRITOIRE -->
+  <section class="territory-section">
+    <div class="container">
+      <div class="territory-layout">
+        <div class="territory-img reveal">
+          <img src="../images/grasse-ville.jpg" alt="Grasse — Côte d'Azur">
+        </div>
+        <div class="territory-text reveal" style="--delay:0.1s">
+          <div class="stag">Mon terrain</div>
+          <h2>La Côte d'Azur,<br><em>je la connais par cœur</em></h2>
+          <p>Chaque rue, chaque quartier, chaque micro-marché. Savoir que votre appartement à Grasse ne se vend pas au même prix qu'à Mougins — et pourquoi — c'est ce qui fait la différence entre une vente ordinaire et une vente réussie.</p>
+          <p>Cette expertise locale, c'est votre avantage concurrentiel. Je négocie pour vous avec la connaissance du terrain que les acheteurs n'ont pas.</p>
+          <div class="territory-zones">
+            <div class="zone-tag">Cannes</div>
+            <div class="zone-tag">Grasse</div>
+            <div class="zone-tag">Mougins</div>
+            <div class="zone-tag">Antibes</div>
+            <div class="zone-tag">Valbonne</div>
+            <div class="zone-tag">Le Cannet</div>
+            <div class="zone-tag">Mandelieu</div>
+            <div class="zone-tag">Sophia Antipolis</div>
+          </div>
+          <a href="estimation.html" class="btn btn-coral">Estimer mon bien dans ma zone →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="apropos-cta">
+    <div class="container apropos-cta-inner">
+      <h2>Prête à mettre mon expertise<br><em>au service de votre projet ?</em></h2>
+      <p>Consultation gratuite · Sans engagement · Réponse sous 2h</p>
+      <div class="apropos-cta-btns">
+        <a href="rendez-vous.html" class="btn btn-coral btn-lg">Prendre RDV gratuitement</a>
+        <a href="https://wa.me/33767632274?text=Bonjour%20Maëlle%20!%20J'ai%20vu%20votre%20site%20et%20je%20voudrais%20discuter%20de%20mon%20projet%20immobilier." target="_blank" rel="noopener" class="btn btn-wa btn-lg">
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+          WhatsApp direct
+        </a>
+        <a href="tel:+33767632274" class="btn btn-glass-dark btn-lg">📞 07 67 63 22 74</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-logo">Maëlle Jean</div>
+          <p>Experte immobilière 2.0 sur la Côte d'Azur depuis 2018.<br>Cannes · Grasse · Mougins · Antibes</p>
+          <div class="footer-socials">
+            <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            </a>
+            <a href="https://www.youtube.com/@azurimmobymaelle" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/></svg>
+            </a>
+            <a href="https://wa.me/33767632274" target="_blank" rel="noopener" aria-label="WhatsApp" style="background:#25D366;border-color:#25D366;color:white">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-nav-col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="../index.html">Accueil</a></li>
+            <li><a href="estimation.html">Estimation gratuite</a></li>
+            <li><a href="rendez-vous.html">Prendre RDV</a></li>
+            <li><a href="vlog.html">Conseils &amp; Vlog</a></li>
+            <li><a href="ebook.html">E-book gratuit</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <h5>Zones</h5>
+          <ul>
+            <li>Cannes</li>
+            <li>Grasse</li>
+            <li>Mougins</li>
+            <li>Antibes</li>
+            <li>Valbonne · Le Cannet</li>
+            <li>Mandelieu</li>
+          </ul>
+        </div>
+        <div class="footer-contact-col">
+          <h5>Contact</h5>
+          <a href="tel:+33767632274" class="ftr-phone">07 67 63 22 74</a>
+          <a href="https://wa.me/33767632274" target="_blank" rel="noopener" class="btn btn-wa btn-sm" style="justify-content:center;margin-bottom:10px">
+            <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+            WhatsApp
+          </a>
+          <a href="rendez-vous.html" class="btn btn-coral btn-sm">RDV en ligne</a>
+        </div>
+      </div>
+      <div class="footer-bar">
+        <p>© 2025 Maëlle Jean · <a href="#">Mentions légales</a> · <a href="#">Politique de confidentialité</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WA float -->
+  <a href="https://wa.me/33767632274?text=Bonjour%20Maëlle%20!%20Je%20souhaite%20discuter%20de%20mon%20projet%20immobilier." target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.473 2.025 7.773L.057 32l8.495-2.003A15.938 15.938 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.5a13.46 13.46 0 01-6.858-1.87l-.492-.292-5.044 1.189 1.144-4.897-.321-.505A13.444 13.444 0 012.5 16C2.5 8.544 8.544 2.5 16 2.5S29.5 8.544 29.5 16 23.456 29.5 16 29.5zm7.34-10.058c-.4-.2-2.368-1.168-2.736-1.302-.367-.133-.633-.2-.9.2-.266.4-1.033 1.302-1.266 1.568-.233.267-.467.3-.867.1-.4-.2-1.687-.621-3.214-1.98-1.188-1.058-1.99-2.367-2.223-2.768-.234-.4-.026-.615.173-.815.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.168-1.234-2.968-.323-.779-.653-.673-.9-.685-.233-.01-.5-.013-.766-.013-.267 0-.7.1-1.067.5-.367.4-1.4 1.368-1.4 3.335 0 1.967 1.433 3.868 1.633 4.134.2.267 2.82 4.301 6.826 6.03.953.412 1.697.658 2.277.843.957.305 1.828.262 2.518.159.768-.115 2.368-.968 2.702-1.902.334-.934.334-1.736.234-1.902-.1-.167-.367-.267-.767-.467z"/></svg>
+  </a>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
