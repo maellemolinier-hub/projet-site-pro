@@ -1,16 +1,17 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { createBillingPortalSession } from "@/lib/stripe";
 import { db } from "@immoexpert/db";
 
 export async function POST(req: Request) {
-  const { userId } = await auth();
+  const authSession = await auth();
+  const userId = authSession?.user?.id;
   if (!userId) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
   const user = await db.user.findUnique({
-    where: { clerkId: userId },
+    where: { id: userId },
     include: { subscription: true },
   });
 

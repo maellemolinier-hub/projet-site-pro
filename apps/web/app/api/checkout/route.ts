@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { createCheckoutSession, type PlanKey } from "@/lib/stripe";
 import { z } from "zod";
@@ -9,7 +9,8 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
-  const { userId } = await auth();
+  const session = await auth();
+  const userId = session?.user?.id;
   if (!userId) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }

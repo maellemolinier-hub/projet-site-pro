@@ -17,6 +17,7 @@ apps/api/.venv/
 .env
 .env.local
 .env.*.local
+# IMPORTANT: .env.example est commité (sans secrets) — .env ne l'est jamais
 
 # Build
 dist/

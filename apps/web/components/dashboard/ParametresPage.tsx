@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { UserButton } from "@clerk/nextjs";
+// auth managed via dashboard layout
 import { CreditCard, Bell, Shield, Plug, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -58,7 +58,9 @@ export function ParametresPage() {
             <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm space-y-6">
               <h2 className="font-semibold text-gray-900">Informations personnelles</h2>
               <div className="flex items-center gap-4">
-                <UserButton />
+                <div className="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm">
+                  SM
+                </div>
                 <div>
                   <p className="font-medium text-gray-900 text-sm">Sophie Martin</p>
                   <p className="text-xs text-gray-400">sophie.martin@example.fr</p>

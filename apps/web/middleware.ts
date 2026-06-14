@@ -1,28 +1,23 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
-const isPublicRoute = createRouteMatcher([
-  "/",
-  "/connexion(.*)",
-  "/inscription(.*)",
-  "/experts(.*)",
-  "/verifier(.*)",
-  "/contact-entreprise(.*)",
-  "/api/webhooks(.*)",
-]);
+const PROTECTED = ["/dashboard"];
+const PUBLIC = ["/", "/connexion", "/inscription", "/experts", "/verifier", "/contact-entreprise", "/api/webhooks", "/api/auth"];
 
-export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    const { userId } = await auth();
-    if (!userId) {
-      const url = new URL("/connexion", req.url);
-      url.searchParams.set("redirect_url", req.url);
-      return NextResponse.redirect(url);
-    }
+export default auth((req: NextRequest & { auth: unknown }) => {
+  const { pathname } = req.nextUrl;
+  const isProtected = PROTECTED.some((p) => pathname.startsWith(p));
+
+  if (isProtected && !req.auth) {
+    const url = new URL("/connexion", req.url);
+    url.searchParams.set("callbackUrl", req.url);
+    return NextResponse.redirect(url);
   }
+
+  return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)"],
+  matcher: ["/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|webmanifest)).*)"],
 };
