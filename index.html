@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vente Immobilière Rapide & Discrète — [Prénom] [Nom]</title>
+  <meta name="description" content="Divorce, séparation, succession, mutation... Je vends votre bien immobilier rapidement et en toute discrétion. Estimation offerte sous 2h." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bleu:    #0f1f3d;
+      --bleu2:   #1a3260;
+      --orange:  #f05a28;
+      --vert:    #22c55e;
+      --gris:    #f4f6fa;
+      --texte:   #1e293b;
+      --doux:    #64748b;
+      --blanc:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--blanc);
+      color: var(--texte);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── BARRE DE NAVIGATION ── */
+    nav {
+      background: var(--bleu);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      color: var(--blanc);
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -.3px;
+    }
+    .nav-logo span { color: var(--orange); }
+    .nav-tel {
+      color: var(--blanc);
+      font-weight: 600;
+      font-size: .95rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-tel:hover { color: var(--orange); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu2) 100%);
+      padding: 60px 24px 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(240,90,40,.15);
+      border: 1px solid rgba(240,90,40,.4);
+      color: var(--orange);
+      font-weight: 700;
+      font-size: .8rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 50px;
+      margin-bottom: 28px;
+    }
+    .badge::before { content: '⚡'; font-size: 1rem; }
+
+    .hero h1 {
+      color: var(--blanc);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      max-width: 700px;
+      margin: 0 auto 16px;
+      letter-spacing: -.5px;
+    }
+    .hero h1 em {
+      color: var(--orange);
+      font-style: normal;
+    }
+
+    .hero-sub {
+      color: rgba(255,255,255,.75);
+      font-size: 1.05rem;
+      max-width: 560px;
+      margin: 0 auto 36px;
+      font-weight: 400;
+    }
+    .hero-sub strong {
+      color: rgba(255,255,255,.95);
+      font-weight: 600;
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 44px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,.9);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .check-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--vert);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: .75rem;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .btn-primary {
+      background: var(--orange);
+      color: var(--blanc);
+      font-size: 1.05rem;
+      font-weight: 800;
+      padding: 18px 40px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 8px 30px rgba(240,90,40,.4);
+      letter-spacing: -.2px;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(240,90,40,.55);
+    }
+    .btn-secondary {
+      color: rgba(255,255,255,.7);
+      font-size: .9rem;
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .btn-secondary:hover { color: var(--blanc); }
+
+    /* ── NOTIFICATION LIVE ── */
+    .notif-wrap {
+      position: relative;
+      height: 60px;
+      margin-top: 40px;
+    }
+    .notif {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--blanc);
+      border-radius: 12px;
+      padding: 12px 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
+      font-size: .88rem;
+      color: var(--texte);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .4s, transform .4s;
+      pointer-events: none;
+    }
+    .notif.visible { opacity: 1; transform: translateY(0); }
+    .notif-dot {
+      width: 10px; height: 10px;
+      background: var(--vert);
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,.5); }
+      50%      { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+    }
+    .notif strong { font-weight: 700; }
+    .notif-time { color: var(--doux); margin-left: 4px; }
+
+    /* ── SECTION SITUATIONS ── */
+    .situations {
+      background: var(--gris);
+      padding: 70px 24px;
+      text-align: center;
+    }
+    .section-label {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-weight: 900;
+      color: var(--bleu);
+      margin-bottom: 14px;
+      letter-spacing: -.4px;
+      line-height: 1.2;
+    }
+    .section-sub {
+      color: var(--doux);
+      max-width: 520px;
+      margin: 0 auto 50px;
+      font-size: 1rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--blanc);
+      border-radius: 16px;
+      padding: 32px 28px;
+      text-align: left;
+      border: 1.5px solid transparent;
+      transition: border-color .2s, box-shadow .2s, transform .2s;
+    }
+    .card:hover {
+      border-color: var(--orange);
+      box-shadow: 0 12px 40px rgba(15,31,61,.1);
+      transform: translateY(-4px);
+    }
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .card h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--bleu);
+      margin-bottom: 10px;
+    }
+    .card p {
+      color: var(--doux);
+      font-size: .92rem;
+      line-height: 1.65;
+    }
+
+    /* ── FORMULAIRE ── */
+    .form-section {
+      padding: 70px 24px;
+      text-align: center;
+      background: var(--blanc);
+    }
+    .form-box {
+      background: var(--bleu);
+      border-radius: 20px;
+      padding: 48px 40px;
+      max-width: 560px;
+      margin: 0 auto;
+      box-shadow: 0 20px 60px rgba(15,31,61,.25);
+    }
+    .form-box .section-title { color: var(--blanc); margin-bottom: 8px; }
+    .form-box .section-sub { color: rgba(255,255,255,.65); margin-bottom: 32px; }
+
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      color: rgba(255,255,255,.8);
+      font-size: .85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: .3px;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 10px;
+      border: 1.5px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.08);
+      color: var(--blanc);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s, background .2s;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder { color: rgba(255,255,255,.35); }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--orange);
+      background: rgba(255,255,255,.12);
+    }
+    .form-group select option {
+      background: var(--bleu2);
+      color: var(--blanc);
+    }
+
+    .form-submit {
+      width: 100%;
+      margin-top: 8px;
+      font-size: 1.1rem;
+      justify-content: center;
+    }
+    .form-legal {
+      color: rgba(255,255,255,.4);
+      font-size: .75rem;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    /* ── PREUVE SOCIALE ── */
+    .social-proof {
+      background: var(--gris);
+      padding: 70px 24px;
+      text-align: center;
+    }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      margin: 40px auto;
+      max-width: 700px;
+    }
+    .stat { text-align: center; }
+    .stat-number {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--orange);
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+    .stat-label {
+      color: var(--doux);
+      font-size: .88rem;
+      margin-top: 6px;
+    }
+
+    .temoignages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .temoignage {
+      background: var(--blanc);
+      border-radius: 14px;
+      padding: 28px 24px;
+      text-align: left;
+      border-left: 4px solid var(--orange);
+    }
+    .temoignage-text {
+      color: var(--texte);
+      font-size: .95rem;
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+    .temoignage-text::before { content: '\201C'; }
+    .temoignage-text::after  { content: '\201D'; }
+    .temoignage-auteur {
+      font-weight: 700;
+      color: var(--bleu);
+      font-size: .88rem;
+    }
+    .temoignage-situation {
+      color: var(--orange);
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    /* ── PROCESSUS ── */
+    .processus {
+      padding: 70px 24px;
+      text-align: center;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0;
+      max-width: 860px;
+      margin: 48px auto 0;
+      position: relative;
+    }
+    .step {
+      padding: 0 20px;
+      position: relative;
+    }
+    .step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -8px;
+      top: 20px;
+      color: var(--orange);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .step-num {
+      width: 48px; height: 48px;
+      background: var(--orange);
+      color: var(--blanc);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      margin: 0 auto 16px;
+    }
+    .step h4 {
+      font-weight: 800;
+      color: var(--bleu);
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+    .step p {
+      color: var(--doux);
+      font-size: .88rem;
+      line-height: 1.6;
+    }
+
+    /* ── CTA FINAL ── */
+    .cta-final {
+      background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu2) 100%);
+      padding: 70px 24px;
+      text-align: center;
+    }
+    .cta-final h2 {
+      color: var(--blanc);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      margin-bottom: 14px;
+      letter-spacing: -.4px;
+    }
+    .cta-final p {
+      color: rgba(255,255,255,.7);
+      margin-bottom: 36px;
+      font-size: 1rem;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .tel-block {
+      margin-top: 24px;
+      color: rgba(255,255,255,.5);
+      font-size: .9rem;
+    }
+    .tel-block a {
+      color: var(--blanc);
+      font-weight: 700;
+      font-size: 1.3rem;
+      text-decoration: none;
+      display: block;
+      margin-top: 4px;
+    }
+    .tel-block a:hover { color: var(--orange); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bleu);
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 24px;
+      text-align: center;
+      color: rgba(255,255,255,.35);
+      font-size: .8rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .form-box { padding: 32px 24px; }
+      .stats { gap: 32px; }
+      .step:not(:last-child)::after { display: none; }
+    }
+
+    /* ── ANIMATION ENTRÉE ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <span class="nav-logo">[Prénom] <span>[Nom]</span> — Immobilier</span>
+  <a class="nav-tel" href="tel:+33600000000">📞 06 00 00 00 00</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">Vente rapide garantie</div>
+
+  <h1>Je vends votre bien<br>immobilier <em>rapidement</em></h1>
+
+  <p class="hero-sub">
+    <strong>Divorce, séparation, succession, mutation...</strong><br>
+    Je débloque les situations les plus complexes, en toute discrétion.
+  </p>
+
+  <div class="checklist">
+    <div class="check-item">
+      <span class="check-icon">✓</span>
+      Estimation offerte sous 2h
+    </div>
+    <div class="check-item">
+      <span class="check-icon">✓</span>
+      Acquéreurs qualifiés déjà en attente
+    </div>
+    <div class="check-item">
+      <span class="check-icon">✓</span>
+      Accompagnement humain &amp; confidentiel
+    </div>
+  </div>
+
+  <div class="cta-group">
+    <a class="btn-primary" href="#formulaire">
+      📋 Estimer mon bien gratuitement
+    </a>
+    <a class="btn-secondary" href="tel:+33600000000">
+      Ou appeler [Prénom] directement →
+    </a>
+  </div>
+
+  <!-- NOTIFICATION LIVE -->
+  <div class="notif-wrap">
+    <div class="notif" id="notif">
+      <span class="notif-dot"></span>
+      <div>
+        Estimation envoyée — <strong id="notif-ville">Lyon</strong>
+        <span class="notif-time" id="notif-time">il y a 3 minutes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SITUATIONS -->
+<section class="situations">
+  <div class="section-label">Votre situation</div>
+  <h2 class="section-title fade-in">Je comprends ce que vous traversez.</h2>
+  <p class="section-sub fade-in">
+    Chaque situation est unique. C'est pourquoi je ne vous propose pas
+    une vente standard — je m'adapte à votre réalité.
+  </p>
+
+  <div class="cards">
+    <div class="card fade-in">
+      <span class="card-icon">💔</span>
+      <h3>Divorce ou séparation</h3>
+      <p>
+        Vous devez vendre le bien commun sans que ça devienne une guerre.
+        Je m'occupe des visites, des négociations et du lien avec vos avocats.
+        Discret, neutre, efficace.
+      </p>
+    </div>
+    <div class="card fade-in">
+      <span class="card-icon">🕊️</span>
+      <h3>Succession ou héritage</h3>
+      <p>
+        Un bien à vendre entre héritiers, un notaire à coordonner, une charge
+        émotionnelle immense. Je suis votre interlocuteur unique pour que
+        la vente se passe dans le calme et le respect.
+      </p>
+    </div>
+    <div class="card fade-in">
+      <span class="card-icon">🧳</span>
+      <h3>Mutation professionnelle</h3>
+      <p>
+        Votre prise de poste approche et votre bien est encore là.
+        Je gère tout à votre place — visites, offres, acte — même à distance.
+        Vous signez, c'est tout.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULAIRE -->
+<section class="form-section" id="formulaire">
+  <div class="form-box">
+    <div class="section-label" style="color:var(--orange)">Estimation gratuite</div>
+    <h2 class="section-title">Parlez-moi de votre situation</h2>
+    <p class="section-sub">
+      Réponse sous 2h. Sans engagement. Sans démarchage.
+    </p>
+
+    <form id="lead-form" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label for="prenom">Votre prénom</label>
+        <input type="text" id="prenom" name="prenom" placeholder="Marie" required />
+      </div>
+
+      <div class="form-group">
+        <label for="telephone">Votre numéro de téléphone</label>
+        <input type="tel" id="telephone" name="telephone" placeholder="06 00 00 00 00" required />
+      </div>
+
+      <div class="form-group">
+        <label for="situation">Votre situation</label>
+        <select id="situation" name="situation" required>
+          <option value="" disabled selected>Choisissez votre situation</option>
+          <option value="divorce">Divorce ou séparation</option>
+          <option value="succession">Succession ou héritage</option>
+          <option value="mutation">Mutation professionnelle</option>
+          <option value="autre">Autre urgence de vente</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary form-submit">
+        Recevoir mon estimation gratuite →
+      </button>
+    </form>
+
+    <p class="form-legal">
+      Vos données sont confidentielles et ne sont jamais transmises à des tiers.
+      Vous pouvez vous désinscrire à tout moment.
+    </p>
+  </div>
+</section>
+
+<!-- PREUVE SOCIALE -->
+<section class="social-proof">
+  <div class="section-label">Ils m'ont fait confiance</div>
+  <h2 class="section-title fade-in">Des résultats concrets,<br>dans des moments difficiles.</h2>
+
+  <div class="stats">
+    <div class="stat fade-in">
+      <div class="stat-number">28j</div>
+      <div class="stat-label">Délai moyen de vente</div>
+    </div>
+    <div class="stat fade-in">
+      <div class="stat-number">97%</div>
+      <div class="stat-label">Du prix demandé obtenu</div>
+    </div>
+    <div class="stat fade-in">
+      <div class="stat-number">+80</div>
+      <div class="stat-label">Familles accompagnées</div>
+    </div>
+  </div>
+
+  <div class="temoignages">
+    <div class="temoignage fade-in">
+      <p class="temoignage-text">
+        Vendu en 23 jours après notre séparation. [Prénom] a géré les visites
+        sans qu'on ait besoin d'être là ensemble. Discret, professionnel, humain.
+        Je recommande sans hésiter.
+      </p>
+      <div class="temoignage-auteur">Sophie M. — [Ville]</div>
+      <div class="temoignage-situation">Vente post-divorce</div>
+    </div>
+
+    <div class="temoignage fade-in">
+      <p class="temoignage-text">
+        On était 3 héritiers qui ne s'accordaient sur rien.
+        [Prénom] a su parler à tout le monde, coordonner avec notre notaire
+        et on a signé en 6 semaines. Un soulagement énorme.
+      </p>
+      <div class="temoignage-auteur">Jean-Pierre L. — [Ville]</div>
+      <div class="temoignage-situation">Vente successorale</div>
+    </div>
+
+    <div class="temoignage fade-in">
+      <p class="temoignage-text">
+        Muté à Bordeaux avec 45 jours pour vendre mon appart à Lyon.
+        [Prénom] a tout géré à distance. J'ai signé l'acte depuis ma nouvelle ville.
+        Vendu au prix, dans les temps.
+      </p>
+      <div class="temoignage-auteur">Thomas R. — [Ville]</div>
+      <div class="temoignage-situation">Mutation professionnelle</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSUS -->
+<section class="processus">
+  <div class="section-label">Comment ça marche</div>
+  <h2 class="section-title fade-in">Simple. Rapide. Sans pression.</h2>
+
+  <div class="steps">
+    <div class="step fade-in">
+      <div class="step-num">1</div>
+      <h4>Vous m'écrivez</h4>
+      <p>Formulaire ou appel direct. Je vous réponds sous 2h.</p>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">2</div>
+      <h4>Bilan offert</h4>
+      <p>J'analyse votre bien et votre situation. Je vous donne un prix et un délai réalistes.</p>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">3</div>
+      <h4>Je m'occupe de tout</h4>
+      <p>Visites, offres, notaire. Vous êtes informé à chaque étape, sans stress.</p>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">4</div>
+      <h4>Vendu.</h4>
+      <p>Acte signé, argent viré, vous pouvez tourner la page.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>Prêt à avancer ?</h2>
+  <p>
+    Parlez-moi de votre situation en 2 minutes.
+    Je vous dis honnêtement si je peux vous aider — sans engagement.
+  </p>
+  <a class="btn-primary" href="#formulaire">
+    📋 Obtenir mon estimation gratuite
+  </a>
+  <div class="tel-block">
+    Ou appelez directement :
+    <a href="tel:+33600000000">06 00 00 00 00</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>[Prénom] [Nom] — Agent immobilier indépendant — [Ville] et alentours</p>
+  <p style="margin-top:6px">
+    <a href="#" style="color:inherit">Mentions légales</a> ·
+    <a href="#" style="color:inherit">Politique de confidentialité</a>
+  </p>
+</footer>
+
+<script>
+  /* ── NOTIFICATION LIVE ── */
+  const villes = [
+    'Lyon', 'Bordeaux', 'Nantes', 'Toulouse', 'Montpellier',
+    'Strasbourg', 'Rennes', 'Grenoble', 'Nice', 'Angers'
+  ];
+  const temps = [
+    'il y a 2 minutes', 'il y a 4 minutes', 'il y a 7 minutes',
+    'il y a 1 minute', 'il y a 5 minutes', 'il y a 3 minutes'
+  ];
+
+  function showNotif() {
+    const notif = document.getElementById('notif');
+    const ville = villes[Math.floor(Math.random() * villes.length)];
+    const t     = temps[Math.floor(Math.random() * temps.length)];
+    document.getElementById('notif-ville').textContent = ville;
+    document.getElementById('notif-time').textContent  = t;
+    notif.classList.add('visible');
+    setTimeout(() => notif.classList.remove('visible'), 4000);
+  }
+
+  setTimeout(showNotif, 2500);
+  setInterval(showNotif, 9000);
+
+  /* ── ANIMATIONS AU SCROLL ── */
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    }),
+    { threshold: 0.15 }
+  );
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  /* ── FORMULAIRE ── */
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = '✅ Demande envoyée ! Je vous rappelle sous 2h.';
+    btn.style.background = 'var(--vert)';
+    btn.style.boxShadow  = '0 8px 30px rgba(34,197,94,.4)';
+    btn.disabled = true;
+    // Ici : connecter à votre CRM / webhook / email
+  }
+</script>
+
+</body>
+</html>
