@@ -147,3 +147,11 @@ function submitEbook(e) {
 // Lead notification stub
 function sendLeadNotification(data) { console.log('[LEAD]', data); }
 
+// Matterport + audio experience
+function startMatterportExperience() {
+  const overlay = document.getElementById('mpOverlay');
+  if (overlay) overlay.style.display = 'none';
+  const audio = document.getElementById('welcomeAudio');
+  if (audio) audio.play().catch(() => {});
+}
+

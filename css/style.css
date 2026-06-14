@@ -145,6 +145,26 @@ em{font-style:italic;color:var(--coral)}
 .hamburger span{display:block;width:24px;height:2px;background:var(--white);transition:var(--ease);border-radius:2px}
 #navbar.scrolled .hamburger span{background:var(--navy)}
 
+/* Facebook link in navbar */
+.nav-fb-link{display:flex;align-items:center;gap:8px;background:var(--fb-blue);color:white;padding:9px 16px;border-radius:var(--r);font-size:.8rem;font-weight:700;transition:var(--ease);white-space:nowrap;text-decoration:none}
+.nav-fb-link:hover{background:#1461c0;transform:translateY(-1px)}
+.nav-fb-link svg{flex-shrink:0}
+
+/* === MATTERPORT TOP === */
+.matterport-top{background:var(--navy);padding:80px 0 56px;position:relative;overflow:hidden}
+.matterport-top::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,85,51,.1) 0%,transparent 60%)}
+.mp-header{text-align:center;margin-bottom:32px;position:relative;z-index:1}
+.mp-header h2{color:white;margin-bottom:0}
+.mp-wrap{position:relative;width:100%;aspect-ratio:16/9;border-radius:var(--r-xl);overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.4);border:1px solid rgba(255,85,51,.2)}
+.mp-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.mp-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(11,29,53,.92) 0%,rgba(26,48,80,.85) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;transition:opacity .4s ease;z-index:5}
+.mp-overlay:hover{background:linear-gradient(135deg,rgba(11,29,53,.85) 0%,rgba(26,48,80,.78) 100%)}
+.mp-play-btn{width:80px;height:80px;background:var(--coral);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 0 16px rgba(255,85,51,.2),var(--sh-lg);transition:transform .25s,box-shadow .25s}
+.mp-play-btn:hover{transform:scale(1.1);box-shadow:0 0 0 24px rgba(255,85,51,.15),var(--sh-lg)}
+.mp-play-btn svg{margin-left:4px}
+.mp-hint{color:white;font-size:1.1rem;font-weight:700;margin:0}
+.mp-hint-sub{color:rgba(255,255,255,.55);font-size:.82rem;margin:0}
+
 /* === HERO === */
 .hero{min-height:100vh;background:linear-gradient(140deg,var(--navy) 0%,var(--navy-mid) 60%,#0D2545 100%);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
@@ -318,6 +338,10 @@ em{font-style:italic;color:var(--coral)}
 /* === SOCIAL === */
 .social-section{padding:var(--section) 0;background:var(--white)}
 .social-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+.social-fb-single{display:flex;justify-content:center}
+.social-fb-single .soc-block{max-width:560px;width:100%}
+.social-fb-single .soc-embed{display:flex;justify-content:center}
+.social-fb-single .soc-embed iframe{width:100%;max-width:500px}
 .soc-block{display:flex;flex-direction:column;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh-sm)}
 .soc-head{display:flex;align-items:center;gap:10px;padding:16px 20px;font-weight:700;font-size:.9rem;color:white}
 .soc-head--fb{background:var(--fb-blue)}
@@ -469,6 +493,8 @@ em{font-style:italic;color:var(--coral)}
   .nav-tab-strip a:hover{background:var(--coral);color:white;border-color:var(--coral)}
   .tab-accent{color:var(--coral)!important;border-color:rgba(255,85,51,.3)!important}
   .tab-cta{background:var(--coral)!important;color:white!important}
+  .nav-fb-link span{display:none}
+  .matterport-top{padding:60px 0 40px}
   .compare-grid{grid-template-columns:1fr}
   .pillars-row{grid-template-columns:1fr 1fr}
   .tech-grid{grid-template-columns:repeat(2,1fr)}
@@ -496,6 +522,10 @@ em{font-style:italic;color:var(--coral)}
   .footer-grid{grid-template-columns:1fr;gap:28px}
   .chatbot-panel{width:calc(100vw - 36px);right:0}
   .fb-pill{display:none}
+  .nav-fb-link{padding:8px 12px}
+  .nav-fb-link span{display:none}
+  .matterport-top{padding:50px 0 32px}
+  .mp-play-btn{width:64px;height:64px}
   .compare-grid{grid-template-columns:1fr}
   .wa-float{bottom:90px;left:14px}
   .hero-layout{padding:80px 20px 56px}
