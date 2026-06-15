@@ -579,6 +579,20 @@ em{font-style:italic;color:var(--coral)}
 .rv-stars--sm{font-size:.65rem;color:#FBBC05;letter-spacing:1px}
 .rv-mini p{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.5;margin:0}
 
+/* === AVANT-PREMIÈRES WHATSAPP === */
+.avantpremiere-section{padding:72px 0;background:rgba(2,62,138,.6);backdrop-filter:blur(8px)}
+.avantpremiere-inner{display:grid;grid-template-columns:1fr 1.6fr;gap:60px;align-items:center}
+.avantpremiere-text p{color:rgba(255,255,255,.75);font-size:1rem;line-height:1.75;margin-top:16px}
+.avantpremiere-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ap-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:var(--r-xl);padding:28px 20px;text-decoration:none;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;transition:var(--ease)}
+.ap-card:hover{background:rgba(255,255,255,.16);border-color:var(--wa-green);transform:translateY(-4px)}
+.ap-emoji{font-size:2.2rem;line-height:1}
+.ap-card strong{color:white;font-size:1rem;font-weight:700}
+.ap-card p{color:rgba(255,255,255,.6);font-size:.78rem;margin:0;line-height:1.4}
+.ap-wa{display:flex;align-items:center;gap:7px;background:var(--wa-green);color:white;padding:9px 16px;border-radius:50px;font-size:.78rem;font-weight:700;margin-top:10px}
+@media(max-width:1024px){.avantpremiere-inner{grid-template-columns:1fr;gap:36px}.avantpremiere-cards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.avantpremiere-cards{grid-template-columns:1fr}}
+
 /* === FACEBOOK PAGE === */
 .fb-page-section{padding:56px 0;background:rgba(6,34,64,.7);backdrop-filter:blur(8px)}
 .fb-page-card{display:flex;align-items:center;gap:48px;background:var(--fb-blue);border-radius:var(--r-xl);padding:40px 48px;box-shadow:var(--sh-lg)}
