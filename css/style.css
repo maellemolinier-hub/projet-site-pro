@@ -154,7 +154,7 @@ em{font-style:italic;color:var(--coral)}
 .nav-fb-link svg{flex-shrink:0}
 
 /* === MATTERPORT TOP === */
-.matterport-top{background:linear-gradient(160deg,var(--azure-deep) 0%,var(--navy) 60%,#050E1D 100%);padding:80px 0 56px;position:relative;overflow:hidden}
+.matterport-top{background:linear-gradient(160deg,var(--azure-deep) 0%,var(--navy) 60%,#050E1D 100%);padding:24px 0 40px;position:relative;overflow:hidden}
 .matterport-top::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 60%,rgba(0,150,199,.18) 0%,transparent 55%),radial-gradient(ellipse at 80% 30%,rgba(255,85,51,.08) 0%,transparent 50%)}
 .mp-header{text-align:center;margin-bottom:32px;position:relative;z-index:1}
 .mp-header h2{color:white;margin-bottom:0}
@@ -169,7 +169,7 @@ em{font-style:italic;color:var(--coral)}
 .mp-hint-sub{color:rgba(255,255,255,.55);font-size:.82rem;margin:0}
 
 /* === HERO === */
-.hero{min-height:auto;padding:100px 0 60px;background:linear-gradient(150deg,var(--navy) 0%,var(--azure-deep) 45%,#095280 75%,#0a6090 100%);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero{min-height:auto;padding:40px 0 40px;background:linear-gradient(150deg,var(--navy) 0%,var(--azure-deep) 45%,#095280 75%,#0a6090 100%);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(144,224,239,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(144,224,239,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
 .orb{position:absolute;border-radius:50%;pointer-events:none}
 .orb--1{width:700px;height:700px;top:-200px;right:-120px;background:radial-gradient(circle,rgba(0,150,199,.22) 0%,rgba(255,85,51,.08) 50%,transparent 70%);animation:orbFloat 10s ease-in-out infinite}
