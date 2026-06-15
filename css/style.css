@@ -559,81 +559,18 @@ em{font-style:italic;color:var(--coral)}
 .conseil-link:hover{text-decoration:underline}
 .conseils-cta{text-align:center;margin-top:48px}
 
-/* === ESTIMATEUR SECTION === */
-.estimateur-section{padding:var(--section) 0;background:linear-gradient(155deg,var(--azure-deep) 0%,var(--navy) 50%,#050E1D 100%);position:relative;overflow:hidden}
-.estimateur-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 75% 20%,rgba(0,150,199,.18) 0%,transparent 50%),radial-gradient(ellipse at 15% 80%,rgba(255,85,51,.1) 0%,transparent 45%);pointer-events:none}
-
-.est-widget{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-xl);padding:40px;max-width:680px;margin:0 auto 32px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);position:relative;z-index:1}
-
-/* Progress bar */
-.est-header{margin-bottom:32px}
-.est-progress-bar{height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;margin-bottom:10px}
-.est-progress-fill{height:100%;background:linear-gradient(90deg,var(--coral),var(--gold));border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
-.est-step-label{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:.08em;text-transform:uppercase}
-
-/* Steps */
-.est-step{display:none;animation:estFadeIn .3s ease}
-.est-step.active{display:block}
-@keyframes estFadeIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
-.est-result{display:none;animation:estFadeIn .35s ease}
-.est-result.active{display:block}
-
-.est-question{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:white;margin-bottom:28px;line-height:1.3}
-
-/* Choice buttons */
-.est-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.est-choices--5{grid-template-columns:repeat(5,1fr)}
-.est-choice{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);border-radius:var(--r-lg);padding:20px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;transition:all .2s ease;font-family:var(--font-body)}
-.est-choice:hover{background:rgba(255,85,51,.15);border-color:rgba(255,85,51,.5);transform:translateY(-2px)}
-.est-choice.selected{background:rgba(255,85,51,.2);border-color:var(--coral);box-shadow:0 0 0 3px rgba(255,85,51,.2)}
-.est-icon{font-size:1.8rem;line-height:1}
-.est-label{font-size:.82rem;font-weight:600;color:rgba(255,255,255,.85);text-align:center;line-height:1.3}
-
-/* Surface slider */
-.est-slider-wrap{margin-bottom:28px;text-align:center}
-.est-surface-display{margin-bottom:16px;line-height:1}
-.est-surface-num{font-family:var(--font-display);font-size:4rem;font-weight:700;color:white}
-.est-surface-unit{font-size:1.5rem;font-weight:600;color:rgba(255,255,255,.5);margin-left:4px}
-.est-range{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:rgba(255,255,255,.15);border-radius:2px;outline:none;cursor:pointer;margin-bottom:10px}
-.est-range::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--coral);cursor:pointer;border:3px solid white;box-shadow:0 2px 12px rgba(255,85,51,.5);transition:transform .15s}
-.est-range::-webkit-slider-thumb:hover{transform:scale(1.15)}
-.est-range::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--coral);cursor:pointer;border:3px solid white;box-shadow:0 2px 12px rgba(255,85,51,.5)}
-.est-range-labels{display:flex;justify-content:space-between;font-size:.72rem;color:rgba(255,255,255,.35);font-weight:500}
-.est-btn-next{display:block;margin:0 auto;min-width:200px;justify-content:center}
-
-/* Result */
-.est-result-top{text-align:center;margin-bottom:32px}
-.est-result-badge{display:inline-block;background:rgba(255,85,51,.2);border:1px solid rgba(255,85,51,.4);color:var(--coral);padding:5px 16px;border-radius:50px;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
-.est-result-label{color:rgba(255,255,255,.6);font-size:.95rem;margin-bottom:12px}
-.est-price-range{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
-.est-price{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:white;line-height:1}
-.est-price-sep{color:rgba(255,255,255,.3);font-size:1.5rem;font-weight:300}
-.est-result-note{color:rgba(255,255,255,.45);font-size:.82rem;margin-bottom:16px}
-.est-disclaimer{display:flex;align-items:flex-start;gap:7px;background:rgba(255,255,255,.05);border-radius:var(--r);padding:12px 16px;font-size:.76rem;color:rgba(255,255,255,.4);line-height:1.5;text-align:left}
-.est-disclaimer svg{flex-shrink:0;margin-top:2px;opacity:.6}
-.est-result-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px}
-.est-restart{background:none;border:none;color:rgba(255,255,255,.35);font-size:.8rem;cursor:pointer;font-family:var(--font-body);margin-top:16px;display:block;margin-left:auto;margin-right:auto;transition:color .2s}
-.est-restart:hover{color:rgba(255,255,255,.7)}
-
-/* Garanties */
-.est-garanties{display:flex;align-items:center;justify-content:center;gap:40px;position:relative;z-index:1}
-.est-gar-item{display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;color:rgba(255,255,255,.45)}
-.est-gar-item svg{color:var(--coral);flex-shrink:0}
+/* === HERO WAVE === */
+.hero-wave-wrap{position:absolute;bottom:0;left:0;right:0;height:80px;pointer-events:none;z-index:1;overflow:hidden}
+.hero-wave{position:absolute;bottom:0;left:0;width:200%;height:100%;display:block}
+.hero-wave--1{animation:waveScroll 14s linear infinite}
+.hero-wave--2{animation:waveScroll 10s linear infinite reverse}
+.hero-wave--3{animation:waveScroll 20s linear infinite}
+@keyframes waveScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* === RESPONSIVE NOUVELLES SECTIONS === */
 @media (max-width:1024px){
   .conseils-grid{grid-template-columns:1fr 1fr}
-  .est-choices--5{grid-template-columns:repeat(3,1fr)}
 }
 @media (max-width:768px){
   .conseils-grid{grid-template-columns:1fr}
-  .est-widget{padding:28px 20px}
-  .est-choices{grid-template-columns:repeat(2,1fr)}
-  .est-choices--5{grid-template-columns:repeat(2,1fr)}
-  .est-question{font-size:1.2rem}
-  .est-surface-num{font-size:3rem}
-  .est-price{font-size:1.6rem}
-  .est-price-range{gap:10px}
-  .est-garanties{gap:20px;flex-wrap:wrap}
-  .est-result-actions{flex-direction:column;align-items:center}
 }
