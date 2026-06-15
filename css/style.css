@@ -575,6 +575,18 @@ em{font-style:italic;color:var(--coral)}
 .rv-stars--sm{font-size:.65rem;color:#FBBC05;letter-spacing:1px}
 .rv-mini p{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.5;margin:0}
 
+/* === INTRO MAËLLE === */
+.intro-maelle{padding:72px 0;background:rgba(2,62,138,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.intro-maelle-inner{display:grid;grid-template-columns:340px 1fr;gap:64px;align-items:center}
+.intro-maelle-photo{border-radius:var(--r-xl);overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.35);border:3px solid rgba(255,255,255,.2)}
+.intro-maelle-photo img{width:100%;display:block;object-fit:cover}
+.intro-maelle-text h2{color:var(--white);margin:12px 0 20px}
+.intro-maelle-text p{color:rgba(255,255,255,.75);font-size:1rem;line-height:1.8;margin-bottom:16px}
+.intro-maelle-text strong{color:var(--white)}
+.intro-maelle-btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+@media(max-width:1024px){.intro-maelle-inner{grid-template-columns:260px 1fr;gap:40px}}
+@media(max-width:768px){.intro-maelle-inner{grid-template-columns:1fr;gap:32px}.intro-maelle-photo{max-width:280px;margin:0 auto}}
+
 /* === HOME STAGING CENTRÉ === */
 .staging-layout--centered{grid-template-columns:1fr;max-width:680px;margin:0 auto}
 .staging-layout--centered .staging-text{text-align:center}
