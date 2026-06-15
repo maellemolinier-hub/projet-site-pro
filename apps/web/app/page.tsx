@@ -2,6 +2,7 @@ import { Navbar } from "@/components/marketing/Navbar";
 import { Hero } from "@/components/marketing/Hero";
 import { Features } from "@/components/marketing/Features";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
+import { LeadCapture } from "@/components/marketing/LeadCapture";
 import { Pricing } from "@/components/marketing/Pricing";
 import { Experts } from "@/components/marketing/Experts";
 import { Testimonials } from "@/components/marketing/Testimonials";
@@ -15,6 +16,7 @@ export default function HomePage() {
       <Hero />
       <Features />
       <HowItWorks />
+      <LeadCapture />
       <Experts />
       <Pricing />
       <Testimonials />
