@@ -581,19 +581,18 @@ em{font-style:italic;color:var(--coral)}
 
 /* === INTRO MAËLLE === */
 .intro-maelle{padding:72px 0;background:rgba(2,62,138,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.intro-maelle-inner{display:grid;grid-template-columns:260px 1fr;gap:64px;align-items:center}
-.intro-maelle-photo{border-radius:var(--r-xl);overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.35);border:3px solid rgba(255,255,255,.2)}
-.intro-maelle-photo video{width:100%;height:100%;object-fit:cover;display:block}
-.intro-maelle-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.intro-maelle-inner{display:flex;flex-direction:column;align-items:center;gap:36px;text-align:center}
+.intro-maelle-photo{border-radius:var(--r-xl);overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.35);border:3px solid rgba(255,255,255,.2);width:100%;max-width:480px}
+.intro-maelle-photo video{width:100%;display:block;object-fit:cover}
+.intro-maelle-photo img{width:100%;display:block;object-fit:cover}
+.intro-maelle-text{max-width:600px}
 .intro-maelle-text h2{color:var(--white);margin:12px 0 20px}
 .intro-maelle-text p{color:rgba(255,255,255,.75);font-size:1rem;line-height:1.8;margin-bottom:16px}
 .intro-maelle-text strong{color:var(--white)}
-.intro-maelle-btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.intro-maelle-btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px;justify-content:center}
 .intro-fb-link{display:inline-flex;align-items:center;gap:10px;background:var(--fb-blue);color:white;padding:11px 20px;border-radius:var(--r);font-size:.85rem;font-weight:700;text-decoration:none;transition:var(--ease);margin-top:16px}
 .intro-fb-link:hover{background:#1461c0;transform:translateY(-2px)}
 .intro-fb-link svg{flex-shrink:0}
-@media(max-width:1024px){.intro-maelle-inner{grid-template-columns:200px 1fr;gap:36px}}
-@media(max-width:768px){.intro-maelle-inner{grid-template-columns:1fr;gap:32px}.intro-maelle-photo{max-width:240px;margin:0 auto}}
 
 /* === HOME STAGING CENTRÉ === */
 .staging-layout--centered{grid-template-columns:1fr;max-width:680px;margin:0 auto}
