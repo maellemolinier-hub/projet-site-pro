@@ -56,7 +56,8 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
-body{font-family:var(--font-body);color:var(--text);background:var(--white);overflow-x:hidden;line-height:1.6}
+body{font-family:var(--font-body);color:var(--text);background:linear-gradient(-45deg,#023E8A,#0077B6,#0096C7,#00B4D8,#023E8A);background-size:400% 400%;animation:coastWave 14s ease infinite;overflow-x:hidden;line-height:1.6}
+@keyframes coastWave{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 img{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}
 ul{list-style:none}
@@ -560,16 +561,9 @@ em{font-style:italic;color:var(--coral)}
 .conseil-link:hover{text-decoration:underline}
 .conseils-cta{text-align:center;margin-top:48px}
 
-/* === OCEAN WAVE === */
-.ocean--transition{position:relative;height:60px;background:var(--navy);overflow:hidden}
-.ocean{position:absolute;bottom:0;left:0;right:0;height:100px;overflow:hidden;pointer-events:none;z-index:1}
-.wave{position:absolute;bottom:-25px;left:0;width:6400px;height:198px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-49.9-200 0-250 49.9-394.5 49.9v31.8h800v-31.8z' fill='rgba(255,255,255,0.08)'/%3E%3C/svg%3E") repeat-x;animation:oceanWave 7s cubic-bezier(.36,.45,.63,.53) infinite}
-.wave:nth-child(2){animation:oceanWave 7s cubic-bezier(.36,.45,.63,.53) -.125s infinite,oceanSwell 7s ease -1.25s infinite;opacity:.5}
-@keyframes oceanWave{0%{margin-left:0}100%{margin-left:-1600px}}
-@keyframes oceanSwell{0%,100%{transform:translate3d(0,-25px,0)}50%{transform:translate3d(0,5px,0)}}
 
 /* === AVIS MINI (sous Matterport) === */
-.reviews-mini{background:var(--navy);padding:24px 0 32px;border-top:1px solid rgba(255,255,255,.07)}
+.reviews-mini{background:rgba(6,34,64,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:24px 0 32px;border-top:1px solid rgba(255,255,255,.1)}
 .reviews-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .rv-mini{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-xl);padding:16px 18px}
 .rv-mini-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
