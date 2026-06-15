@@ -2,6 +2,7 @@ from fastapi import APIRouter, Query, Depends
 from pydantic import BaseModel
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import text
 from core.database import get_db
 from ml.model import predict_sale_probability
 
@@ -32,42 +33,48 @@ async def scan_prospects(
 ):
     """
     Scan d'une zone pour détecter les biens susceptibles d'être mis en vente.
-    Utilise le modèle ML XGBoost entraîné sur l'historique DVF.
+    Colonnes alignées sur le schéma Prisma (camelCase quoté en PostgreSQL).
     """
-    from sqlalchemy import text
-
-    # Récupération des biens dans la zone avec données DVF
+    # Biens DVF dans la zone — on cherche ceux qui n'ont pas bougé depuis >2 ans
     query = text("""
         SELECT
-            p.address,
-            p.city,
-            p.postal_code,
-            p.latitude as lat,
-            p.longitude as lng,
-            p.sold_at as last_mutation,
-            EXTRACT(YEAR FROM AGE(NOW(), p.sold_at)) as years_owned,
-            z.avg_price_sqm,
-            z.trend_6m
-        FROM price_points p
+            COALESCE("streetName", '') || ', ' || COALESCE(city, '')  AS address,
+            COALESCE(city, '')                                          AS city,
+            COALESCE("postalCode", '')                                  AS postal_code,
+            latitude                                                    AS lat,
+            longitude                                                   AS lng,
+            "saleDate"                                                  AS last_mutation,
+            EXTRACT(YEAR FROM AGE(NOW(), "saleDate"))                  AS years_owned,
+            zone_stats.avg_price_sqm,
+            zone_stats.trend_6m
+        FROM "PricePoint" p
         LEFT JOIN LATERAL (
             SELECT
-                AVG(price_sqm) as avg_price_sqm,
-                (AVG(CASE WHEN sold_at > NOW() - INTERVAL '6 months' THEN price_sqm END) /
-                 NULLIF(AVG(CASE WHEN sold_at BETWEEN NOW() - INTERVAL '12 months'
-                     AND NOW() - INTERVAL '6 months' THEN price_sqm END), 0) - 1) * 100 as trend_6m
-            FROM price_points p2
+                AVG("pricePerSqm") AS avg_price_sqm,
+                (
+                    AVG(CASE WHEN "saleDate" > NOW() - INTERVAL '6 months'
+                        THEN "pricePerSqm" END)
+                    / NULLIF(
+                        AVG(CASE WHEN "saleDate" BETWEEN NOW() - INTERVAL '12 months'
+                            AND NOW() - INTERVAL '6 months' THEN "pricePerSqm" END),
+                        0
+                    ) - 1
+                ) * 100 AS trend_6m
+            FROM "PricePoint" p2
             WHERE ST_DWithin(
                 ST_MakePoint(p2.longitude, p2.latitude)::geography,
                 ST_MakePoint(p.longitude, p.latitude)::geography,
                 300
             )
-        ) z ON true
+        ) zone_stats ON true
         WHERE ST_DWithin(
             ST_MakePoint(p.longitude, p.latitude)::geography,
             ST_MakePoint(:lng, :lat)::geography,
             :radius
         )
-        AND p.sold_at < NOW() - INTERVAL '2 years'
+        AND p."saleDate" < NOW() - INTERVAL '2 years'
+        AND p."pricePerSqm" BETWEEN 500 AND 50000
+        ORDER BY p."saleDate" ASC
         LIMIT 500
     """)
 
@@ -79,9 +86,9 @@ async def scan_prospects(
     prospects = []
     for row in rows:
         features = {
-            "years_owned": row.years_owned or 0,
-            "avg_price_sqm": row.avg_price_sqm or 0,
-            "trend_6m": row.trend_6m or 0,
+            "years_owned": float(row.years_owned or 0),
+            "avg_price_sqm": float(row.avg_price_sqm or 0),
+            "trend_6m": float(row.trend_6m or 0),
             "lat": row.lat,
             "lng": row.lng,
         }
@@ -91,7 +98,11 @@ async def scan_prospects(
             continue
 
         reasons = _build_reasons(features, score)
-        label = "Très probable" if score > 0.8 else "Probable" if score > 0.65 else "Possible"
+        label = (
+            "Très probable" if score > 0.8
+            else "Probable" if score > 0.65
+            else "Possible"
+        )
 
         prospects.append(
             ProspectResult(
@@ -114,12 +125,17 @@ async def scan_prospects(
 
 def _build_reasons(features: dict, score: float) -> list[str]:
     reasons = []
-    if features.get("years_owned", 0) > 10:
-        reasons.append(f"Détenu depuis plus de {int(features['years_owned'])} ans")
-    if features.get("trend_6m", 0) > 5:
-        reasons.append("Hausse de prix récente (+5% sur 6 mois) — bon moment pour vendre")
-    if features.get("years_owned", 0) > 15:
-        reasons.append("Profil retraite/succession probable")
+    years = features.get("years_owned", 0)
+    trend = features.get("trend_6m", 0)
+
+    if years > 15:
+        reasons.append(f"Détenu depuis plus de {int(years)} ans — profil succession/retraite")
+    elif years > 10:
+        reasons.append(f"Détenu depuis {int(years)} ans — maturité patrimoniale")
+    if trend > 5:
+        reasons.append(f"Hausse des prix de +{trend:.1f}% sur 6 mois — bon moment pour vendre")
+    elif trend > 2:
+        reasons.append("Marché en progression dans ce secteur")
     if not reasons:
         reasons.append("Signaux de marché favorables à une mise en vente")
     return reasons

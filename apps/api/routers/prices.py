@@ -7,14 +7,18 @@ from core.database import get_db
 
 router = APIRouter()
 
+# Noms de colonnes alignés sur le schéma Prisma (camelCase → PostgreSQL quoted)
+# PricePoint : mutationId, saleDate, price, surfaceArea, pricePerSqm,
+#              propertyType, latitude, longitude, postalCode, city, streetName, roomCount
 
-class PricePoint(BaseModel):
+
+class PricePointOut(BaseModel):
     lat: float
     lng: float
     price_sqm: float
-    type: str
-    sold_at: Optional[str] = None
-    source: str
+    property_type: str
+    sale_date: Optional[str] = None
+    street_name: Optional[str] = None
 
 
 class ZoneStats(BaseModel):
@@ -37,25 +41,46 @@ async def get_zone_stats(
 ):
     """Statistiques de prix pour une zone géographique."""
     query = text("""
-        SELECT
-            AVG(price_sqm) as avg_price,
-            PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price_sqm) as median_price,
-            MIN(price_sqm) as min_price,
-            MAX(price_sqm) as max_price,
-            COUNT(*) as count
-        FROM price_points
-        WHERE ST_DWithin(
-            ST_MakePoint(longitude, latitude)::geography,
-            ST_MakePoint(:lng, :lat)::geography,
-            :radius
+        WITH zone AS (
+            SELECT
+                AVG("pricePerSqm")                                                     AS avg_price,
+                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY "pricePerSqm")            AS median_price,
+                MIN("pricePerSqm")                                                     AS min_price,
+                MAX("pricePerSqm")                                                     AS max_price,
+                COUNT(*)                                                                AS cnt
+            FROM "PricePoint"
+            WHERE ST_DWithin(
+                ST_MakePoint(longitude, latitude)::geography,
+                ST_MakePoint(:lng, :lat)::geography,
+                :radius
+            )
+            AND "saleDate" > NOW() - INTERVAL '24 months'
+            AND "pricePerSqm" BETWEEN 500 AND 50000
+            AND (:prop_type IS NULL OR "propertyType" = :prop_type)
+        ),
+        trend AS (
+            SELECT
+                AVG(CASE WHEN "saleDate" > NOW() - INTERVAL '12 months' THEN "pricePerSqm" END) AS recent,
+                AVG(CASE WHEN "saleDate" BETWEEN NOW() - INTERVAL '24 months'
+                    AND NOW() - INTERVAL '12 months' THEN "pricePerSqm" END)                    AS older
+            FROM "PricePoint"
+            WHERE ST_DWithin(
+                ST_MakePoint(longitude, latitude)::geography,
+                ST_MakePoint(:lng, :lat)::geography,
+                :radius
+            )
         )
-        AND sold_at > NOW() - INTERVAL '24 months'
-        AND (:type IS NULL OR type = :type)
+        SELECT
+            zone.*,
+            CASE WHEN trend.older > 0
+                 THEN ROUND(((trend.recent / trend.older) - 1) * 100, 1)
+                 ELSE NULL END AS trend_12m
+        FROM zone, trend
     """)
 
     result = await db.execute(
         query,
-        {"lat": lat, "lng": lng, "radius": radius_m, "type": property_type},
+        {"lat": lat, "lng": lng, "radius": radius_m, "prop_type": property_type},
     )
     row = result.fetchone()
 
@@ -65,11 +90,12 @@ async def get_zone_stats(
         median_price_sqm=round(row.median_price or 0, 0),
         min_price_sqm=round(row.min_price or 0, 0),
         max_price_sqm=round(row.max_price or 0, 0),
-        count=row.count or 0,
+        count=row.cnt or 0,
+        trend_12m=float(row.trend_12m) if row.trend_12m else None,
     )
 
 
-@router.get("/street", response_model=list[PricePoint])
+@router.get("/street", response_model=list[PricePointOut])
 async def get_street_prices(
     lat: float = Query(...),
     lng: float = Query(...),
@@ -79,14 +105,21 @@ async def get_street_prices(
 ):
     """Prix des transactions dans un rayon autour d'un point."""
     query = text("""
-        SELECT latitude, longitude, price_sqm, type, sold_at, source
-        FROM price_points
+        SELECT
+            latitude,
+            longitude,
+            "pricePerSqm"   AS price_sqm,
+            "propertyType"  AS property_type,
+            "saleDate"      AS sale_date,
+            "streetName"    AS street_name
+        FROM "PricePoint"
         WHERE ST_DWithin(
             ST_MakePoint(longitude, latitude)::geography,
             ST_MakePoint(:lng, :lat)::geography,
             :radius
         )
-        ORDER BY sold_at DESC
+        AND "pricePerSqm" BETWEEN 500 AND 50000
+        ORDER BY "saleDate" DESC
         LIMIT :limit
     """)
 
@@ -97,13 +130,13 @@ async def get_street_prices(
     rows = result.fetchall()
 
     return [
-        PricePoint(
+        PricePointOut(
             lat=r.latitude,
             lng=r.longitude,
-            price_sqm=r.price_sqm,
-            type=r.type,
-            sold_at=str(r.sold_at) if r.sold_at else None,
-            source=r.source,
+            price_sqm=round(r.price_sqm, 0),
+            property_type=r.property_type,
+            sale_date=str(r.sale_date)[:10] if r.sale_date else None,
+            street_name=r.street_name,
         )
         for r in rows
     ]
@@ -118,13 +151,14 @@ async def get_price_trend(
     """Évolution des prix sur N mois pour un code postal."""
     query = text("""
         SELECT
-            DATE_TRUNC('month', sold_at) as month,
-            AVG(price_sqm) as avg_price,
-            COUNT(*) as transactions
-        FROM price_points
-        WHERE postal_code = :postal_code
-        AND sold_at > NOW() - (:months || ' months')::INTERVAL
-        GROUP BY DATE_TRUNC('month', sold_at)
+            DATE_TRUNC('month', "saleDate")    AS month,
+            AVG("pricePerSqm")                 AS avg_price,
+            COUNT(*)                           AS transactions
+        FROM "PricePoint"
+        WHERE "postalCode" = :postal_code
+        AND "saleDate" > NOW() - (:months || ' months')::INTERVAL
+        AND "pricePerSqm" BETWEEN 500 AND 50000
+        GROUP BY DATE_TRUNC('month', "saleDate")
         ORDER BY month ASC
     """)
 
