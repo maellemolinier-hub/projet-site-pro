@@ -153,6 +153,20 @@ em{font-style:italic;color:var(--coral)}
 .nav-fb-link:hover{background:#1461c0;transform:translateY(-1px)}
 .nav-fb-link svg{flex-shrink:0}
 
+/* === MATTERPORT TOP === */
+.matterport-top{background:linear-gradient(160deg,var(--azure-deep) 0%,var(--navy) 60%,#050E1D 100%);padding:80px 0 56px;position:relative;overflow:hidden}
+.matterport-top::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 60%,rgba(0,150,199,.18) 0%,transparent 55%),radial-gradient(ellipse at 80% 30%,rgba(255,85,51,.08) 0%,transparent 50%)}
+.mp-header{text-align:center;margin-bottom:32px;position:relative;z-index:1}
+.mp-header h2{color:white;margin-bottom:0}
+.mp-wrap{position:relative;width:100%;aspect-ratio:16/9;border-radius:var(--r-xl);overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.4);border:1px solid rgba(255,85,51,.2)}
+.mp-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.mp-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(11,29,53,.92) 0%,rgba(26,48,80,.85) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;transition:opacity .4s ease;z-index:5}
+.mp-overlay:hover{background:linear-gradient(135deg,rgba(11,29,53,.85) 0%,rgba(26,48,80,.78) 100%)}
+.mp-play-btn{width:80px;height:80px;background:var(--coral);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 0 16px rgba(255,85,51,.2),var(--sh-lg);transition:transform .25s,box-shadow .25s}
+.mp-play-btn:hover{transform:scale(1.1);box-shadow:0 0 0 24px rgba(255,85,51,.15),var(--sh-lg)}
+.mp-play-btn svg{margin-left:4px}
+.mp-hint{color:white;font-size:1.1rem;font-weight:700;margin:0}
+.mp-hint-sub{color:rgba(255,255,255,.55);font-size:.82rem;margin:0}
 
 /* === HERO === */
 .hero{min-height:auto;padding:100px 0 60px;background:linear-gradient(150deg,var(--navy) 0%,var(--azure-deep) 45%,#095280 75%,#0a6090 100%);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}

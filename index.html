@@ -166,6 +166,26 @@
     </div>
   </nav>
 
+  <!-- ===== VISITE VIRTUELLE 3D ===== -->
+  <section class="matterport-top" id="visite3d">
+    <div class="container">
+      <div class="mp-header">
+        <div class="stag stag--light">Visite virtuelle 3D · Matterport</div>
+        <h2>Explorez ce bien<br><em>en immersion totale</em></h2>
+      </div>
+      <div class="mp-wrap">
+        <iframe src="https://my.matterport.com/show/?m=s37QthBABcE&back=1" frameborder="0" allowfullscreen allow="xr-spatial-tracking; gyroscope; accelerometer" title="Visite virtuelle 3D · Maëlle Jean" loading="lazy" id="mpFrame"></iframe>
+        <div class="mp-overlay" id="mpOverlay">
+          <button class="mp-play-btn" onclick="startMatterportExperience()" aria-label="Lancer la visite">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+          </button>
+          <p class="mp-hint">Explorer en 3D</p>
+          <small class="mp-hint-sub">Le message audio de Maëlle se lance avec la visite</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== HERO ===== -->
   <section class="hero" id="hero">
     <div class="hero-grid-bg"></div>
