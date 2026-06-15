@@ -1,14 +1,12 @@
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
-
-const MapWidget = dynamic(() => import("@/components/widget/MapWidget"), { ssr: false });
+import MapWidget from "@/components/widget/MapWidgetLoader";
 
 interface Props {
-  searchParams: { token?: string; theme?: string; lat?: string; lng?: string; zoom?: string };
+  searchParams: Promise<{ token?: string; theme?: string; lat?: string; lng?: string; zoom?: string }>;
 }
 
-export default function CarteWidgetPage({ searchParams }: Props) {
-  const { token, theme = "light", lat = "48.8566", lng = "2.3522", zoom = "13" } = searchParams;
+export default async function CarteWidgetPage({ searchParams }: Props) {
+  const { token, theme = "light", lat = "48.8566", lng = "2.3522", zoom = "13" } = await searchParams;
 
   return (
     <html lang="fr">

@@ -16,6 +16,7 @@
     "plugins": [{ "name": "next" }],
     "paths": {
       "@/*": ["./*"],
+      "@immoexpert/db": ["../../packages/db/index.ts"],
       "@immoexpert/ui": ["../../packages/ui/src"],
       "@immoexpert/types": ["../../packages/types/src"]
     }

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 
 // Called daily by Vercel Cron (vercel.json) at 3:00 AM

@@ -1,22 +1,16 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { db } from "@immoexpert/db";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { token: string } }
+  { params }: { params: Promise<{ token: string }> }
 ) {
+  const { token } = await params;
   const expert = await db.expertProfile.findFirst({
-    where: { widgetToken: params.token },
+    where: { widgetToken: token },
     include: {
       user: { select: { firstName: true, lastName: true, email: true } },
-      certification: {
-        select: {
-          status: true,
-          issuedAt: true,
-          expiresAt: true,
-          certificateId: true,
-        },
-      },
     },
   });
 
@@ -24,11 +18,6 @@ export async function GET(
     return NextResponse.json({ error: "Token invalide" }, { status: 404 });
   }
 
-  const cert = expert.user.certification
-    ?? (expert as any).certification
-    ?? null;
-
-  // Requête séparée pour la certification via userId
   const certification = await db.certification.findUnique({
     where: { userId: expert.userId },
     select: { status: true, issuedAt: true, expiresAt: true, certificateId: true },

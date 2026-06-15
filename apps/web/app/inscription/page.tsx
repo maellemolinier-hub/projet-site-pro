@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -25,7 +25,7 @@ const PLAN_META: Record<string, { label: string; highlights: string[]; price: st
   },
 };
 
-export default function InscriptionPage() {
+function InscriptionForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan") ?? "expert";
@@ -225,5 +225,13 @@ export default function InscriptionPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function InscriptionPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 animate-pulse" />}>
+      <InscriptionForm />
+    </Suspense>
   );
 }

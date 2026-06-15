@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { createCheckoutSession, type PlanKey } from "@/lib/stripe";
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
   const { plan, annual } = parsed.data;
   const origin = req.headers.get("origin") ?? "https://immoexpert.fr";
 
-  const session = await createCheckoutSession({
+  const checkoutSession = await createCheckoutSession({
     userId,
     plan: plan as PlanKey,
     annual,
@@ -32,5 +33,5 @@ export async function POST(req: Request) {
     cancelUrl: `${origin}/#tarifs`,
   });
 
-  return NextResponse.json({ url: session.url });
+  return NextResponse.json({ url: checkoutSession.url });
 }
