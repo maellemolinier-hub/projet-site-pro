@@ -133,7 +133,11 @@ em{font-style:italic;color:var(--coral)}
 /* === NAVBAR === */
 #navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 0;transition:var(--ease)}
 #navbar.scrolled{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:14px 0;box-shadow:0 1px 0 var(--border)}
-.nav-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.nav-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px}
+.nav-inner .nav-brand{justify-self:start}
+.nav-inner .nav-menu{justify-self:center}
+.nav-inner .hamburger{justify-self:end}
+.nav-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid rgba(255,255,255,.4);flex-shrink:0}
 .nav-brand{display:flex;flex-direction:column}
 .brand-name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--white);line-height:1;transition:var(--ease)}
 .brand-tag{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);transition:var(--ease)}
