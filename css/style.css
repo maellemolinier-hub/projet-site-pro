@@ -580,10 +580,17 @@ em{font-style:italic;color:var(--coral)}
 .rv-mini p{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.5;margin:0}
 
 /* === FACEBOOK PAGE === */
-.fb-page-section{padding:72px 0;background:rgba(6,34,64,.7);backdrop-filter:blur(8px)}
-.fb-page-section .section-header{margin-bottom:36px}
-.fb-page-embed{display:flex;justify-content:center}
-.fb-page-embed iframe{border-radius:var(--r-xl);box-shadow:var(--sh-lg);max-width:100%}
+.fb-page-section{padding:56px 0;background:rgba(6,34,64,.7);backdrop-filter:blur(8px)}
+.fb-page-card{display:flex;align-items:center;gap:48px;background:var(--fb-blue);border-radius:var(--r-xl);padding:40px 48px;box-shadow:var(--sh-lg)}
+.fb-page-left{display:flex;align-items:center;gap:18px;flex-shrink:0}
+.fb-page-icon{width:64px;height:64px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fb-page-left h3{color:white;font-size:1.2rem;margin-bottom:4px}
+.fb-page-left p{color:rgba(255,255,255,.7);font-size:.85rem}
+.fb-page-right{flex:1}
+.fb-page-right p{color:rgba(255,255,255,.8);font-size:.95rem;line-height:1.7;margin-bottom:20px}
+.fb-page-btn{display:inline-flex;align-items:center;gap:10px;background:white;color:var(--fb-blue);padding:12px 24px;border-radius:var(--r);font-weight:700;font-size:.9rem;text-decoration:none;transition:var(--ease)}
+.fb-page-btn:hover{background:var(--cream);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+@media(max-width:768px){.fb-page-card{flex-direction:column;padding:28px 24px;gap:24px}}
 
 /* === INTRO MAËLLE === */
 .intro-maelle{padding:72px 0;background:rgba(2,62,138,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
