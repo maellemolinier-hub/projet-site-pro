@@ -579,6 +579,12 @@ em{font-style:italic;color:var(--coral)}
 .rv-stars--sm{font-size:.65rem;color:#FBBC05;letter-spacing:1px}
 .rv-mini p{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.5;margin:0}
 
+/* === FACEBOOK PAGE === */
+.fb-page-section{padding:72px 0;background:rgba(6,34,64,.7);backdrop-filter:blur(8px)}
+.fb-page-section .section-header{margin-bottom:36px}
+.fb-page-embed{display:flex;justify-content:center}
+.fb-page-embed iframe{border-radius:var(--r-xl);box-shadow:var(--sh-lg);max-width:100%}
+
 /* === INTRO MAËLLE === */
 .intro-maelle{padding:72px 0;background:rgba(2,62,138,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .intro-maelle-inner{display:flex;flex-direction:column;align-items:center;gap:36px;text-align:center}
