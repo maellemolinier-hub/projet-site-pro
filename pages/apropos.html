@@ -19,9 +19,10 @@
 
     .apropos-main{padding:var(--section) 0;background:var(--white)}
     .apropos-layout{display:grid;grid-template-columns:420px 1fr;gap:80px;align-items:start}
-    .apropos-photo-wrap{position:sticky;top:100px}
-    .apropos-photo{border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-lg);margin-bottom:24px}
-    .apropos-photo img{width:100%;display:block;object-fit:cover}
+    .apropos-photo-wrap{position:sticky;top:100px;display:flex;flex-direction:column;align-items:center}
+    .apropos-photo{display:flex;justify-content:center;margin-bottom:24px}
+    .apropos-portrait{width:280px;height:280px;border-radius:50%;overflow:hidden;border:5px solid var(--coral);box-shadow:0 0 0 16px rgba(255,85,51,.1),var(--sh-lg)}
+    .apropos-portrait img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
     .apropos-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .apropos-stat{background:var(--cream);border-radius:var(--r-lg);padding:18px;text-align:center;border-top:3px solid var(--coral)}
     .apropos-stat strong{display:block;font-family:var(--font-display);font-size:2rem;color:var(--navy);line-height:1}
@@ -93,6 +94,10 @@
         <a href="estimation.html" class="nav-accent">Estimer mon bien</a>
         <a href="rendez-vous.html" class="nav-cta">Prendre RDV</a>
       </div>
+      <a href="https://www.facebook.com/AzurImmoByMaelle" target="_blank" rel="noopener" class="nav-fb-link" aria-label="Page Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        <span>azurimmo by Maëlle</span>
+      </a>
       <button class="hamburger" id="navToggle" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -115,7 +120,9 @@
 
         <div class="apropos-photo-wrap reveal">
           <div class="apropos-photo">
-            <img src="../images/photo-about.png" alt="Maëlle Jean — Experte immobilière Côte d'Azur">
+            <div class="apropos-portrait">
+              <img src="../images/avatar-maelle.jpg" alt="Maëlle Jean — Experte immobilière Côte d'Azur">
+            </div>
           </div>
           <div class="apropos-stat-row">
             <div class="apropos-stat"><strong>7+</strong><span>ans d'expertise</span></div>
