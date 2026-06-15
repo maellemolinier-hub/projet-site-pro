@@ -1,0 +1,15 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "apps/api/Dockerfile"
+buildContext = "."
+watchPatterns = ["apps/api/**", "data/**"]
+
+[deploy]
+startCommand = "celery -A data.pipelines.celery_app worker --loglevel=info -Q dvf,default --concurrency ${CELERY_CONCURRENCY:-2}"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5
+
+[variables]
+PYTHONPATH = "/app"
+PYTHONDONTWRITEBYTECODE = "1"
+PYTHONUNBUFFERED = "1"
