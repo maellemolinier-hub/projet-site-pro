@@ -196,7 +196,7 @@ em{font-style:italic;color:var(--coral)}
 .split-card--coral::before{background:linear-gradient(160deg,rgba(255,85,51,.5) 0%,rgba(180,35,10,.88) 60%,rgba(130,20,5,.95) 100%)}
 .split-card--dark{background-image:url('images/split-acheter.jpg')}
 .split-card--dark::before{background:linear-gradient(160deg,rgba(11,29,53,.5) 0%,rgba(5,18,42,.88) 60%,rgba(3,10,25,.95) 100%)}
-.split-card__content{position:relative;z-index:1}
+.split-card__content{position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;align-items:center}
 .split-card__pre{font-size:.85rem;color:rgba(255,255,255,.7);margin-bottom:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
 .split-card__title{font-family:var(--font-display);font-size:clamp(3rem,5.5vw,5.2rem);color:white;font-weight:900;line-height:1;margin-bottom:20px;letter-spacing:-.02em;text-shadow:0 4px 24px rgba(0,0,0,.3)}
 .split-card__sub{font-size:.88rem;color:rgba(255,255,255,.65);margin-bottom:28px;max-width:280px;line-height:1.5}
@@ -561,6 +561,7 @@ em{font-style:italic;color:var(--coral)}
 .conseils-cta{text-align:center;margin-top:48px}
 
 /* === OCEAN WAVE === */
+.ocean--transition{position:relative;height:60px;background:var(--navy);overflow:hidden}
 .ocean{position:absolute;bottom:0;left:0;right:0;height:100px;overflow:hidden;pointer-events:none;z-index:1}
 .wave{position:absolute;bottom:-25px;left:0;width:6400px;height:198px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-49.9-200 0-250 49.9-394.5 49.9v31.8h800v-31.8z' fill='rgba(255,255,255,0.08)'/%3E%3C/svg%3E") repeat-x;animation:oceanWave 7s cubic-bezier(.36,.45,.63,.53) infinite}
 .wave:nth-child(2){animation:oceanWave 7s cubic-bezier(.36,.45,.63,.53) -.125s infinite,oceanSwell 7s ease -1.25s infinite;opacity:.5}
