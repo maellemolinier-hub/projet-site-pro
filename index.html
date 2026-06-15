@@ -175,9 +175,23 @@
     <div class="container">
       <div class="intro-maelle-inner">
         <div class="intro-maelle-photo">
-          <div class="photo-carousel">
+          <div class="photo-carousel" id="photoCarousel">
             <img src="images/intro-maelle.png" alt="Maëlle Jean · vue aérienne">
+            <img src="images/carousel-drone.jpg" alt="Visite drone">
+            <img src="images/carousel-visite.jpg" alt="Visite virtuelle">
+            <img src="images/carousel-bien1.jpg" alt="Bien immobilier">
+            <img src="images/carousel-bien2.jpg" alt="Bien immobilier">
           </div>
+          <script>
+            (function(){
+              var c = document.getElementById('photoCarousel');
+              var i = 0;
+              setInterval(function(){
+                i = (i + 1) % c.children.length;
+                c.scrollTo({left: c.children[i].offsetLeft, behavior:'smooth'});
+              }, 3000);
+            })();
+          </script>
         </div>
         <div class="intro-maelle-text">
           <div class="stag stag--light">Votre experte immobilière</div>
