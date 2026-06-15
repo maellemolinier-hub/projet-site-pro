@@ -176,7 +176,7 @@
       <div class="intro-maelle-inner">
         <div class="intro-maelle-photo">
           <div class="photo-carousel" id="photoCarousel">
-            <img src="images/intro-maelle.png" alt="Maëlle Jean · vue aérienne">
+            <img src="images/intro-maelle.png" alt="Maëlle Jean · vue aérienne" class="active">
             <img src="images/carousel-drone.jpg" alt="Visite drone">
             <img src="images/carousel-visite.jpg" alt="Visite virtuelle">
             <img src="images/carousel-bien1.jpg" alt="Bien immobilier">
@@ -184,11 +184,12 @@
           </div>
           <script>
             (function(){
-              var c = document.getElementById('photoCarousel');
+              var imgs = document.querySelectorAll('#photoCarousel img');
               var i = 0;
               setInterval(function(){
-                i = (i + 1) % c.children.length;
-                c.scrollTo({left: c.children[i].offsetLeft, behavior:'smooth'});
+                imgs[i].classList.remove('active');
+                i = (i + 1) % imgs.length;
+                imgs[i].classList.add('active');
               }, 3000);
             })();
           </script>
