@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://azur-immo-by-maelle.fr/sitemap.xml
