@@ -21,11 +21,11 @@ const testimonials = [
   },
   {
     quote:
-      "En tant que promoteur, l'analyse foncière m'a permis d'identifier 2 opportunités sous-valorisées que mes concurrents avaient ratées. ROI immédiat.",
-    name: "Frédéric L.",
-    role: "Promoteur immobilier, Lyon",
+      "Avant ImmoExpert, je perdais un rendez-vous sur deux sur l'estimation. Maintenant j'arrive avec la carte et les données DVF, les vendeurs me font confiance immédiatement.",
+    name: "Mathieu R.",
+    role: "Conseiller Century 21, Toulouse",
     rating: 5,
-    initials: "FL",
+    initials: "MR",
     color: "bg-purple-100 text-purple-700",
   },
   {
@@ -48,7 +48,7 @@ export function Testimonials() {
             Témoignages
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Ils ont déjà une longueur d&apos;avance
+            Des agents qui rentrent plus de mandats
           </h2>
         </div>
 

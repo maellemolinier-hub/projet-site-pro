@@ -5,9 +5,9 @@ import { ArrowRight, TrendingUp, Users, Award } from "lucide-react";
 import { MapPreview } from "@/components/map/MapPreview";
 
 const stats = [
-  { icon: TrendingUp, value: "98%", label: "de précision sur les prix" },
-  { icon: Users, value: "44 000+", label: "conseillers en France" },
-  { icon: Award, value: "3 700+", label: "experts certifiés" },
+  { icon: TrendingUp, value: "3×", label: "plus de mandats rentrés en moyenne" },
+  { icon: Users, value: "44 000+", label: "agents immobiliers en France" },
+  { icon: Award, value: "14 jours", label: "d'essai gratuit, sans CB" },
 ];
 
 export function Hero() {
@@ -41,22 +41,22 @@ export function Hero() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm text-white/90 backdrop-blur-sm">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              Données mises à jour en quasi temps réel
+              Conçu pour les agents immobiliers français
             </div>
 
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight text-balance">
-              Les prix de l&apos;immo{" "}
-              <span className="text-accent-400">rue par rue</span>,{" "}
+              Rentrez plus de mandats{" "}
+              <span className="text-accent-400">grâce aux données</span>{" "}
               <span className="underline decoration-accent-400 decoration-4 underline-offset-4">
-                en temps réel
+                officielles
               </span>
             </h1>
 
             <p className="text-lg text-white/70 max-w-xl leading-relaxed">
-              La première plateforme tout-en-un pour les professionnels de
-              l&apos;immobilier. Carte interactive 3D, prospection prédictive,
-              formations certifiantes et annuaire des experts.
+              ImmoExpert donne aux agents immobiliers une longueur d&apos;avance :
+              carte des prix rue par rue, prospection prédictive, rapports de marché
+              personnalisés et badge Expert pour convaincre chaque vendeur.
             </p>
 
             {/* CTA buttons */}
@@ -65,20 +65,20 @@ export function Hero() {
                 href="/inscription"
                 className="inline-flex items-center justify-center gap-2 bg-accent-500 hover:bg-accent-600 text-white font-semibold px-6 py-3.5 rounded-xl transition-all shadow-lg shadow-accent-500/30 hover:shadow-accent-500/50 hover:-translate-y-0.5"
               >
-                Commencer — 14 jours gratuits
+                Essayer gratuitement — 14 jours
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="#comment-ca-marche"
+                href="#demo"
                 className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-6 py-3.5 rounded-xl transition-all border border-white/20"
               >
-                Voir la démo
+                Voir la carte en direct
               </Link>
             </div>
 
             {/* Trust */}
             <p className="text-sm text-white/50">
-              Sans carte bancaire · Résiliation en 1 clic · Données DVF + PERVAL
+              Sans carte bancaire · Données DVF officielles · Résiliation en 1 clic
             </p>
 
             {/* Stats */}

@@ -19,8 +19,8 @@ export function CTA() {
         </h2>
 
         <p className="text-lg text-white/60 max-w-xl mx-auto">
-          Rejoignez les 3 700+ professionnels qui utilisent déjà ImmoExpert
-          pour rentrer plus de mandats, estimer juste et prospecter mieux.
+          Rejoignez les agents immobiliers qui utilisent déjà ImmoExpert
+          pour rentrer plus de mandats, estimer juste et convaincre chaque vendeur.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

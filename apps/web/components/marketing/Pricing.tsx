@@ -6,8 +6,8 @@ import { Check, Zap } from "lucide-react";
 
 const plans = [
   {
-    name: "Starter",
-    tagline: "Pour débuter",
+    name: "Agent Solo",
+    tagline: "Pour démarrer",
     monthlyPrice: 59,
     annualPrice: 490,
     annualMonthly: 41,
@@ -30,7 +30,7 @@ const plans = [
     ],
   },
   {
-    name: "Expert",
+    name: "Agent Expert",
     tagline: "Le plus populaire",
     monthlyPrice: 129,
     annualPrice: 990,
@@ -194,11 +194,11 @@ export function Pricing() {
         {/* Enterprise */}
         <div className="mt-8 text-center p-8 bg-brand-950 rounded-2xl text-white">
           <h3 className="text-xl font-bold mb-2">
-            Réseau d&apos;agences ou Promoteur immobilier ?
+            Franchise ou réseau d&apos;agences ?
           </h3>
           <p className="text-white/70 mb-6">
-            Accès API, analyse foncière, multi-agences, SLA dédié. Tarification
-            sur mesure à partir de 3 500 €/an.
+            Accès API, marque blanche, multi-agences, tableau de bord réseau, SLA dédié.
+            Tarification sur mesure à partir de 3 500 €/an.
           </p>
           <Link
             href="/contact-entreprise"

@@ -62,9 +62,9 @@ const features = [
   {
     icon: Shield,
     color: "bg-teal-50 text-teal-600",
-    title: "Analyse foncière promoteurs",
+    title: "Estimation argumentée",
     description:
-      "Potentiel constructible, PLU, prix foncier historique. L'outil indispensable pour sourcer les meilleurs terrains.",
+      "Générez une analyse comparative de marché (ACM) automatique en 30 secondes. Défendez votre estimation avec des chiffres officiels et gagnez le mandat.",
   },
 ];
 
@@ -81,12 +81,12 @@ export function Features() {
             Fonctionnalités
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Tout ce dont un professionnel{" "}
+            Tout ce dont un agent{" "}
             <span className="gradient-text">a vraiment besoin</span>
           </h2>
           <p className="text-gray-500 text-lg">
             Une seule plateforme remplace cinq abonnements. Et vous donne un
-            avantage que vos concurrents n&apos;ont pas encore.
+            avantage décisif sur les 44 000 agents qui vous font concurrence.
           </p>
         </div>
 

@@ -1,30 +1,30 @@
 const steps = [
   {
     num: "01",
-    title: "Choisissez votre formule",
+    title: "Créez votre compte agent",
     description:
-      "Starter, Expert ou Agence Pro. Essai 14 jours sans CB, résiliation en 1 clic. Accès immédiat à toute la plateforme.",
+      "14 jours gratuits, sans carte bancaire, accès immédiat. En moins de 2 minutes vous êtes dans la plateforme, prêt à travailler.",
     color: "from-brand-400 to-brand-600",
   },
   {
     num: "02",
-    title: "Explorez les prix de votre secteur",
+    title: "Analysez les prix de votre secteur",
     description:
-      "Ouvrez la carte, tapez une adresse, et visualisez instantanément les prix rue par rue avec l'historique des ventes et les tendances.",
+      "Ouvrez la carte, tapez n'importe quelle adresse, et visualisez les prix au m² rue par rue avec l'historique complet des ventes DVF.",
     color: "from-purple-400 to-purple-600",
   },
   {
     num: "03",
-    title: "Prospectez avec l'IA terrain",
+    title: "Identifiez les vendeurs avant vos concurrents",
     description:
-      "L'app mobile vous indique les propriétaires les plus susceptibles de vendre dans votre zone. Fini la prospection à l'aveugle.",
+      "L'IA terrain vous indique les propriétaires les plus susceptibles de mettre en vente dans les 6 mois. Ciblez votre boîtage et vos appels.",
     color: "from-orange-400 to-orange-600",
   },
   {
     num: "04",
-    title: "Devenez Expert certifié",
+    title: "Gagnez chaque rendez-vous de mandat",
     description:
-      "Suivez la formation valeur vénale, passez la certification, obtenez votre badge et soyez référencé dans notre annuaire national.",
+      "Présentez un rapport de marché personnalisé, défendez votre estimation avec les données officielles et obtenez la signature du vendeur.",
     color: "from-green-400 to-green-600",
   },
 ];

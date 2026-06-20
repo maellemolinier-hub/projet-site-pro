@@ -6,7 +6,7 @@ import { Menu, X, MapPin } from "lucide-react";
 
 const navLinks = [
   { href: "#fonctionnalites", label: "Fonctionnalités" },
-  { href: "#comment-ca-marche", label: "Comment ça marche" },
+  { href: "#demo", label: "Carte des prix" },
   { href: "#experts", label: "Experts certifiés" },
   { href: "#tarifs", label: "Tarifs" },
 ];

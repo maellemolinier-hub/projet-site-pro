@@ -17,7 +17,7 @@ const links = {
   Entreprise: [
     { href: "/a-propos", label: "À propos" },
     { href: "/contact", label: "Contact" },
-    { href: "/promoteurs", label: "Promoteurs & Réseaux" },
+    { href: "/reseaux", label: "Agences & Réseaux" },
     { href: "/presse", label: "Presse" },
   ],
   Légal: [
@@ -44,8 +44,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed">
-              La plateforme de référence pour les professionnels de
-              l&apos;immobilier en France.
+              L&apos;outil n°1 des agents immobiliers français pour rentrer plus
+              de mandats et estimer avec précision.
             </p>
             <p className="text-xs text-gray-600">
               Données DVF · PERVAL · INSEE
@@ -81,7 +81,7 @@ export function Footer() {
             © 2026 ImmoExpert SAS. Tous droits réservés.
           </p>
           <p className="text-xs text-gray-600">
-            Fait avec ❤️ pour les professionnels de l&apos;immobilier français
+            Fait avec ❤️ pour les agents immobiliers français
           </p>
         </div>
       </div>
