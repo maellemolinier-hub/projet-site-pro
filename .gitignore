@@ -36,3 +36,7 @@ packages/db/node_modules/
 # Expo
 apps/mobile/.expo/
 apps/mobile/dist/
+
+# MCP OAuth credentials (ne jamais commiter)
+gcp-oauth.keys.json
+credentials.json
