@@ -8,20 +8,30 @@ import { MapPin, Eye, EyeOff, Loader2, Check } from "lucide-react";
 import { toast } from "sonner";
 
 const PLAN_META: Record<string, { label: string; highlights: string[]; price: string }> = {
-  starter: {
-    label: "Starter",
+  "agent-solo": {
+    label: "Agent Solo",
     price: "490 €/an",
     highlights: ["Carte des prix nationale", "10 rapports/mois", "Essai 14 jours gratuit"],
   },
-  expert: {
-    label: "Expert",
+  starter: {
+    label: "Agent Solo",
+    price: "490 €/an",
+    highlights: ["Carte des prix nationale", "10 rapports/mois", "Essai 14 jours gratuit"],
+  },
+  "agent-expert": {
+    label: "Agent Expert",
     price: "990 €/an",
-    highlights: ["Prospection IA terrain", "Vue 3D", "Formation certifiante", "Badge + référencement"],
+    highlights: ["Prospection IA terrain", "Formation certifiante", "Badge + référencement annuaire", "Widget pour votre site"],
+  },
+  expert: {
+    label: "Agent Expert",
+    price: "990 €/an",
+    highlights: ["Prospection IA terrain", "Formation certifiante", "Badge + référencement annuaire", "Widget pour votre site"],
   },
   agence: {
     label: "Agence Pro",
     price: "1 990 €/an",
-    highlights: ["Jusqu'à 10 utilisateurs", "Widget marque blanche", "Dashboard agence"],
+    highlights: ["Jusqu'à 10 utilisateurs", "Widget marque blanche", "Dashboard agence centralisé"],
   },
 };
 

@@ -5,7 +5,7 @@ import { Navbar } from "@/components/marketing/Navbar";
 import { Footer } from "@/components/marketing/Footer";
 
 export const metadata: Metadata = {
-  title: "Contact entreprise — Réseaux et Promoteurs | ImmoExpert",
+  title: "Contact entreprise — Franchises et Réseaux d'agences | ImmoExpert",
 };
 
 export default function ContactEntreprisePage() {
@@ -26,18 +26,17 @@ export default function ContactEntreprisePage() {
                   Offre Enterprise
                 </span>
                 <h1 className="text-3xl font-bold text-gray-900 mt-2">
-                  Réseaux d'agences et Promoteurs
+                  Franchises et réseaux d&apos;agences
                 </h1>
                 <p className="text-gray-500 mt-3 leading-relaxed">
-                  Vous pilotez plusieurs agences, un réseau de mandataires ou une activité de promotion immobilière ?
-                  Notre offre sur-mesure s'adapte à votre volume et vos intégrations.
+                  Vous pilotez plusieurs agences ou un réseau de mandataires ?
+                  Notre offre sur-mesure s&apos;adapte à votre volume et vos intégrations.
                 </p>
               </div>
 
               <div className="space-y-3">
                 {[
                   "API données immobilières (prix, transactions, tendances)",
-                  "Analyse foncière et potentiel constructible",
                   "Multi-agences et multi-utilisateurs illimités",
                   "Dashboard administrateur centralisé",
                   "Intégration CRM (Salesforce, HubSpot, sur-mesure)",
@@ -104,9 +103,8 @@ export default function ContactEntreprisePage() {
                 <select className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
                   <option>Réseau de mandataires</option>
                   <option>Réseau d'agences franchisées</option>
-                  <option>Promoteur immobilier</option>
                   <option>Agence indépendante multi-sites</option>
-                  <option>Investisseur / Asset manager</option>
+                  <option>Groupement d'agences indépendantes</option>
                 </select>
               </div>
 

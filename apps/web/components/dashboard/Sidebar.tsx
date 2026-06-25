@@ -4,17 +4,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
-  Map, Smartphone, GraduationCap, BarChart3,
-  Settings, MapPin, BadgeCheck, LogOut, User,
+  LayoutDashboard, Map, Smartphone, GraduationCap, BarChart3,
+  Settings, MapPin, BadgeCheck, LogOut, User, Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/dashboard", icon: Map, label: "Tableau de bord", exact: true },
+  { href: "/dashboard", icon: LayoutDashboard, label: "Tableau de bord", exact: true },
   { href: "/dashboard/carte", icon: Map, label: "Carte des prix" },
   { href: "/dashboard/prospects", icon: Smartphone, label: "Prospection IA" },
   { href: "/dashboard/formation", icon: GraduationCap, label: "Formation" },
   { href: "/dashboard/rapports", icon: BarChart3, label: "Rapports" },
+  { href: "/dashboard/widget", icon: Globe, label: "Mon widget site" },
   { href: "/dashboard/expert", icon: BadgeCheck, label: "Mon profil Expert" },
   { href: "/dashboard/parametres", icon: Settings, label: "Paramètres" },
 ];
@@ -54,7 +55,6 @@ export function DashboardSidebar({ user }: Props) {
       {/* Nav */}
       <nav className="flex-1 p-4 space-y-1">
         {navItems.map(({ href, icon: Icon, label, exact }) => {
-          const active = exact ? pathname === href : (pathname.startsWith(href) && href !== "/dashboard");
           const isHome = href === "/dashboard" && pathname === "/dashboard";
           const isActive = isHome || (!exact && pathname.startsWith(href) && href !== "/dashboard");
 
@@ -64,12 +64,12 @@ export function DashboardSidebar({ user }: Props) {
               href={href}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
-                isActive || isHome
+                isActive
                   ? "bg-brand-50 text-brand-700"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
               )}
             >
-              <Icon className={cn("w-4 h-4", isActive || isHome ? "text-brand-600" : "text-gray-400")} />
+              <Icon className={cn("w-4 h-4", isActive ? "text-brand-600" : "text-gray-400")} />
               {label}
             </Link>
           );
@@ -83,7 +83,7 @@ export function DashboardSidebar({ user }: Props) {
           className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all"
         >
           <LogOut className="w-4 h-4 text-gray-400" />
-          Déconnexion
+          {"Déconnexion"}
         </button>
       </div>
     </aside>
