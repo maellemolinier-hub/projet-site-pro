@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import {
   Map,
   Smartphone,
@@ -70,13 +73,16 @@ const features = [
 
 export function Features() {
   return (
-    <section
-      id="fonctionnalites"
-      className="py-24 bg-gray-50"
-    >
+    <section id="fonctionnalites" className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-2xl mx-auto mb-16"
+        >
           <span className="inline-block text-xs font-semibold tracking-widest text-brand-600 uppercase mb-3">
             Fonctionnalités
           </span>
@@ -88,13 +94,17 @@ export function Features() {
             Une seule plateforme remplace cinq abonnements. Et vous donne un
             avantage que vos concurrents n&apos;ont pas encore.
           </p>
-        </div>
+        </motion.div>
 
         {/* Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature) => (
-            <div
+          {features.map((feature, i) => (
+            <motion.div
               key={feature.title}
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: i * 0.07 }}
               className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 group"
             >
               <div
@@ -108,7 +118,7 @@ export function Features() {
               <p className="text-sm text-gray-500 leading-relaxed">
                 {feature.description}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

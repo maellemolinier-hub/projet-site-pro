@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 const steps = [
   {
     num: "01",
@@ -33,7 +37,13 @@ export function HowItWorks() {
   return (
     <section id="comment-ca-marche" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-2xl mx-auto mb-16"
+        >
           <span className="inline-block text-xs font-semibold tracking-widest text-brand-600 uppercase mb-3">
             Comment ça marche
           </span>
@@ -45,30 +55,46 @@ export function HowItWorks() {
             Aucune installation, aucune configuration complexe. Vous êtes
             directement dans la carte.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, i) => (
-            <div key={step.num} className="relative">
+            <motion.div
+              key={step.num}
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55, delay: i * 0.12 }}
+              className="relative"
+            >
               {/* Connector line */}
               {i < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-6 left-[calc(100%_-_16px)] w-8 h-px bg-gray-200 z-10" />
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.12 + 0.3 }}
+                  style={{ originX: 0 }}
+                  className="hidden lg:block absolute top-6 left-[calc(100%_-_16px)] w-8 h-px bg-gray-200 z-10"
+                />
               )}
 
               <div className="space-y-4">
-                <div
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 3 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg`}
                 >
                   <span className="text-sm font-bold text-white">
                     {step.num}
                   </span>
-                </div>
+                </motion.div>
                 <h3 className="font-semibold text-gray-900">{step.title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">
                   {step.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
