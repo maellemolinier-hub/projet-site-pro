@@ -1,9 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Link from "next/link";
+
 import { ArrowRight, TrendingUp, Users, Award } from "lucide-react";
 import { MapPreview } from "@/components/map/MapPreview";
+
+const HeroBackground = dynamic(
+  () =>
+    import("@/components/three/HeroBackground").then((m) => m.HeroBackground),
+  { ssr: false },
+);
 
 const stats = [
   { icon: TrendingUp, value: "98%", label: "de précision sur les prix" },
@@ -14,28 +22,10 @@ const stats = [
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 pt-16">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 25% 25%, #7c96f8 0%, transparent 50%),
-                             radial-gradient(circle at 75% 75%, #fb923c 0%, transparent 50%)`,
-          }}
-        />
-      </div>
+      {/* Three.js network background */}
+      <HeroBackground />
 
-      {/* Grid overlay */}
-      <div
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `linear-gradient(#ffffff 1px, transparent 1px),
-                           linear-gradient(to right, #ffffff 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-0">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-0">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left — copy */}
           <div className="space-y-8">
