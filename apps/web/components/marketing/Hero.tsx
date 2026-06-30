@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { ArrowRight, TrendingUp, Users, Award } from "lucide-react";
 import { MapPreview } from "@/components/map/MapPreview";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 
 const HeroBackground = dynamic(
   () =>
@@ -109,9 +110,10 @@ export function Hero() {
                 >
                   <div className="flex items-center gap-1.5">
                     <Icon className="w-4 h-4 text-accent-400" />
-                    <span className="text-2xl font-bold text-white">
-                      {value}
-                    </span>
+                    <AnimatedCounter
+                      value={value}
+                      className="text-2xl font-bold text-white"
+                    />
                   </div>
                   <p className="text-xs text-white/50">{label}</p>
                 </motion.div>
