@@ -17,10 +17,12 @@ MapLibreGL.setAccessToken(null);
 const STYLE_URL = "https://demotiles.maplibre.org/style.json";
 
 interface ZoneStats {
-  median_price: number;
-  avg_price: number;
-  transaction_count: number;
-  price_per_sqm: number;
+  avg_price_sqm: number;
+  median_price_sqm: number;
+  min_price_sqm: number;
+  max_price_sqm: number;
+  count: number;
+  trend_12m?: number;
 }
 
 export default function MapScreen() {
@@ -121,18 +123,18 @@ export default function MapScreen() {
               <View style={styles.statsGrid}>
                 <View style={styles.statItem}>
                   <Text style={styles.statItemValue}>
-                    {Math.round(zoneStats.median_price / 1000)}k€
+                    {Math.round(zoneStats.median_price_sqm).toLocaleString("fr-FR")} €/m²
                   </Text>
                   <Text style={styles.statItemLabel}>Prix médian</Text>
                 </View>
                 <View style={styles.statItem}>
                   <Text style={styles.statItemValue}>
-                    {Math.round(zoneStats.price_per_sqm).toLocaleString("fr-FR")} €/m²
+                    {Math.round(zoneStats.avg_price_sqm).toLocaleString("fr-FR")} €/m²
                   </Text>
-                  <Text style={styles.statItemLabel}>Prix au m²</Text>
+                  <Text style={styles.statItemLabel}>Prix moyen</Text>
                 </View>
                 <View style={styles.statItem}>
-                  <Text style={styles.statItemValue}>{zoneStats.transaction_count}</Text>
+                  <Text style={styles.statItemValue}>{zoneStats.count}</Text>
                   <Text style={styles.statItemLabel}>Transactions</Text>
                 </View>
               </View>

@@ -40,7 +40,7 @@ export async function logout() {
 }
 
 export async function getZoneStats(lat: number, lng: number, radius = 500) {
-  const res = await apiClient.get("/prices/zone", { params: { lat, lng, radius } });
+  const res = await apiClient.get("/prices/zone", { params: { lat, lng, radius_m: radius } });
   return res.data;
 }
 

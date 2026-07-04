@@ -9,8 +9,8 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
-  const session = await auth();
-  const userId = session?.user?.id;
+  const authSession = await auth();
+  const userId = authSession?.user?.id;
   if (!userId) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }

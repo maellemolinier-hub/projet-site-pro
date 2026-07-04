@@ -12,57 +12,35 @@ import {
 import { useLocation } from "@/hooks/useLocation";
 import { useProspects, useScanZone, type Prospect } from "@/hooks/useProspects";
 
-const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
-  new: { bg: "#DBEAFE", text: "#1D4ED8" },
-  contacted: { bg: "#FEF3C7", text: "#D97706" },
-  qualified: { bg: "#D1FAE5", text: "#059669" },
-  lost: { bg: "#FEE2E2", text: "#DC2626" },
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  new: "Nouveau",
-  contacted: "Contacté",
-  qualified: "Qualifié",
-  lost: "Perdu",
-};
-
-function ScoreBadge({ score }: { score: number }) {
-  const color = score >= 80 ? "#059669" : score >= 60 ? "#D97706" : "#DC2626";
+function ScoreBadge({ score, label }: { score: number; label: string }) {
+  const pct = Math.round(score * 100);
+  const color = pct >= 80 ? "#059669" : pct >= 60 ? "#D97706" : "#DC2626";
   return (
     <View style={[styles.scoreBadge, { backgroundColor: color + "20" }]}>
-      <Text style={[styles.scoreText, { color }]}>{score}%</Text>
+      <Text style={[styles.scoreText, { color }]}>{pct}%</Text>
+      <Text style={[styles.scoreLabelText, { color }]}>{label}</Text>
     </View>
   );
 }
 
 function ProspectCard({ item, onPress }: { item: Prospect; onPress: () => void }) {
-  const statusStyle = STATUS_COLORS[item.status] ?? STATUS_COLORS.new;
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
       <View style={styles.cardTop}>
         <View style={styles.cardLeft}>
           <Text style={styles.cardAddress} numberOfLines={1}>{item.address}</Text>
-          <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg }]}>
-            <Text style={[styles.statusText, { color: statusStyle.text }]}>
-              {STATUS_LABELS[item.status]}
-            </Text>
-          </View>
+          <Text style={styles.cardCity}>{item.city} {item.postalCode}</Text>
         </View>
-        <ScoreBadge score={item.score} />
+        <ScoreBadge score={item.saleScore} label={item.scoreLabel} />
       </View>
-      {item.signals.length > 0 && (
+      {item.reasons.length > 0 && (
         <View style={styles.signals}>
-          {item.signals.slice(0, 3).map((s) => (
-            <View key={s} style={styles.signalChip}>
-              <Text style={styles.signalText}>{s}</Text>
+          {item.reasons.slice(0, 3).map((r) => (
+            <View key={r} style={styles.signalChip}>
+              <Text style={styles.signalText}>{r}</Text>
             </View>
           ))}
         </View>
-      )}
-      {item.estimatedValue && (
-        <Text style={styles.estimatedValue}>
-          Valeur estimée : {Math.round(item.estimatedValue / 1000)}k€
-        </Text>
       )}
     </TouchableOpacity>
   );
@@ -77,9 +55,14 @@ export default function ProspectsScreen() {
   const { mutate: scanZone, isPending: isScanning } = useScanZone();
   const [filter, setFilter] = useState<string>("all");
 
-  const filtered = (prospects as Prospect[] ?? []).filter(
-    (p) => filter === "all" || p.status === filter
-  );
+  const matchesFilter = (p: Prospect) => {
+    if (filter === "all") return true;
+    if (filter === "high") return p.saleScore >= 0.8;
+    if (filter === "medium") return p.saleScore >= 0.65 && p.saleScore < 0.8;
+    return p.saleScore < 0.65;
+  };
+
+  const filtered = (prospects as Prospect[] ?? []).filter(matchesFilter);
 
   const handleScan = () => {
     if (!location) return;
@@ -122,14 +105,19 @@ export default function ProspectsScreen() {
 
       {/* Filters */}
       <View style={styles.filters}>
-        {["all", "new", "contacted", "qualified", "lost"].map((f) => (
+        {[
+          { key: "all", label: "Tous" },
+          { key: "high", label: "Très probable" },
+          { key: "medium", label: "Probable" },
+          { key: "low", label: "Possible" },
+        ].map((f) => (
           <TouchableOpacity
-            key={f}
-            style={[styles.filterChip, filter === f && styles.filterChipActive]}
-            onPress={() => setFilter(f)}
+            key={f.key}
+            style={[styles.filterChip, filter === f.key && styles.filterChipActive]}
+            onPress={() => setFilter(f.key)}
           >
-            <Text style={[styles.filterText, filter === f && styles.filterTextActive]}>
-              {f === "all" ? "Tous" : STATUS_LABELS[f]}
+            <Text style={[styles.filterText, filter === f.key && styles.filterTextActive]}>
+              {f.label}
             </Text>
           </TouchableOpacity>
         ))}
@@ -143,7 +131,7 @@ export default function ProspectsScreen() {
       ) : (
         <FlatList
           data={filtered}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => `${item.lat}-${item.lng}-${item.lastMutation ?? index}`}
           renderItem={({ item }) => (
             <ProspectCard item={item} onPress={() => {}} />
           )}
@@ -186,15 +174,14 @@ const styles = StyleSheet.create({
   card: { backgroundColor: "#fff", borderRadius: 16, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: "#F3F4F6", shadowColor: "#000", shadowOpacity: 0.04, shadowRadius: 8, elevation: 2 },
   cardTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 },
   cardLeft: { flex: 1, marginRight: 12 },
-  cardAddress: { fontSize: 14, fontWeight: "600", color: "#111827", marginBottom: 6 },
-  statusBadge: { alignSelf: "flex-start", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
-  statusText: { fontSize: 11, fontWeight: "600" },
-  scoreBadge: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 20 },
+  cardAddress: { fontSize: 14, fontWeight: "600", color: "#111827", marginBottom: 4 },
+  cardCity: { fontSize: 12, color: "#6B7280" },
+  scoreBadge: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 20, alignItems: "center" },
   scoreText: { fontSize: 14, fontWeight: "800" },
+  scoreLabelText: { fontSize: 10, fontWeight: "600" },
   signals: { flexDirection: "row", flexWrap: "wrap", gap: 6, marginBottom: 8 },
   signalChip: { backgroundColor: "#F3F4F6", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
   signalText: { fontSize: 11, color: "#374151" },
-  estimatedValue: { fontSize: 12, color: "#1D4ED8", fontWeight: "600" },
   empty: { alignItems: "center", paddingTop: 80 },
   emptyIcon: { fontSize: 48, marginBottom: 16 },
   emptyTitle: { fontSize: 18, fontWeight: "700", color: "#374151", marginBottom: 8 },
