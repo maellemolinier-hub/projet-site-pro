@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Download, Plus, BarChart3, MapPin, Calendar, Loader2 } from "lucide-react";
+import { FileText, Download, Plus, BarChart3, MapPin, Calendar, Loader2, Video } from "lucide-react";
 
 const SAVED_REPORTS = [
   { id: "r1", title: "Marché Lyon 6e", zone: "Lyon 6e (69006)", date: "14 juin 2026", pages: 4, status: "ready" },
@@ -14,12 +14,19 @@ export function RapportsDashboard() {
   const [generating, setGenerating] = useState(false);
   const [zone, setZone] = useState("");
   const [type, setType] = useState("résidentiel");
+  const [generatingVideoId, setGeneratingVideoId] = useState<string | null>(null);
 
   const generate = async () => {
     if (!zone) return;
     setGenerating(true);
     await new Promise((r) => setTimeout(r, 3000));
     setGenerating(false);
+  };
+
+  const generateVideo = async (reportId: string) => {
+    setGeneratingVideoId(reportId);
+    await new Promise((r) => setTimeout(r, 3000));
+    setGeneratingVideoId(null);
   };
 
   return (
@@ -130,9 +137,21 @@ export function RapportsDashboard() {
                     <span className="text-xs text-gray-400">{report.pages} pages</span>
                   </div>
                 </div>
-                <button className="flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition-colors">
-                  <Download className="w-3.5 h-3.5" /> Télécharger
-                </button>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => generateVideo(report.id)}
+                    disabled={generatingVideoId === report.id}
+                    className="flex items-center gap-1.5 text-xs font-semibold text-accent-600 bg-accent-500/10 hover:bg-accent-500/20 disabled:opacity-50 px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    {generatingVideoId === report.id
+                      ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Rendu…</>
+                      : <><Video className="w-3.5 h-3.5" /> Vidéo</>
+                    }
+                  </button>
+                  <button className="flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition-colors">
+                    <Download className="w-3.5 h-3.5" /> Télécharger
+                  </button>
+                </div>
               </div>
             ))}
           </div>

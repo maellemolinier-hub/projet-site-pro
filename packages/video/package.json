@@ -1,0 +1,28 @@
+{
+  "name": "@immoexpert/video",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/compositions/index.ts",
+  "scripts": {
+    "dev": "remotion studio src/remotion-entry.ts",
+    "render:rapport": "remotion render src/remotion-entry.ts RapportVideo out/rapport.mp4",
+    "render:vlog": "remotion render src/remotion-entry.ts VlogClip out/vlog.mp4",
+    "render": "ts-node --transpile-only scripts/render.ts",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.485",
+    "@remotion/cli": "^4.0.485",
+    "@remotion/renderer": "^4.0.485",
+    "remotion": "^4.0.485",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.0"
+  }
+}
