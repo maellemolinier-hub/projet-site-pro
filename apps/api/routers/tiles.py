@@ -26,7 +26,10 @@ async def get_price_tile(
             SELECT
                 ST_AsMVTGeom(
                     ST_Transform(
-                        ST_SetSRID(ST_MakePoint(longitude, latitude), 4326),
+                        ST_SnapToGrid(
+                            ST_SetSRID(ST_MakePoint(longitude, latitude), 4326),
+                            0.001::double precision
+                        ),
                         3857
                     ),
                     bounds.geom,
@@ -48,8 +51,10 @@ async def get_price_tile(
             AND "saleDate" > NOW() - INTERVAL '24 months'
             AND "pricePerSqm" BETWEEN 500 AND 50000
             GROUP BY
-                ST_SnapToGrid(longitude, 0.001),
-                ST_SnapToGrid(latitude, 0.001),
+                ST_SnapToGrid(
+                    ST_SetSRID(ST_MakePoint(longitude, latitude), 4326),
+                    0.001::double precision
+                ),
                 "propertyType",
                 bounds.geom
         )

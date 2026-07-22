@@ -36,3 +36,6 @@ packages/db/node_modules/
 # Expo
 apps/mobile/.expo/
 apps/mobile/dist/
+
+# TypeScript build info
+*.tsbuildinfo

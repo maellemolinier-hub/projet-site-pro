@@ -133,7 +133,7 @@ export default async function ExpertPage({ params }: Props) {
                 et coût de remplacement. Il utilise les données DVF temps réel.
               </p>
               <Link
-                href="/formation"
+                href="/dashboard/formation"
                 className="inline-block mt-4 text-xs text-brand-300 hover:text-brand-200 underline"
               >
                 En savoir plus sur la certification →

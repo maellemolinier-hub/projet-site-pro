@@ -8,9 +8,26 @@ import { cn } from "@/lib/utils";
 const SECTIONS = ["Compte", "Abonnement", "Notifications", "Intégrations"] as const;
 type Section = typeof SECTIONS[number];
 
-export function ParametresPage() {
+interface ParametresPageProps {
+  user?: { name?: string | null; email?: string | null };
+}
+
+export function ParametresPage({ user }: ParametresPageProps = {}) {
   const [section, setSection] = useState<Section>("Compte");
   const [saved, setSaved] = useState(false);
+
+  const displayName = user?.name?.trim() || "Mon compte";
+  const displayEmail = user?.email || "";
+  const initials =
+    displayName
+      .split(" ")
+      .map((n) => n[0])
+      .filter(Boolean)
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || "?";
+  const [firstName = "", ...rest] = displayName.split(" ");
+  const lastName = rest.join(" ");
 
   const save = () => {
     setSaved(true);
@@ -59,19 +76,19 @@ export function ParametresPage() {
               <h2 className="font-semibold text-gray-900">Informations personnelles</h2>
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm">
-                  SM
+                  {initials}
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 text-sm">Sophie Martin</p>
-                  <p className="text-xs text-gray-400">sophie.martin@example.fr</p>
+                  <p className="font-medium text-gray-900 text-sm">{displayName}</p>
+                  <p className="text-xs text-gray-400">{displayEmail}</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { label: "Prénom", value: "Sophie" },
-                  { label: "Nom", value: "Martin" },
-                  { label: "Email", value: "sophie.martin@example.fr" },
-                  { label: "Téléphone", value: "06 12 34 56 78" },
+                  { label: "Prénom", value: firstName },
+                  { label: "Nom", value: lastName },
+                  { label: "Email", value: displayEmail },
+                  { label: "Téléphone", value: "" },
                 ].map((f) => (
                   <div key={f.label}>
                     <label className="block text-xs text-gray-500 mb-1">{f.label}</label>
