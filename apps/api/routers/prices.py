@@ -56,7 +56,7 @@ async def get_zone_stats(
             )
             AND "saleDate" > NOW() - INTERVAL '24 months'
             AND "pricePerSqm" BETWEEN 500 AND 50000
-            AND (:prop_type IS NULL OR "propertyType" = :prop_type)
+            AND (CAST(:prop_type AS text) IS NULL OR "propertyType"::text = CAST(:prop_type AS text))
         ),
         trend AS (
             SELECT
@@ -73,7 +73,7 @@ async def get_zone_stats(
         SELECT
             zone.*,
             CASE WHEN trend.older > 0
-                 THEN ROUND(((trend.recent / trend.older) - 1) * 100, 1)
+                 THEN ROUND(((((trend.recent / trend.older) - 1) * 100))::numeric, 1)
                  ELSE NULL END AS trend_12m
         FROM zone, trend
     """)
@@ -156,7 +156,7 @@ async def get_price_trend(
             COUNT(*)                           AS transactions
         FROM "PricePoint"
         WHERE "postalCode" = :postal_code
-        AND "saleDate" > NOW() - (:months || ' months')::INTERVAL
+        AND "saleDate" > NOW() - make_interval(months => :months)
         AND "pricePerSqm" BETWEEN 500 AND 50000
         GROUP BY DATE_TRUNC('month', "saleDate")
         ORDER BY month ASC

@@ -53,8 +53,13 @@ PGPASSWORD=immoexpert psql -h localhost -U immoexpert -d immoexpert -f data/sql/
   - API lint: `apps/api/.venv/bin/ruff check apps/api --ignore E501`
 - Web build: `pnpm --filter @immoexpert/web build` (runs `prisma generate` then `next build`).
 
-### Known pre-existing bugs (app code, not environment)
-Do not treat these as setup failures:
-- Sidebar/nav links point to `/dashboard/*`, but the dashboard pages live in the `(dashboard)` route group and resolve to `/carte`, `/formation`, `/parametres`, etc. `/dashboard/*` returns 404. Auth + session work correctly; navigate to the un-prefixed paths.
-- `/parametres` shows hardcoded placeholder profile data ("Sophie Martin").
-- API geo endpoints `/prices/zone`, `/prices/trend`, and `/tiles/{z}/{x}/{y}.mvt` return 500 under asyncpg's strict typing (missing `::numeric` / `::double precision` casts and an int-to-string interval concat). `/prices/street` and `/formations/courses` work and confirm PostGIS is healthy. The web price map (`/carte`) shows a "Failed to fetch" toast because of these.
+### Routing
+Dashboard pages live under the real `app/dashboard/` segment, so all authenticated routes are `/dashboard`, `/dashboard/carte`, `/dashboard/formation`, `/dashboard/parametres`, etc. (matching the sidebar links and post-signup redirect). The public marketing site is at `/`, and `/experts`, `/connexion`, `/inscription` are public.
+
+### API geo queries (asyncpg strict typing)
+The FastAPI geo endpoints run raw SQL through the asyncpg driver, which is strict about parameter/return types. When editing these queries keep the explicit casts:
+- `ROUND(<double precision expr>::numeric, n)` (asyncpg has no `round(double precision, int)`).
+- `make_interval(months => :months)` for int month intervals (do not concatenate ints into a text interval).
+- Compare the `PropertyType` enum column via `"propertyType"::text = CAST(:param AS text)`.
+- Grid-aggregate points with `ST_SnapToGrid(<geometry>, 0.001::double precision)` (the geometry overload), not on scalar lng/lat.
+All endpoints (`/prices/zone`, `/prices/street`, `/prices/trend`, `/tiles/{z}/{x}/{y}.mvt`, `/formations/courses`) return data against the seeded DB; the web price map (`/dashboard/carte`) loads MVT tiles from `/tiles/*`.
