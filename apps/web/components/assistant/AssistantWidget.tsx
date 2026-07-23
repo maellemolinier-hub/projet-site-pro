@@ -28,7 +28,25 @@ export function AssistantWidget() {
   const [loading, setLoading] = useState(false);
   const [showLead, setShowLead] = useState(false);
   const [leadSent, setLeadSent] = useState(false);
+  const [teaser, setTeaser] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Ouverture programmatique (boutons "Parler à Capia" de la page).
+  useEffect(() => {
+    const openHandler = () => {
+      setOpen(true);
+      setTeaser(false);
+    };
+    window.addEventListener("open-capia", openHandler);
+    return () => window.removeEventListener("open-capia", openHandler);
+  }, []);
+
+  // Capia vient "parler" : une bulle proactive apparaît après quelques secondes.
+  useEffect(() => {
+    if (open) return;
+    const t = setTimeout(() => setTeaser(true), 4000);
+    return () => clearTimeout(t);
+  }, [open]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -84,6 +102,35 @@ export function AssistantWidget() {
 
   return (
     <>
+      {/* Teaser proactif : Capia vient parler */}
+      {!open && teaser && (
+        <div className="fixed bottom-24 right-5 z-50 max-w-[15rem] bg-white text-slate-800 rounded-2xl rounded-br-sm p-3 shadow-2xl border border-slate-100 animate-fade-in">
+          <button
+            onClick={() => setTeaser(false)}
+            className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs hover:bg-slate-300"
+            aria-label="Fermer"
+          >
+            <X className="w-3 h-3" />
+          </button>
+          <p className="text-xs font-semibold flex items-center gap-1.5 mb-1">
+            Capia
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          </p>
+          <p className="text-sm leading-snug">
+            Besoin d'un diagnostic gratuit ? Dites-moi votre métier 👋
+          </p>
+          <button
+            onClick={() => {
+              setOpen(true);
+              setTeaser(false);
+            }}
+            className="mt-2 text-xs font-semibold text-blue-600 hover:text-blue-700"
+          >
+            Discuter maintenant →
+          </button>
+        </div>
+      )}
+
       {/* Launcher */}
       {!open && (
         <button
