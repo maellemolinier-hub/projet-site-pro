@@ -47,6 +47,28 @@ export async function POST(req: Request) {
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const { db } = await import("@immoexpert/db");
+
+  // Paiement unique d'une commande (devis Cap Entreprendre France).
+  if (session.metadata?.kind === "order_payment" && session.metadata.orderId) {
+    const orderId = session.metadata.orderId;
+    const order = await db.order.findUnique({ where: { id: orderId }, select: { metadata: true } });
+    if (order) {
+      const metadata = (order.metadata as Record<string, unknown> | null) ?? {};
+      const prevPayment = (metadata.payment as Record<string, unknown> | undefined) ?? {};
+      await db.order.update({
+        where: { id: orderId },
+        data: {
+          status: "COMPLETED",
+          metadata: {
+            ...metadata,
+            payment: { ...prevPayment, status: "paid", paidAt: new Date().toISOString() },
+          } as object,
+        },
+      });
+    }
+    return;
+  }
+
   const userId = session.metadata?.userId;
   if (!userId) return;
 
