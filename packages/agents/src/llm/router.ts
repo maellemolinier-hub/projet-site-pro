@@ -3,6 +3,7 @@ import type { AgentRole } from "../types";
 import { AnthropicProvider } from "./anthropic";
 import { DryRunProvider } from "./dryrun";
 import { GeminiProvider } from "./gemini";
+import { OpenAICompatibleProvider } from "./openaiCompatible";
 import type { LLMProvider } from "./provider";
 
 /**
@@ -18,8 +19,9 @@ export class ProviderRouter {
   /** Fournisseurs réellement utilisables (clé présente). */
   available(): ProviderName[] {
     const list: ProviderName[] = [];
-    if (this.config.anthropic.apiKey) list.push("anthropic");
     if (this.config.gemini.apiKey) list.push("gemini");
+    if (this.config.openai.baseUrl) list.push("openai");
+    if (this.config.anthropic.apiKey) list.push("anthropic");
     list.push("dryrun");
     return list;
   }
@@ -56,6 +58,13 @@ export class ProviderRouter {
         break;
       case "gemini":
         provider = new GeminiProvider(this.config.gemini.apiKey!, this.config.gemini.model);
+        break;
+      case "openai":
+        provider = new OpenAICompatibleProvider(
+          this.config.openai.baseUrl!,
+          this.config.openai.apiKey,
+          this.config.openai.model,
+        );
         break;
       default:
         provider = new DryRunProvider();

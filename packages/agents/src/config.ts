@@ -1,7 +1,7 @@
 import type { AgentRole } from "./types";
 import type { VoiceProvider } from "./integrations/voice";
 
-export type ProviderName = "anthropic" | "gemini" | "dryrun";
+export type ProviderName = "anthropic" | "gemini" | "openai" | "dryrun";
 
 export interface AgentsConfig {
   /** Fournisseur LLM par défaut. */
@@ -11,6 +11,12 @@ export interface AgentsConfig {
     model: string;
   };
   gemini: {
+    apiKey?: string;
+    model: string;
+  };
+  /** Fournisseur compatible OpenAI (Groq, OpenRouter, Ollama local… souvent gratuits). */
+  openai: {
+    baseUrl?: string;
     apiKey?: string;
     model: string;
   };
@@ -60,13 +66,25 @@ export function getConfig(overrides: Partial<AgentsConfig> = {}): AgentsConfig {
   const anthropicKey = env("ANTHROPIC_API_KEY");
   const geminiKey = env("GEMINI_API_KEY") ?? env("GOOGLE_API_KEY");
 
+  // Fournisseur compatible OpenAI = passerelle vers les IA gratuites (Groq, OpenRouter, Ollama).
+  const groqKey = env("GROQ_API_KEY");
+  const openaiBaseUrl =
+    env("OPENAI_COMPATIBLE_BASE_URL") ??
+    (groqKey ? "https://api.groq.com/openai/v1" : undefined) ??
+    env("OLLAMA_BASE_URL");
+  const openaiKey = env("OPENAI_COMPATIBLE_API_KEY") ?? groqKey;
+  const openaiModel =
+    env("OPENAI_COMPATIBLE_MODEL") ?? (groqKey ? "llama-3.3-70b-versatile" : "llama3.2");
+
   let defaultProvider: ProviderName = "dryrun";
   if (env("AGENTS_DEFAULT_PROVIDER")) {
     defaultProvider = env("AGENTS_DEFAULT_PROVIDER") as ProviderName;
-  } else if (anthropicKey) {
-    defaultProvider = "anthropic";
   } else if (geminiKey) {
     defaultProvider = "gemini";
+  } else if (openaiBaseUrl) {
+    defaultProvider = "openai";
+  } else if (anthropicKey) {
+    defaultProvider = "anthropic";
   }
 
   return {
@@ -78,6 +96,11 @@ export function getConfig(overrides: Partial<AgentsConfig> = {}): AgentsConfig {
     gemini: {
       apiKey: geminiKey,
       model: env("GEMINI_MODEL") ?? "gemini-1.5-pro",
+    },
+    openai: {
+      baseUrl: openaiBaseUrl,
+      apiKey: openaiKey,
+      model: openaiModel,
     },
     providerByRole: {
       // Les visuels/vidéos décrivent mieux avec Gemini si dispo ; sinon fallback.

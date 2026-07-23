@@ -37,18 +37,31 @@ sans appeler de LLM. Aucune clé requise pour valider l'architecture.
 
 ## Passer en production (vrais livrables)
 
-Ajoutez au minimum une clé LLM dans votre `.env` :
+Ajoutez **une seule** clé LLM dans votre `.env`. Plusieurs options **100% gratuites** :
 
 ```bash
-ANTHROPIC_API_KEY=sk-ant-...      # Claude (recommandé pour dev, SEO, prospection, relance)
-GEMINI_API_KEY=...                # Gemini (recommandé pour les visuels)
-# Optionnel : choisir le modèle
-ANTHROPIC_MODEL=claude-3-5-sonnet-latest
-GEMINI_MODEL=gemini-1.5-pro
+# GRATUIT — Gemini (Google AI Studio) : https://aistudio.google.com/app/apikey
+GEMINI_API_KEY=...
+
+# GRATUIT — Groq (très rapide) : https://console.groq.com/keys
+GROQ_API_KEY=...
+
+# GRATUIT & LOCAL — Ollama sur votre ordinateur : https://ollama.com
+#   `ollama run llama3.2`
+OLLAMA_BASE_URL=http://localhost:11434/v1
+
+# Payant (optionnel) — Claude : https://console.anthropic.com
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Toute API compatible OpenAI (OpenRouter ":free"…)
+OPENAI_COMPATIBLE_BASE_URL=...
+OPENAI_COMPATIBLE_API_KEY=...
+OPENAI_COMPATIBLE_MODEL=...
 ```
 
-Sans surcharge, la plateforme choisit automatiquement le fournisseur disponible,
-avec repli. Relancez `... demo` : les agents produisent alors de vrais livrables.
+Sans surcharge, la plateforme choisit automatiquement le fournisseur disponible
+(ordre : Gemini → OpenAI-compatible/Groq → Anthropic → mode démo), avec repli.
+Relancez `... demo` : les agents produisent alors de vrais livrables.
 
 ## Utilisation dans le code
 

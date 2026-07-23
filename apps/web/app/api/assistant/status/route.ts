@@ -19,6 +19,7 @@ export async function GET() {
     providers: router.available().filter((p) => p !== "dryrun"),
     anthropic: Boolean(config.anthropic.apiKey),
     gemini: Boolean(config.gemini.apiKey),
+    openai: Boolean(config.openai.baseUrl),
     message: llm
       ? "Clé détectée : Capia et les agents utilisent la vraie IA."
       : "Aucune clé détectée : mode démo. Vérifiez le nom de la variable et redéployez.",
