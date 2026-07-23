@@ -2,6 +2,7 @@ import { db } from "@immoexpert/db";
 import {
   createOrchestrator,
   MakeClient,
+  HubSpotClient,
   getConfig,
   type OrderInput,
   type OrchestrationResult,
@@ -31,7 +32,21 @@ export async function processOrder(
 
   await db.order.update({ where: { id: order.id }, data: { status: "IN_PROGRESS" } });
 
-  const orchestrator = createOrchestrator();
+  const config = getConfig();
+
+  // CRM HubSpot : contact + deal créés dès la réception (avant même la production).
+  const hubspot = new HubSpotClient(config.hubspot.token);
+  let dealId: string | undefined;
+  if (hubspot.enabled) {
+    try {
+      const contactId = await hubspot.upsertContact(input);
+      dealId = await hubspot.createDeal(input, contactId);
+    } catch {
+      // On ne bloque jamais la production sur une erreur CRM.
+    }
+  }
+
+  const orchestrator = createOrchestrator(config);
   const result = await orchestrator.run({ ...input, id: order.id }, { parallel: true });
 
   await db.agentRun.createMany({
@@ -55,10 +70,13 @@ export async function processOrder(
     data: { status: result.ok ? "COMPLETED" : "FAILED" },
   });
 
-  const config = getConfig();
   const make = new MakeClient(config.make.outboundWebhookUrl, config.make.signingSecret);
   if (make.enabled) {
     await make.sendResult(result).catch(() => undefined);
+  }
+
+  if (hubspot.enabled && dealId) {
+    await hubspot.logResult(dealId, result).catch(() => undefined);
   }
 
   return { orderId: order.id, result };

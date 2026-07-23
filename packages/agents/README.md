@@ -5,20 +5,26 @@ grâce à 5 agents IA autonomes branchés ensemble et propulsés par **Claude (A
 et **Gemini (Google)**.
 
 ```
-Commande (site web, Make, Google Sheets)
+Commande (site web / pilotage, Make, Google Sheets « Cerveau Central »)
         │
         ▼
   Orchestrateur ── planifie ──► mobilise les bons agents
         │
-        ├─ 🧑‍💻 Agent Développeur           (sites & apps Next.js/React)
-        ├─ 📈 Agent SEO & Réseaux sociaux  (stratégie, contenu, calendrier)
-        ├─ 🎬 Agent Visuels cinématographiques (direction artistique + prompts image/vidéo)
-        ├─ ☎️ Agent Prospection téléphonique (ICP, scripts, objections)
-        └─ 🔁 Agent Relance client          (séquences de suivi, avis, upsell)
+        ├─ Agent Diagnostic métier         (analyse les problèmes, cadre la solution)
+        ├─ Agent Développeur               (sites, apps & assistants IA)
+        ├─ Agent SEO & Réseaux sociaux     (stratégie, contenu, calendrier)
+        ├─ Agent Visuels cinématographiques (direction artistique + prompts image/vidéo)
+        ├─ Agent Prospection entreprises   (identifie & qualifie les cibles → HubSpot)
+        ├─ Assistant vocal                 (prise de RDV & qualification par téléphone)
+        ├─ Agent Prospection téléphonique  (scripts d'appels sortants, objections)
+        └─ Agent Relance client            (séquences de suivi, avis, upsell)
         │
         ▼
-  Livrables agrégés ──► Make ──► Google Sheets / email / Slack…
+  Livrables agrégés ──► Make / HubSpot ──► Google Sheets / email / CRM / vocal…
 ```
+
+Le tout se pilote depuis la page **`/pilotage`** (vue d'ensemble : KPIs, panneau
+d'agents, connexions, commandes en cours) — pensée pour gérer l'activité en 1–2 h/jour.
 
 ## Démarrer en 30 secondes (sans aucune clé)
 
@@ -61,6 +67,20 @@ const result = await orchestrator.run({
 console.log(result.plan.steps);   // agents mobilisés
 console.log(result.results);      // livrables par agent
 ```
+
+## HubSpot CRM + Assistant vocal
+
+```bash
+HUBSPOT_ACCESS_TOKEN=...     # Private App HubSpot : contact + deal créés à chaque commande
+VOICE_PROVIDER=vapi          # vapi | retell
+VOICE_API_KEY=...            # assistant vocal (prise de RDV, qualification)
+VOICE_PHONE_NUMBER_ID=...
+VOICE_ASSISTANT_ID=...
+```
+
+- `HubSpotClient` : `upsertContact` + `createDeal` dès la réception, puis `logResult` (synthèse des agents).
+- `VoiceClient` : `startOutboundCall` pour rappeler un lead (Vapi/Retell), en s'appuyant sur le prompt
+  produit par l'Assistant vocal.
 
 ## Connexion Make + Google Sheets
 
