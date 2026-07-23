@@ -1,6 +1,11 @@
-import { auth } from "@/lib/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+
+// Instantiate Auth.js with the edge-safe config only, so the middleware bundle
+// stays free of Node-only deps (bcryptjs, Prisma adapter) that break the Edge Runtime.
+const { auth } = NextAuth(authConfig);
 
 const PROTECTED = ["/dashboard"];
 const PUBLIC = ["/", "/connexion", "/inscription", "/experts", "/verifier", "/contact-entreprise", "/api/webhooks", "/api/auth"];
