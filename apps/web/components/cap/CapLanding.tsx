@@ -20,10 +20,14 @@ import {
   Check,
   Zap,
   ShieldCheck,
+  Rocket,
+  Crown,
+  Star,
+  Quote,
   type LucideIcon,
 } from "lucide-react";
 import type { AgentCatalogEntry } from "@immoexpert/agents";
-import { OFFERS } from "@/lib/offers";
+import { PACKS } from "@/lib/packs";
 
 const ICONS: Record<string, LucideIcon> = {
   stethoscope: Stethoscope,
@@ -36,23 +40,41 @@ const ICONS: Record<string, LucideIcon> = {
   repeat: Repeat,
 };
 
+const PACK_ICONS: Record<string, LucideIcon> = {
+  decollage: Rocket,
+  croissance: Star,
+  domination: Crown,
+};
+
 function openCapia() {
   window.dispatchEvent(new Event("open-capia"));
 }
 
-const TYPED = "Décrivez-moi votre activité — je diagnostique vos blocages et je vous propose LA solution.";
+const MESSAGES = [
+  "Bonjour, moi c'est Capia 👋 Dites-moi votre métier.",
+  "Je diagnostique vos blocages en 2 minutes, gratuitement.",
+  "Et je vous propose LA solution pour vendre plus.",
+];
 
 export function CapLanding({ catalog }: { catalog: AgentCatalogEntry[] }) {
+  const [idx, setIdx] = useState(0);
   const [typed, setTyped] = useState("");
 
   useEffect(() => {
+    setTyped("");
     let i = 0;
-    const id = setInterval(() => {
+    const msg = MESSAGES[idx];
+    const t = setInterval(() => {
       i += 1;
-      setTyped(TYPED.slice(0, i));
-      if (i >= TYPED.length) clearInterval(id);
-    }, 28);
-    return () => clearInterval(id);
+      setTyped(msg.slice(0, i));
+      if (i >= msg.length) clearInterval(t);
+    }, 30);
+    return () => clearInterval(t);
+  }, [idx]);
+
+  useEffect(() => {
+    const r = setInterval(() => setIdx((v) => (v + 1) % MESSAGES.length), 4800);
+    return () => clearInterval(r);
   }, []);
 
   return (
@@ -68,8 +90,8 @@ export function CapLanding({ catalog }: { catalog: AgentCatalogEntry[] }) {
           </span>
         </div>
         <div className="hidden sm:flex items-center gap-6 text-sm text-white/70">
+          <a href="#packs" className="hover:text-white transition">Offres</a>
           <a href="#agents" className="hover:text-white transition">Agents</a>
-          <Link href="/offres" className="hover:text-white transition">Offres</Link>
           <Link href="/connexion" className="hover:text-white transition">Connexion</Link>
           <button
             onClick={openCapia}
@@ -80,105 +102,101 @@ export function CapLanding({ catalog }: { catalog: AgentCatalogEntry[] }) {
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="relative min-h-[92vh] flex items-center">
-        {/* NeuralBackground is injected by the server wrapper via children slot */}
+      {/* Hero — Capia super-héroïne au centre */}
+      <section className="relative min-h-[94vh] flex flex-col items-center justify-center text-center">
         <NeuralLayer />
-        <div className="absolute -top-40 -right-40 w-[36rem] h-[36rem] rounded-full bg-blue-600/20 blur-[120px]" />
-        <div className="absolute -bottom-40 -left-40 w-[36rem] h-[36rem] rounded-full bg-emerald-500/20 blur-[120px]" />
+        <div className="absolute top-10 -right-40 w-[36rem] h-[36rem] rounded-full bg-blue-600/25 blur-[130px]" />
+        <div className="absolute bottom-0 -left-40 w-[36rem] h-[36rem] rounded-full bg-emerald-500/25 blur-[130px]" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center py-16">
-          <div>
+        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-6 pb-20">
+          <motion.span
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-xs font-medium mb-10"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+            L'IA au service des entrepreneurs · comme personne n'en fait
+          </motion.span>
+
+          {/* Capia entrance */}
+          <div className="relative flex justify-center mb-6">
+            {/* power burst */}
             <motion.span
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-xs font-medium mb-6"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
-              Agents IA autonomes · comme personne n'en a jamais vu
-            </motion.span>
-            <motion.h1
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 }}
-              className="text-4xl sm:text-6xl font-bold leading-[1.05] tracking-tight"
-            >
-              Votre entreprise a un problème.
-              <span className="block bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent">
-                Notre IA le règle.
-              </span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.12 }}
-              className="mt-6 text-lg text-white/60 max-w-xl"
-            >
-              CAP Entreprendre France déploie une équipe d'agents IA qui créent votre site, vos
-              assistants, votre visibilité et votre prospection. Vous pilotez, l'IA exécute.
-            </motion.p>
+              initial={{ scale: 0, opacity: 0.7 }}
+              animate={{ scale: 3.2, opacity: 0 }}
+              transition={{ duration: 1.3, delay: 0.15, ease: "easeOut" }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-gradient-to-br from-blue-400 to-emerald-400"
+            />
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.19 }}
-              className="mt-8 flex flex-wrap gap-3"
+              initial={{ opacity: 0, scale: 0.2, y: 150 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 85, damping: 13, delay: 0.1 }}
+              className="relative"
             >
-              <button
-                onClick={openCapia}
-                className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-emerald-500 font-semibold hover:shadow-[0_0_40px_-8px_rgba(52,211,153,0.6)] transition"
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-emerald-400 blur-2xl opacity-50 animate-pulse" />
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="relative w-40 h-40 sm:w-52 sm:h-52 rounded-full overflow-hidden ring-4 ring-white/15 shadow-[0_0_60px_-10px_rgba(52,211,153,0.6)]"
               >
-                <MessageCircle className="w-4 h-4" />
-                Diagnostic gratuit avec Capia
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
-              </button>
-              <Link
-                href="/offres"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white/10 font-semibold hover:bg-white/15 transition"
-              >
-                Voir les offres
-              </Link>
+                <Image src="/capia-avatar.png" alt="Capia" fill sizes="208px" className="object-cover" priority />
+              </motion.div>
             </motion.div>
           </div>
 
-          {/* Capia qui vient parler */}
+          {/* Capia parle */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 120, damping: 16 }}
-            className="relative mx-auto"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="mx-auto max-w-md bg-white text-slate-800 rounded-2xl px-5 py-3 shadow-xl mb-8"
           >
-            <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-emerald-400 blur-2xl opacity-40 animate-pulse" />
-              <motion.div
-                animate={{ y: [0, -12, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden ring-4 ring-white/10 shadow-2xl"
-              >
-                <Image src="/capia-avatar.png" alt="Capia" fill sizes="320px" className="object-cover" priority />
-              </motion.div>
-              {/* Speech bubble */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-                className="absolute -bottom-6 -left-6 sm:-left-16 max-w-[16rem] bg-white text-slate-800 rounded-2xl rounded-bl-sm p-4 shadow-xl"
-              >
-                <p className="text-xs font-semibold text-slate-900 flex items-center gap-1.5 mb-1">
-                  Capia
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                </p>
-                <p className="text-sm leading-relaxed min-h-[3.5rem]">
-                  {typed}
-                  <span className="inline-block w-1 h-4 bg-slate-400 ml-0.5 animate-pulse align-middle" />
-                </p>
-                <button
-                  onClick={openCapia}
-                  className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700"
-                >
-                  Discuter maintenant <ArrowRight className="w-3 h-3" />
-                </button>
-              </motion.div>
-            </div>
+            <p className="text-sm leading-relaxed min-h-[2.5rem] flex items-center justify-center">
+              {typed}
+              <span className="inline-block w-1 h-4 bg-slate-400 ml-0.5 animate-pulse align-middle" />
+            </p>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="text-4xl sm:text-6xl font-bold leading-[1.05] tracking-tight"
+          >
+            Votre entreprise a un problème.
+            <span className="block bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent">
+              Capia et ses agents le règlent.
+            </span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.32 }}
+            className="mt-6 text-lg text-white/60 max-w-2xl mx-auto"
+          >
+            Site, assistants IA, visibilité, prospection : une équipe d'agents autonomes exécute,
+            vous encaissez. Pensé par des entrepreneurs, propulsé par l'IA.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-9 flex flex-wrap justify-center gap-3"
+          >
+            <button
+              onClick={openCapia}
+              className="group inline-flex items-center gap-2 px-7 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-emerald-500 font-semibold hover:shadow-[0_0_50px_-8px_rgba(52,211,153,0.7)] transition"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Diagnostic gratuit avec Capia
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
+            </button>
+            <a
+              href="#packs"
+              className="inline-flex items-center gap-2 px-7 py-4 rounded-2xl bg-white/10 font-semibold hover:bg-white/15 transition"
+            >
+              Voir les offres
+            </a>
           </motion.div>
         </div>
       </section>
@@ -189,6 +207,86 @@ export function CapLanding({ catalog }: { catalog: AgentCatalogEntry[] }) {
           <Pillar icon={Stethoscope} title="On diagnostique" text="On identifie ce qui vous fait perdre des clients." />
           <Pillar icon={Zap} title="L'IA exécute" text="Des agents autonomes produisent vos livrables." />
           <Pillar icon={ShieldCheck} title="Vous êtes propriétaire" text="Livraison clé en main, directement chez vous." />
+        </div>
+      </section>
+
+      {/* PACKS */}
+      <section id="packs" className="relative z-10 py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-bold">Des offres qui changent la donne</h2>
+            <p className="text-white/50 mt-3">Choisissez votre niveau d'ambition. On s'occupe du reste.</p>
+          </div>
+          <div className="grid lg:grid-cols-3 gap-6 items-stretch">
+            {PACKS.map((pack, i) => {
+              const Icon = PACK_ICONS[pack.id] ?? Rocket;
+              return (
+                <motion.div
+                  key={pack.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ delay: i * 0.1 }}
+                  className={
+                    "relative rounded-3xl p-7 flex flex-col " +
+                    (pack.highlighted
+                      ? "bg-gradient-to-b from-blue-600/20 to-emerald-500/10 border-2 border-emerald-400/40 shadow-[0_0_60px_-15px_rgba(52,211,153,0.5)] lg:-mt-4 lg:mb-4"
+                      : "bg-white/[0.03] border border-white/10")
+                  }
+                >
+                  {pack.badge && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-emerald-400 text-xs font-bold text-[#0a1626]">
+                      {pack.badge}
+                    </span>
+                  )}
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-emerald-400/20 flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-emerald-300" />
+                  </div>
+                  <h3 className="text-xl font-bold">{pack.name}</h3>
+                  <p className="text-sm text-white/50 mt-1 min-h-[2.5rem]">{pack.punchline}</p>
+                  <div className="mt-4 flex items-end gap-1">
+                    <span className="text-3xl font-bold">{pack.price}</span>
+                    {pack.priceNote && <span className="text-sm text-white/40 mb-1">/ {pack.priceNote}</span>}
+                  </div>
+                  <ul className="mt-5 space-y-2.5 flex-1">
+                    {pack.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-white/70">
+                        <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    onClick={openCapia}
+                    className={
+                      "mt-6 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-semibold transition " +
+                      (pack.highlighted
+                        ? "bg-gradient-to-r from-blue-600 to-emerald-500 hover:opacity-90"
+                        : "bg-white/10 hover:bg-white/15")
+                    }
+                  >
+                    Choisir {pack.name} <ArrowRight className="w-4 h-4" />
+                  </button>
+                </motion.div>
+              );
+            })}
+          </div>
+          <p className="text-center text-white/40 text-sm mt-8">
+            Un besoin précis ? <button onClick={openCapia} className="text-emerald-300 hover:text-emerald-200 font-medium">Demandez un devis sur-mesure à Capia →</button>
+          </p>
+        </div>
+      </section>
+
+      {/* Human promise band */}
+      <section className="relative z-10 py-16 bg-white/[0.02] border-y border-white/10">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <Quote className="w-8 h-8 text-emerald-300/60 mx-auto mb-4" />
+          <p className="text-xl sm:text-2xl font-medium leading-relaxed">
+            « On a créé CAP Entreprendre France pour une raison simple : trop d'entrepreneurs
+            passionnés perdent des clients à cause du digital. Notre job, c'est de régler ça —
+            vite, proprement, et sans que vous ayez à devenir expert. »
+          </p>
+          <p className="mt-5 text-sm text-white/50">L'équipe CAP Entreprendre France</p>
         </div>
       </section>
 
@@ -227,48 +325,8 @@ export function CapLanding({ catalog }: { catalog: AgentCatalogEntry[] }) {
         </div>
       </section>
 
-      {/* Offers preview */}
-      <section className="relative z-10 py-20 bg-white/[0.02] border-y border-white/10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <h2 className="text-3xl font-bold">Nos offres</h2>
-              <p className="text-white/50 mt-2">Des solutions concrètes, prêtes à générer du chiffre.</p>
-            </div>
-            <Link href="/offres" className="hidden sm:inline-flex items-center gap-1 text-sm text-emerald-300 hover:text-emerald-200">
-              Tout voir <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {OFFERS.slice(0, 6).map((offer, i) => (
-              <motion.div
-                key={offer.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: (i % 3) * 0.06 }}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
-              >
-                <p className="font-semibold">{offer.name}</p>
-                <p className="text-sm text-white/50 mt-1">{offer.tagline}</p>
-                <ul className="mt-3 space-y-1.5">
-                  {offer.outcomes.slice(0, 3).map((o) => (
-                    <li key={o} className="flex items-center gap-2 text-sm text-white/60">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0" /> {o}
-                    </li>
-                  ))}
-                </ul>
-                {offer.priceHint && (
-                  <p className="mt-4 text-sm font-semibold text-white">{offer.priceHint}</p>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* How it works */}
-      <section className="relative z-10 py-24">
+      <section className="relative z-10 py-24 bg-white/[0.02] border-y border-white/10">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-14">Comment ça marche</h2>
           <div className="space-y-8">
@@ -320,7 +378,7 @@ export function CapLanding({ catalog }: { catalog: AgentCatalogEntry[] }) {
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/40">
           <span>© {new Date().getFullYear()} CAP Entreprendre France</span>
           <div className="flex gap-6">
-            <Link href="/offres" className="hover:text-white/70">Offres</Link>
+            <a href="#packs" className="hover:text-white/70">Offres</a>
             <Link href="/connexion" className="hover:text-white/70">Connexion</Link>
           </div>
         </div>
@@ -344,7 +402,6 @@ function Pillar({ icon: Icon, title, text }: { icon: LucideIcon; title: string; 
 }
 
 function NeuralLayer() {
-  // Dynamically imported to keep the canvas client-only.
   const [Comp, setComp] = useState<null | React.ComponentType<{ className?: string }>>(null);
   useEffect(() => {
     let mounted = true;
