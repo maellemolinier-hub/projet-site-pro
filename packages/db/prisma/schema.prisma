@@ -403,3 +403,63 @@ model Report {
 
   @@index([userId])
 }
+
+// ─── AGENTS IA — CAP ENTREPRENDRE FRANCE ─────────────────────────────────────
+
+model Order {
+  id          String      @id @default(cuid())
+  clientName  String
+  clientEmail String?
+  clientPhone String?
+  type        String
+  description String      @db.Text
+  budget      Float?
+  source      String      @default("web")
+  status      OrderStatus @default(RECEIVED)
+  metadata    Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  runs AgentRun[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum OrderStatus {
+  RECEIVED
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+model AgentRun {
+  id          String         @id @default(cuid())
+  orderId     String
+  role        String
+  provider    String?
+  model       String?
+  status      AgentRunStatus @default(PENDING)
+  summary     String?        @db.Text
+  output      String?        @db.Text
+  artifacts   Json?
+  nextActions Json?
+  error       String?        @db.Text
+  durationMs  Int?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([role])
+  @@index([status])
+}
+
+enum AgentRunStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+}

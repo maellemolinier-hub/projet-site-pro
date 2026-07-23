@@ -1,0 +1,132 @@
+import type { AgentRole } from "./types";
+import type { VoiceProvider } from "./integrations/voice";
+
+export type ProviderName = "anthropic" | "gemini" | "openai" | "dryrun";
+
+export interface AgentsConfig {
+  /** Fournisseur LLM par défaut. */
+  defaultProvider: ProviderName;
+  anthropic: {
+    apiKey?: string;
+    model: string;
+  };
+  gemini: {
+    apiKey?: string;
+    model: string;
+  };
+  /** Fournisseur compatible OpenAI (Groq, OpenRouter, Ollama local… souvent gratuits). */
+  openai: {
+    baseUrl?: string;
+    apiKey?: string;
+    model: string;
+  };
+  /** Surcharge de fournisseur par agent (ex: visuels -> gemini). */
+  providerByRole: Partial<Record<AgentRole, ProviderName>>;
+  make: {
+    /** Webhook Make appelé pour renvoyer les livrables (écriture Google Sheets, email…). */
+    outboundWebhookUrl?: string;
+    /** Secret partagé attendu sur le webhook entrant (intake des commandes). */
+    signingSecret?: string;
+  };
+  googleSheets: {
+    /** JSON du compte de service (chaîne brute ou base64). */
+    serviceAccountJson?: string;
+    spreadsheetId?: string;
+  };
+  hubspot: {
+    /** Token de Private App HubSpot. */
+    token?: string;
+  };
+  slack: {
+    /** Incoming Webhook Slack pour la supervision. */
+    webhookUrl?: string;
+  };
+  voice: {
+    provider: VoiceProvider;
+    apiKey?: string;
+    phoneNumberId?: string;
+    assistantId?: string;
+  };
+  /** Limite de tokens par appel LLM. */
+  maxTokens: number;
+}
+
+function env(key: string): string | undefined {
+  const value = process.env[key];
+  return value && value.trim() !== "" ? value.trim() : undefined;
+}
+
+/**
+ * Construit la configuration depuis les variables d'environnement.
+ * Aucune clé n'est requise : sans clé, la plateforme tourne en mode "dryrun"
+ * (elle produit le plan et les prompts sans appeler les LLM), ce qui permet
+ * de tester tout le câblage avant de brancher les vraies API.
+ */
+export function getConfig(overrides: Partial<AgentsConfig> = {}): AgentsConfig {
+  const anthropicKey = env("ANTHROPIC_API_KEY");
+  const geminiKey = env("GEMINI_API_KEY") ?? env("GOOGLE_API_KEY");
+
+  // Fournisseur compatible OpenAI = passerelle vers les IA gratuites (Groq, OpenRouter, Ollama).
+  const groqKey = env("GROQ_API_KEY");
+  const openaiBaseUrl =
+    env("OPENAI_COMPATIBLE_BASE_URL") ??
+    (groqKey ? "https://api.groq.com/openai/v1" : undefined) ??
+    env("OLLAMA_BASE_URL");
+  const openaiKey = env("OPENAI_COMPATIBLE_API_KEY") ?? groqKey;
+  const openaiModel =
+    env("OPENAI_COMPATIBLE_MODEL") ?? (groqKey ? "llama-3.3-70b-versatile" : "llama3.2");
+
+  let defaultProvider: ProviderName = "dryrun";
+  if (env("AGENTS_DEFAULT_PROVIDER")) {
+    defaultProvider = env("AGENTS_DEFAULT_PROVIDER") as ProviderName;
+  } else if (geminiKey) {
+    defaultProvider = "gemini";
+  } else if (openaiBaseUrl) {
+    defaultProvider = "openai";
+  } else if (anthropicKey) {
+    defaultProvider = "anthropic";
+  }
+
+  return {
+    defaultProvider,
+    anthropic: {
+      apiKey: anthropicKey,
+      model: env("ANTHROPIC_MODEL") ?? "claude-3-5-sonnet-latest",
+    },
+    gemini: {
+      apiKey: geminiKey,
+      model: env("GEMINI_MODEL") ?? "gemini-1.5-pro",
+    },
+    openai: {
+      baseUrl: openaiBaseUrl,
+      apiKey: openaiKey,
+      model: openaiModel,
+    },
+    providerByRole: {
+      // Les visuels/vidéos décrivent mieux avec Gemini si dispo ; sinon fallback.
+      cinematic_visuals: geminiKey ? "gemini" : undefined,
+    },
+    make: {
+      outboundWebhookUrl: env("MAKE_WEBHOOK_URL"),
+      signingSecret: env("MAKE_SIGNING_SECRET") ?? env("AGENTS_WEBHOOK_SECRET"),
+    },
+    googleSheets: {
+      serviceAccountJson: env("GOOGLE_SERVICE_ACCOUNT_JSON"),
+      spreadsheetId: env("GOOGLE_SHEETS_ID"),
+    },
+    hubspot: {
+      token: env("HUBSPOT_ACCESS_TOKEN") ?? env("HUBSPOT_API_KEY"),
+    },
+    slack: {
+      webhookUrl: env("SLACK_WEBHOOK_URL"),
+    },
+    voice: {
+      provider: (env("VOICE_PROVIDER") as VoiceProvider) ?? "vapi",
+      apiKey: env("VOICE_API_KEY"),
+      phoneNumberId: env("VOICE_PHONE_NUMBER_ID"),
+      assistantId: env("VOICE_ASSISTANT_ID"),
+    },
+    maxTokens: Number(env("AGENTS_MAX_TOKENS") ?? "4096"),
+    ...overrides,
+  };
+}

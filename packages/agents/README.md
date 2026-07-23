@@ -1,0 +1,131 @@
+# @immoexpert/agents — Plateforme d'agents IA autonomes (Cap Entreprendre France)
+
+Moteur d'orchestration qui transforme une **commande client** en **livrables**,
+grâce à 5 agents IA autonomes branchés ensemble et propulsés par **Claude (Anthropic)**
+et **Gemini (Google)**.
+
+```
+Commande (site web / pilotage, Make, Google Sheets « Cerveau Central »)
+        │
+        ▼
+  Orchestrateur ── planifie ──► mobilise les bons agents
+        │
+        ├─ Agent Diagnostic métier         (analyse les problèmes, cadre la solution)
+        ├─ Agent Développeur               (sites, apps & assistants IA)
+        ├─ Agent SEO & Réseaux sociaux     (stratégie, contenu, calendrier)
+        ├─ Agent Visuels cinématographiques (direction artistique + prompts image/vidéo)
+        ├─ Agent Prospection entreprises   (identifie & qualifie les cibles → HubSpot)
+        ├─ Assistant vocal                 (prise de RDV & qualification par téléphone)
+        ├─ Agent Prospection téléphonique  (scripts d'appels sortants, objections)
+        └─ Agent Relance client            (séquences de suivi, avis, upsell)
+        │
+        ▼
+  Livrables agrégés ──► Make / HubSpot ──► Google Sheets / email / CRM / vocal…
+```
+
+Le tout se pilote depuis la page **`/pilotage`** (vue d'ensemble : KPIs, panneau
+d'agents, connexions, commandes en cours) — pensée pour gérer l'activité en 1–2 h/jour.
+
+## Démarrer en 30 secondes (sans aucune clé)
+
+```bash
+pnpm --filter @immoexpert/agents demo
+```
+
+La démo tourne en **mode DÉMO** : elle produit le plan et le câblage complet
+sans appeler de LLM. Aucune clé requise pour valider l'architecture.
+
+## Passer en production (vrais livrables)
+
+Ajoutez **une seule** clé LLM dans votre `.env`. Plusieurs options **100% gratuites** :
+
+```bash
+# GRATUIT — Gemini (Google AI Studio) : https://aistudio.google.com/app/apikey
+GEMINI_API_KEY=...
+
+# GRATUIT — Groq (très rapide) : https://console.groq.com/keys
+GROQ_API_KEY=...
+
+# GRATUIT & LOCAL — Ollama sur votre ordinateur : https://ollama.com
+#   `ollama run llama3.2`
+OLLAMA_BASE_URL=http://localhost:11434/v1
+
+# Payant (optionnel) — Claude : https://console.anthropic.com
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Toute API compatible OpenAI (OpenRouter ":free"…)
+OPENAI_COMPATIBLE_BASE_URL=...
+OPENAI_COMPATIBLE_API_KEY=...
+OPENAI_COMPATIBLE_MODEL=...
+```
+
+Sans surcharge, la plateforme choisit automatiquement le fournisseur disponible
+(ordre : Gemini → OpenAI-compatible/Groq → Anthropic → mode démo), avec repli.
+Relancez `... demo` : les agents produisent alors de vrais livrables.
+
+## Utilisation dans le code
+
+```ts
+import { createOrchestrator } from "@immoexpert/agents";
+
+const orchestrator = createOrchestrator();
+
+const result = await orchestrator.run({
+  clientName: "Boulangerie Le Fournil",
+  type: "Site vitrine + réseaux sociaux",
+  description: "Boulangerie à Lyon, click & collect, visuels pub, prospection B2B.",
+  budget: 3500,
+});
+
+console.log(result.plan.steps);   // agents mobilisés
+console.log(result.results);      // livrables par agent
+```
+
+## HubSpot CRM + Assistant vocal
+
+```bash
+HUBSPOT_ACCESS_TOKEN=...     # Private App HubSpot : contact + deal créés à chaque commande
+VOICE_PROVIDER=vapi          # vapi | retell
+VOICE_API_KEY=...            # assistant vocal (prise de RDV, qualification)
+VOICE_PHONE_NUMBER_ID=...
+VOICE_ASSISTANT_ID=...
+```
+
+- `HubSpotClient` : `upsertContact` + `createDeal` dès la réception, puis `logResult` (synthèse des agents).
+- `VoiceClient` : `startOutboundCall` pour rappeler un lead (Vapi/Retell), en s'appuyant sur le prompt
+  produit par l'Assistant vocal.
+
+## Connexion Make + Google Sheets
+
+- **Entrée** : votre scénario Make (déclenché par une ligne Google Sheets ou un formulaire)
+  appelle `POST /api/agents/webhook/make` (voir `apps/web`). Le payload est normalisé
+  automatiquement par `parseInboundOrder` (champs FR ou EN tolérés).
+- **Sortie** : à la fin de l'orchestration, `MakeClient.sendResult()` renvoie la synthèse
+  vers un webhook Make (`MAKE_WEBHOOK_URL`) qui écrit dans Google Sheets, envoie l'email, etc.
+- **Direct Google Sheets** (optionnel) : `GoogleSheetsClient` (compte de service) permet
+  de lire/écrire directement, sans passer par Make.
+
+```bash
+MAKE_WEBHOOK_URL=https://hook.eu2.make.com/xxxxxxxx   # webhook sortant (livrables)
+MAKE_SIGNING_SECRET=un-secret-partage                 # sécurise le webhook entrant
+GOOGLE_SERVICE_ACCOUNT_JSON=...                        # JSON compte de service (brut ou base64)
+GOOGLE_SHEETS_ID=1AbC...                               # ID du classeur
+```
+
+## Architecture du package
+
+| Dossier | Rôle |
+|---------|------|
+| `src/agents/` | Les 5 agents + classe de base + registre |
+| `src/llm/` | Fournisseurs Claude / Gemini + routeur + mode démo |
+| `src/orchestrator/` | Planificateur (déterministe) + orchestrateur |
+| `src/integrations/` | Connecteurs Make + Google Sheets |
+| `src/config.ts` | Configuration depuis l'environnement |
+| `src/demo.ts` | Démo exécutable de bout en bout |
+
+## Principes
+
+- **Zéro dépendance runtime** : appels LLM et API via `fetch` natif.
+- **Testable hors-ligne** : mode démo intégré, planificateur déterministe.
+- **Extensible** : ajouter un agent = 1 fichier + 1 ligne dans le registre.
+- **Conforme** : l'agent de prospection rappelle systématiquement RGPD/Bloctel.
