@@ -51,10 +51,19 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   // Paiement unique d'une commande (devis Cap Entreprendre France).
   if (session.metadata?.kind === "order_payment" && session.metadata.orderId) {
     const orderId = session.metadata.orderId;
-    const order = await db.order.findUnique({ where: { id: orderId }, select: { metadata: true } });
+    const order = await db.order.findUnique({
+      where: { id: orderId },
+      select: { metadata: true, clientName: true },
+    });
     if (order) {
+      const { makeDeliveryToken } = await import("@/lib/delivery");
+      const { SlackClient, getConfig } = await import("@immoexpert/agents");
       const metadata = (order.metadata as Record<string, unknown> | null) ?? {};
       const prevPayment = (metadata.payment as Record<string, unknown> | undefined) ?? {};
+      const delivery =
+        (metadata.delivery as { token: string } | undefined) ??
+        { token: makeDeliveryToken(), createdAt: new Date().toISOString() };
+
       await db.order.update({
         where: { id: orderId },
         data: {
@@ -62,9 +71,16 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
           metadata: {
             ...metadata,
             payment: { ...prevPayment, status: "paid", paidAt: new Date().toISOString() },
+            delivery,
           } as object,
         },
       });
+
+      const slack = new SlackClient(getConfig().slack.webhookUrl);
+      const url = `${process.env.NEXTAUTH_URL ?? ""}/livraison/${delivery.token}`;
+      await slack
+        .notify(`💰 Paiement reçu — *${order.clientName}*. Livraison : ${url}`)
+        .catch(() => undefined);
     }
     return;
   }

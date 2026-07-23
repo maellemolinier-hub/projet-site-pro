@@ -14,6 +14,9 @@ import {
   Loader2,
   Save,
   ChevronDown,
+  Package,
+  Copy,
+  ExternalLink,
 } from "lucide-react";
 import { OFFERS } from "@/lib/offers";
 import { computeTotal, priceHintToNumber, type Quote, type QuoteItem } from "@/lib/quote";
@@ -50,8 +53,32 @@ export function OrderDetail({ order }: { order: OrderView }) {
   const [paying, setPaying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [openRun, setOpenRun] = useState<number | null>(null);
+  const existingDelivery = order.metadata.delivery as { token: string } | undefined;
+  const [deliveryUrl, setDeliveryUrl] = useState<string>(
+    existingDelivery?.token
+      ? (typeof window !== "undefined" ? window.location.origin : "") +
+          `/livraison/${existingDelivery.token}`
+      : "",
+  );
+  const [delivering, setDelivering] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const total = computeTotal(items);
+
+  async function generateDelivery() {
+    setDelivering(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/pilotage/orders/${order.id}/deliver`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Erreur");
+      setDeliveryUrl(data.url);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setDelivering(false);
+    }
+  }
 
   function addOffer(offerId: string) {
     const offer = OFFERS.find((o) => o.id === offerId);
@@ -191,6 +218,55 @@ export function OrderDetail({ order }: { order: OrderView }) {
                   </div>
                 ))}
               </div>
+            )}
+          </section>
+
+          <section className="bg-white rounded-2xl border border-gray-100 p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Package className="w-4 h-4 text-indigo-600" />
+              <h2 className="text-sm font-semibold text-gray-900">Livraison clé en main</h2>
+            </div>
+            <p className="text-sm text-gray-500 mb-3">
+              Générez un lien privé que le client ouvre pour télécharger lui-même son produit fini.
+              Une fois livré, il en est 100 % propriétaire — plus rien à gérer de votre côté.
+            </p>
+            {deliveryUrl ? (
+              <div className="flex items-center gap-2">
+                <input
+                  readOnly
+                  value={deliveryUrl}
+                  className="flex-1 text-xs px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-600"
+                />
+                <button
+                  onClick={() => {
+                    navigator.clipboard?.writeText(deliveryUrl);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 1500);
+                  }}
+                  className="p-2 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50"
+                  title="Copier"
+                >
+                  {copied ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                </button>
+                <a
+                  href={deliveryUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50"
+                  title="Ouvrir"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            ) : (
+              <button
+                onClick={generateDelivery}
+                disabled={delivering}
+                className="inline-flex items-center gap-2 text-sm font-medium border border-gray-200 text-gray-700 px-3 py-2.5 rounded-xl hover:bg-gray-50 disabled:opacity-50"
+              >
+                {delivering ? <Loader2 className="w-4 h-4 animate-spin" /> : <Package className="w-4 h-4" />}
+                Générer le lien de livraison
+              </button>
             )}
           </section>
         </div>

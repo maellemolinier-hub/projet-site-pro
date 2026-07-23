@@ -3,10 +3,12 @@ import {
   createOrchestrator,
   MakeClient,
   HubSpotClient,
+  SlackClient,
   getConfig,
   type OrderInput,
   type OrchestrationResult,
 } from "@immoexpert/agents";
+import { makeDeliveryToken } from "@/lib/delivery";
 
 /**
  * Crée une commande en base, lance l'orchestration des agents, persiste chaque
@@ -65,9 +67,18 @@ export async function processOrder(
     })),
   });
 
+  // Commande terminée : on prépare la livraison "clé en main" du client.
+  const baseMetadata = (input.metadata ?? {}) as Record<string, unknown>;
+  const deliveryMetadata = result.ok
+    ? { delivery: { token: makeDeliveryToken(), createdAt: new Date().toISOString() } }
+    : {};
+
   await db.order.update({
     where: { id: order.id },
-    data: { status: result.ok ? "COMPLETED" : "FAILED" },
+    data: {
+      status: result.ok ? "COMPLETED" : "FAILED",
+      metadata: { ...baseMetadata, ...deliveryMetadata } as object,
+    },
   });
 
   const make = new MakeClient(config.make.outboundWebhookUrl, config.make.signingSecret);
@@ -77,6 +88,17 @@ export async function processOrder(
 
   if (hubspot.enabled && dealId) {
     await hubspot.logResult(dealId, result).catch(() => undefined);
+  }
+
+  const slack = new SlackClient(config.slack.webhookUrl);
+  if (slack.enabled) {
+    await slack
+      .notify(
+        result.ok
+          ? `✅ Commande terminée pour *${input.clientName}* (${input.type}). Livraison prête.`
+          : `⚠️ Commande *${input.clientName}* : production en échec partiel.`,
+      )
+      .catch(() => undefined);
   }
 
   return { orderId: order.id, result };
@@ -115,6 +137,17 @@ export async function captureLead(
     } catch {
       // Un échec CRM ne doit jamais faire perdre le lead.
     }
+  }
+
+  const slack = new SlackClient(config.slack.webhookUrl);
+  if (slack.enabled) {
+    await slack
+      .notify(
+        `🟢 Nouveau lead : *${input.clientName}* — ${input.type}` +
+          (input.clientEmail ? ` (${input.clientEmail})` : "") +
+          (input.clientPhone ? ` ${input.clientPhone}` : ""),
+      )
+      .catch(() => undefined);
   }
 
   return { orderId: order.id };
