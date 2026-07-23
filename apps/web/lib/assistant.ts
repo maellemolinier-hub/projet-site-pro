@@ -61,15 +61,37 @@ export function parseReply(text: string): AssistantReply {
   return { reply, offers };
 }
 
+/** Minuscules + suppression des accents, pour une correspondance robuste. */
+function normalize(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+/** Mots-clés déclencheurs par offre (sans accents), pour le diagnostic hors-ligne. */
+const OFFER_TRIGGERS: Record<string, string[]> = {
+  "site-web": ["site", "web", "internet", "vitrine", "boutique", "e-commerce", "ecommerce", "application", "app", "vendre en ligne"],
+  "assistant-ia": ["chatbot", "assistant", "repondre", "faq", "questions", "24/7", "chat"],
+  "assistant-vocal": ["appel", "appels", "telephone", "standard", "vocal", "voix", "rendez-vous", "rdv", "secretariat", "accueil telephonique"],
+  "seo-social": ["seo", "google", "referencement", "visibilite", "reseaux", "instagram", "tiktok", "linkedin", "facebook", "abonnes", "vues", "communaute", "contenu", "post"],
+  visuels: ["visuel", "photo", "image", "video", "montage", "pub", "publicite", "logo", "branding", "design", "affiche"],
+  prospection: ["prospection", "prospect", "leads", "clients", "acquisition", "b2b", "demarchage", "crm", "hubspot"],
+  relance: ["relance", "fidelisation", "avis", "paiement", "facture", "devis", "suivi", "retour client"],
+  automatisation: ["automatisation", "automatiser", "make", "zapier", "tache", "repetitif", "excel", "sheets", "process"],
+  "formation-metier": ["formation", "former", "apprendre", "monter en competence", "equipe", "coacher"],
+};
+
 /**
  * Diagnostic hors-ligne (sans clé LLM) : Capia reste utile en mode démo.
  * Elle repère des mots-clés dans le dernier message et recommande des offres.
  */
 export function dryRunDiagnose(messages: ChatMessage[]): AssistantReply {
+  const userTurns = messages.filter((m) => m.role === "user");
   const lastUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
   const text = lastUser.toLowerCase();
 
-  if (!text.trim() || messages.filter((m) => m.role === "user").length === 0) {
+  if (!text.trim() || userTurns.length === 0) {
     return {
       reply:
         `Bonjour, je suis ${ASSISTANT_NAME}, l'assistante IA de CAP Entreprendre France. ` +
@@ -78,14 +100,28 @@ export function dryRunDiagnose(messages: ChatMessage[]): AssistantReply {
     };
   }
 
+  // Premier message trop vague : on pose une question de qualification avant de recommander.
+  const wordCount = text.trim().split(/\s+/).length;
+  if (userTurns.length === 1 && wordCount < 6) {
+    return {
+      reply:
+        "Merci ! Pour bien vous orienter, dites-m'en un peu plus : quel est votre métier, et " +
+        "qu'est-ce qui vous pose le plus problème aujourd'hui (visibilité, manque de clients, " +
+        "temps perdu, image, appels manqués…) ?",
+      offers: [],
+    };
+  }
+
+  const norm = normalize(text);
   const scored = OFFERS.map((offer) => {
     let score = 0;
-    for (const keyword of offer.solves) {
-      const words = keyword.toLowerCase().split(/\s+/).filter((w) => w.length > 3);
-      for (const w of words) if (text.includes(w)) score += 1;
+    for (const trigger of OFFER_TRIGGERS[offer.id] ?? []) {
+      if (norm.includes(trigger)) score += 1;
     }
-    for (const w of ["site", "web", "vocal", "appel", "seo", "réseau", "visuel", "vidéo", "client", "prospection", "automat", "formation", "ia", "assistant"]) {
-      if (text.includes(w) && (offer.name.toLowerCase().includes(w) || offer.tagline.toLowerCase().includes(w))) score += 1;
+    for (const keyword of offer.solves) {
+      for (const w of normalize(keyword).split(/\s+/).filter((x) => x.length > 4)) {
+        if (norm.includes(w)) score += 1;
+      }
     }
     return { offer, score };
   })

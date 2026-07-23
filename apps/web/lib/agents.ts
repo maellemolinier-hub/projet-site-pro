@@ -81,3 +81,41 @@ export async function processOrder(
 
   return { orderId: order.id, result };
 }
+
+/**
+ * Capture un lead (depuis l'assistante Capia) : crée la commande en base au
+ * statut RECEIVED et pousse le contact + deal dans HubSpot, SANS lancer les
+ * agents. L'entrepreneur déclenche la production quand il le souhaite depuis
+ * la page /pilotage.
+ */
+export async function captureLead(
+  input: OrderInput,
+): Promise<{ orderId: string }> {
+  const order = await db.order.create({
+    data: {
+      clientName: input.clientName,
+      clientEmail: input.clientEmail,
+      clientPhone: input.clientPhone,
+      type: input.type,
+      description: input.description,
+      budget: input.budget,
+      source: (input.metadata?.source as string) ?? "capia",
+      status: "RECEIVED",
+      metadata: (input.metadata ?? {}) as object,
+    },
+    select: { id: true },
+  });
+
+  const config = getConfig();
+  const hubspot = new HubSpotClient(config.hubspot.token);
+  if (hubspot.enabled) {
+    try {
+      const contactId = await hubspot.upsertContact(input);
+      await hubspot.createDeal(input, contactId);
+    } catch {
+      // Un échec CRM ne doit jamais faire perdre le lead.
+    }
+  }
+
+  return { orderId: order.id };
+}
