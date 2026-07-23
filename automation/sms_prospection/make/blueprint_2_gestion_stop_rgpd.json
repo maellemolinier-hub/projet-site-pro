@@ -1,0 +1,84 @@
+{
+  "name": "Prospection SMS - 2. Gestion des STOP (RGPD)",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": "REMPLACER_PAR_ID_WEBHOOK_sms_entrant",
+        "maxResults": 1
+      },
+      "mapper": {},
+      "metadata": { "designer": { "x": 0, "y": 0 } }
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicFilter",
+      "version": 1,
+      "filter": {
+        "name": "Contient un mot-clé STOP",
+        "conditions": [
+          [
+            { "a": "{{lower(1.text)}}", "o": "text:contains", "b": "stop" }
+          ],
+          [
+            { "a": "{{lower(1.text)}}", "o": "text:contains", "b": "arret" }
+          ],
+          [
+            { "a": "{{lower(1.text)}}", "o": "text:contains", "b": "desinscription" }
+          ]
+        ]
+      },
+      "mapper": {},
+      "metadata": { "designer": { "x": 300, "y": 0 } }
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": { "handleErrors": true },
+      "mapper": {
+        "url": "{{BOOKING_BASE_URL_HOST}}/webhooks/sms-inbound",
+        "method": "POST",
+        "headers": [
+          { "name": "X-Webhook-Secret", "value": "{{SMS_WEBHOOK_SECRET}}" },
+          { "name": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "from": "{{1.from}}", "text": "{{1.text}}" },
+        "bodyType": "raw",
+        "contentType": "application/json"
+      },
+      "metadata": { "designer": { "x": 600, "y": 0 } }
+    },
+    {
+      "id": 4,
+      "module": "datastore:ActionAddRecord",
+      "version": 1,
+      "parameters": { "datastore": "REMPLACER_PAR_ID_DATASTORE_liste_noire" },
+      "mapper": {
+        "key": "{{1.from}}",
+        "phone": "{{1.from}}",
+        "source": "stop_sms"
+      },
+      "metadata": {
+        "designer": { "x": 600, "y": 200 },
+        "note": "Alternative 100% no-code au module HTTP #3 (les deux ne sont pas nécessaires en même temps)."
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "sequential": true,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false
+    },
+    "designer": { "orphans": [] },
+    "zone": "eu1.make.com"
+  }
+}

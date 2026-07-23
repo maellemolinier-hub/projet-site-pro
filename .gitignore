@@ -12,6 +12,11 @@ __pycache__/
 *.pyo
 .venv/
 apps/api/.venv/
+.pytest_cache/
+*.db
+
+# Assistant de prospection SMS
+automation/sms_prospection/service-account.json
 
 # Env
 .env

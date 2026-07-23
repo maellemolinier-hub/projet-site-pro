@@ -1,0 +1,150 @@
+{
+  "name": "Prospection SMS - 1. Envoi de campagne",
+  "flow": [
+    {
+      "id": 1,
+      "module": "builtin:BasicScheduler",
+      "version": 1,
+      "parameters": {
+        "type": "daily",
+        "hour": 10,
+        "minute": 0,
+        "timezone": "Europe/Paris"
+      },
+      "mapper": {},
+      "metadata": { "designer": { "x": 0, "y": 0 } }
+    },
+    {
+      "id": 2,
+      "module": "datastore:ActionSearchRecords",
+      "version": 1,
+      "parameters": {
+        "datastore": "REMPLACER_PAR_ID_DATASTORE_prospects"
+      },
+      "mapper": {
+        "filter": { "statut": "nouveau" },
+        "maxRecords": 200
+      },
+      "metadata": { "designer": { "x": 300, "y": 0 } }
+    },
+    {
+      "id": 3,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 4,
+              "module": "datastore:ActionSearchRecords",
+              "version": 1,
+              "parameters": {
+                "datastore": "REMPLACER_PAR_ID_DATASTORE_liste_noire"
+              },
+              "mapper": {
+                "filter": { "phone": "{{2.phone}}" },
+                "maxRecords": 1
+              },
+              "filter": {
+                "name": "Numéro trouvé en liste noire",
+                "conditions": [[{ "a": "{{4.length}}", "o": "number:greater", "b": 0 }]]
+              },
+              "metadata": { "designer": { "x": 600, "y": -120 } }
+            },
+            {
+              "id": 5,
+              "module": "datastore:ActionUpdateRecord",
+              "version": 1,
+              "parameters": { "datastore": "REMPLACER_PAR_ID_DATASTORE_prospects" },
+              "mapper": { "key": "{{2.id}}", "statut": "stop" },
+              "metadata": { "designer": { "x": 900, "y": -120 } }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 6,
+              "module": "datastore:ActionSearchRecords",
+              "version": 1,
+              "parameters": { "datastore": "REMPLACER_PAR_ID_DATASTORE_secteurs" },
+              "mapper": { "filter": { "cle": "{{2.secteur}}" }, "maxRecords": 1 },
+              "metadata": { "designer": { "x": 600, "y": 120 } }
+            },
+            {
+              "id": 7,
+              "module": "util:ComposeString",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "value": "Bonjour {{2.prenom}}, {{COMPANY_NAME}} aide les {{6.label_pluriel}} à digitaliser leur activité avec le Pack Digitalisation et {{6.assistant_ia}}. Réservez un audit gratuit : {{BOOKING_BASE_URL}}/{{2.booking_token}} Rép STOP pour ne plus recevoir de SMS."
+              },
+              "metadata": { "designer": { "x": 900, "y": 120 } }
+            },
+            {
+              "id": 8,
+              "module": "http:ActionSendData",
+              "version": 3,
+              "parameters": {
+                "handleErrors": true,
+                "useNewZLibDeCompress": true
+              },
+              "mapper": {
+                "url": "https://api.brevo.com/v3/transactionalSMS/sms",
+                "method": "POST",
+                "headers": [
+                  { "name": "api-key", "value": "{{BREVO_API_KEY}}" },
+                  { "name": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "sender": "{{SMS_SENDER_ID}}",
+                  "recipient": "{{2.phone}}",
+                  "content": "{{7.value}}",
+                  "type": "transactional"
+                },
+                "bodyType": "raw",
+                "contentType": "application/json"
+              },
+              "metadata": { "designer": { "x": 1200, "y": 120 } }
+            },
+            {
+              "id": 9,
+              "module": "datastore:ActionUpdateRecord",
+              "version": 1,
+              "parameters": { "datastore": "REMPLACER_PAR_ID_DATASTORE_prospects" },
+              "mapper": {
+                "key": "{{2.id}}",
+                "statut": "envoye",
+                "date_envoi": "{{now}}"
+              },
+              "metadata": { "designer": { "x": 1500, "y": 120 } }
+            },
+            {
+              "id": 10,
+              "module": "util:Sleep",
+              "version": 1,
+              "parameters": {},
+              "mapper": { "delay": "{{SECONDS_BETWEEN_SMS}}" },
+              "metadata": { "designer": { "x": 1800, "y": 120 } }
+            }
+          ]
+        }
+      ],
+      "metadata": { "designer": { "x": 600, "y": 0 } }
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "sequential": true,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false
+    },
+    "designer": { "orphans": [] },
+    "zone": "eu1.make.com"
+  }
+}
