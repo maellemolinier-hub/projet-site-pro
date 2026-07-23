@@ -169,6 +169,8 @@ export function PilotageDashboard({ catalog, integrations, userName }: Props) {
 
         {showForm && <NewOrderForm onCreated={() => { setShowForm(false); loadOrders(); }} />}
 
+        <TeleprospecteurCard onLaunched={loadOrders} />
+
         {/* Panneau d'agents */}
         <section>
           <h2 className="text-sm font-semibold text-gray-900 mb-3">Vos agents autonomes</h2>
@@ -311,6 +313,93 @@ function KpiCard({
       <p className="text-2xl font-bold text-gray-900">{value}</p>
       <p className="text-xs text-gray-400 mt-1">{label}</p>
     </div>
+  );
+}
+
+function TeleprospecteurCard({ onLaunched }: { onLaunched: () => void }) {
+  const [form, setForm] = useState({ company: "", phone: "", context: "" });
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<{ pitch: string; demo: boolean } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function launch(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      const res = await fetch("/api/pilotage/prospection/call", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Erreur");
+      setResult({ pitch: data.pitch, demo: data.demo });
+      setForm({ company: "", phone: "", context: "" });
+      onLaunched();
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <section className="bg-white rounded-2xl border border-gray-100 p-5">
+      <div className="flex items-center gap-2 mb-1">
+        <PhoneCall className="w-4 h-4 text-indigo-600" />
+        <h2 className="text-sm font-semibold text-gray-900">Téléprospecteur IA</h2>
+      </div>
+      <p className="text-xs text-gray-400 mb-3">
+        Ligne dédiée : l'agent appelle une entreprise, présente votre offre et reporte dans HubSpot.
+      </p>
+      <form onSubmit={launch} className="space-y-3">
+        <div className="grid sm:grid-cols-2 gap-3">
+          <input
+            required
+            placeholder="Entreprise cible"
+            value={form.company}
+            onChange={(e) => setForm({ ...form, company: e.target.value })}
+            className="px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          />
+          <input
+            required
+            placeholder="Téléphone"
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            className="px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          />
+        </div>
+        <input
+          placeholder="Contexte / accroche souhaitée (optionnel)"
+          value={form.context}
+          onChange={(e) => setForm({ ...form, context: e.target.value })}
+          className="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
+        />
+        {error && <p className="text-xs text-red-500">{error}</p>}
+        <button
+          type="submit"
+          disabled={loading}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition"
+        >
+          {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+          Lancer l'appel
+        </button>
+      </form>
+      {result && (
+        <div className="mt-3 rounded-xl bg-indigo-50 p-3">
+          {result.demo && (
+            <p className="text-[11px] text-indigo-500 mb-1">
+              Mode démo (ajoutez VOICE_API_KEY + une clé IA pour un appel réel)
+            </p>
+          )}
+          <p className="text-xs text-gray-600">
+            <span className="font-medium">Accroche générée :</span> {result.pitch}
+          </p>
+        </div>
+      )}
+    </section>
   );
 }
 
