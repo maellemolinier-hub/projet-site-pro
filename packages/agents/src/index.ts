@@ -1,5 +1,6 @@
 export * from "./types";
 export * from "./config";
+export { AGENT_CATALOG, type AgentCatalogEntry } from "./catalog";
 export { Orchestrator, type RunOptions } from "./orchestrator/orchestrator";
 export { planOrder } from "./orchestrator/planner";
 export { buildAgentRegistry } from "./agents/registry";
@@ -9,6 +10,13 @@ export type { LLMProvider, LLMRequest, LLMResponse } from "./llm/provider";
 export { LLMError } from "./llm/provider";
 export { MakeClient, parseInboundOrder } from "./integrations/make";
 export { GoogleSheetsClient } from "./integrations/googleSheets";
+export { HubSpotClient } from "./integrations/hubspot";
+export {
+  VoiceClient,
+  type VoiceConfig,
+  type VoiceProvider,
+  type OutboundCall,
+} from "./integrations/voice";
 
 import { getConfig, type AgentsConfig } from "./config";
 import { Orchestrator } from "./orchestrator/orchestrator";

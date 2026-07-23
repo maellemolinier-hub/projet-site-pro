@@ -1,4 +1,5 @@
 import type { AgentRole } from "./types";
+import type { VoiceProvider } from "./integrations/voice";
 
 export type ProviderName = "anthropic" | "gemini" | "dryrun";
 
@@ -25,6 +26,16 @@ export interface AgentsConfig {
     /** JSON du compte de service (chaîne brute ou base64). */
     serviceAccountJson?: string;
     spreadsheetId?: string;
+  };
+  hubspot: {
+    /** Token de Private App HubSpot. */
+    token?: string;
+  };
+  voice: {
+    provider: VoiceProvider;
+    apiKey?: string;
+    phoneNumberId?: string;
+    assistantId?: string;
   };
   /** Limite de tokens par appel LLM. */
   maxTokens: number;
@@ -75,6 +86,15 @@ export function getConfig(overrides: Partial<AgentsConfig> = {}): AgentsConfig {
     googleSheets: {
       serviceAccountJson: env("GOOGLE_SERVICE_ACCOUNT_JSON"),
       spreadsheetId: env("GOOGLE_SHEETS_ID"),
+    },
+    hubspot: {
+      token: env("HUBSPOT_ACCESS_TOKEN") ?? env("HUBSPOT_API_KEY"),
+    },
+    voice: {
+      provider: (env("VOICE_PROVIDER") as VoiceProvider) ?? "vapi",
+      apiKey: env("VOICE_API_KEY"),
+      phoneNumberId: env("VOICE_PHONE_NUMBER_ID"),
+      assistantId: env("VOICE_ASSISTANT_ID"),
     },
     maxTokens: Number(env("AGENTS_MAX_TOKENS") ?? "4096"),
     ...overrides,
