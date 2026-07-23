@@ -1,25 +1,6 @@
-import { Navbar } from "@/components/marketing/Navbar";
-import { Hero } from "@/components/marketing/Hero";
-import { Features } from "@/components/marketing/Features";
-import { HowItWorks } from "@/components/marketing/HowItWorks";
-import { Pricing } from "@/components/marketing/Pricing";
-import { Experts } from "@/components/marketing/Experts";
-import { Testimonials } from "@/components/marketing/Testimonials";
-import { CTA } from "@/components/marketing/CTA";
-import { Footer } from "@/components/marketing/Footer";
+import { AGENT_CATALOG } from "@immoexpert/agents";
+import { CapLanding } from "@/components/cap/CapLanding";
 
 export default function HomePage() {
-  return (
-    <main className="min-h-screen bg-white">
-      <Navbar />
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <Experts />
-      <Pricing />
-      <Testimonials />
-      <CTA />
-      <Footer />
-    </main>
-  );
+  return <CapLanding catalog={AGENT_CATALOG} />;
 }
