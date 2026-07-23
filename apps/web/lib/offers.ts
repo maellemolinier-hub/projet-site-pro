@@ -1,7 +1,7 @@
 /**
  * Catalogue des offres de CAP Entreprendre France.
  *
- * L'assistante IA (Capucine) s'appuie sur ce catalogue pour diagnostiquer le
+ * L'assistante IA (Capia) s'appuie sur ce catalogue pour diagnostiquer le
  * besoin d'une entreprise et recommander la ou les bonnes offres.
  *
  * ➜ Modifiez librement ce fichier : ajoutez vos offres réelles, vos prix, vos

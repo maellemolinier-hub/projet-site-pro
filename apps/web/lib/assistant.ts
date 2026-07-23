@@ -10,9 +10,9 @@ export interface AssistantReply {
   offers: Offer[];
 }
 
-export const ASSISTANT_NAME = "Capucine";
+export const ASSISTANT_NAME = "Capia";
 
-/** Prompt système de Capucine, l'assistante IA (mi-femme, mi-robot) de CAP Entreprendre France. */
+/** Prompt système de Capia, l'assistante IA (mi-femme, mi-robot) de CAP Entreprendre France. */
 export function buildSystemPrompt(): string {
   const catalog = OFFERS.map(
     (o) =>
@@ -62,7 +62,7 @@ export function parseReply(text: string): AssistantReply {
 }
 
 /**
- * Diagnostic hors-ligne (sans clé LLM) : Capucine reste utile en mode démo.
+ * Diagnostic hors-ligne (sans clé LLM) : Capia reste utile en mode démo.
  * Elle repère des mots-clés dans le dernier message et recommande des offres.
  */
 export function dryRunDiagnose(messages: ChatMessage[]): AssistantReply {

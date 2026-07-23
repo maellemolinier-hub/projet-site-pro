@@ -13,12 +13,12 @@ interface Msg {
   offers?: Offer[];
 }
 
-const AVATAR = "/capucine-avatar.png";
+const AVATAR = "/capia-avatar.png";
 
 const GREETING: Msg = {
   role: "assistant",
   content:
-    "Bonjour, je suis Capucine, l'assistante IA de CAP Entreprendre France. En quelques questions, je diagnostique le problème de votre entreprise et je vous oriente vers la bonne solution. Quel est votre métier, et qu'est-ce qui vous freine aujourd'hui ?",
+    "Bonjour, je suis Capia, l'assistante IA de CAP Entreprendre France. En quelques questions, je diagnostique le problème de votre entreprise et je vous oriente vers la bonne solution. Quel est votre métier, et qu'est-ce qui vous freine aujourd'hui ?",
 };
 
 export function AssistantWidget() {
@@ -73,15 +73,15 @@ export function AssistantWidget() {
         <button
           onClick={() => setOpen(true)}
           className="fixed bottom-5 right-5 z-50 flex items-center gap-3 group"
-          aria-label="Discuter avec Capucine"
+          aria-label="Discuter avec Capia"
         >
           <span className="hidden sm:block bg-white shadow-lg rounded-full pl-4 pr-3 py-2 text-sm font-medium text-slate-800 border border-slate-100 group-hover:shadow-xl transition">
-            Discutez avec Capucine
+            Discutez avec Capia
           </span>
           <span className="relative">
             <span className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-emerald-400 blur-[6px] opacity-70 group-hover:opacity-100 transition" />
             <span className="relative block w-14 h-14 rounded-full ring-2 ring-white shadow-xl overflow-hidden bg-slate-900">
-              <Image src={AVATAR} alt="Capucine" fill sizes="56px" className="object-cover" />
+              <Image src={AVATAR} alt="Capia" fill sizes="56px" className="object-cover" />
             </span>
             <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-2 ring-white" />
           </span>
@@ -94,11 +94,11 @@ export function AssistantWidget() {
           {/* Header */}
           <div className="relative flex items-center gap-3 px-4 py-3 bg-gradient-to-br from-[#0d1b2a] to-[#1c1b4f] text-white">
             <span className="relative block w-10 h-10 rounded-full ring-2 ring-white/30 overflow-hidden bg-slate-800 shrink-0">
-              <Image src={AVATAR} alt="Capucine" fill sizes="40px" className="object-cover" />
+              <Image src={AVATAR} alt="Capia" fill sizes="40px" className="object-cover" />
             </span>
             <div className="flex-1 min-w-0">
               <p className="font-semibold leading-tight flex items-center gap-1.5">
-                Capucine
+                Capia
                 <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
               </p>
               <p className="text-[11px] text-white/60 flex items-center gap-1.5">
@@ -213,7 +213,7 @@ export function AssistantWidget() {
               </button>
             </div>
             <p className="text-[10px] text-slate-300 text-center mt-2">
-              Capucine · IA au service des entrepreneurs
+              Capia · IA au service des entrepreneurs
             </p>
           </div>
         </div>
