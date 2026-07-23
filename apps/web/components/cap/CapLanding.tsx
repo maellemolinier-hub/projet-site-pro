@@ -118,28 +118,35 @@ export function CapLanding({ catalog }: { catalog: AgentCatalogEntry[] }) {
             L'IA au service des entrepreneurs · comme personne n'en fait
           </motion.span>
 
-          {/* Capia entrance */}
-          <div className="relative flex justify-center mb-6">
+          {/* Capia entrance — super-héroïne en pied */}
+          <div className="relative flex justify-center mb-4">
             {/* power burst */}
             <motion.span
               initial={{ scale: 0, opacity: 0.7 }}
-              animate={{ scale: 3.2, opacity: 0 }}
-              transition={{ duration: 1.3, delay: 0.15, ease: "easeOut" }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-gradient-to-br from-blue-400 to-emerald-400"
+              animate={{ scale: 3.4, opacity: 0 }}
+              transition={{ duration: 1.4, delay: 0.15, ease: "easeOut" }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-gradient-to-br from-blue-400 to-emerald-400"
             />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-br from-blue-500/30 to-emerald-400/30 blur-3xl animate-pulse" />
             <motion.div
-              initial={{ opacity: 0, scale: 0.2, y: 150 }}
+              initial={{ opacity: 0, scale: 0.3, y: 160 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 85, damping: 13, delay: 0.1 }}
+              transition={{ type: "spring", stiffness: 80, damping: 14, delay: 0.1 }}
               className="relative"
             >
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-emerald-400 blur-2xl opacity-50 animate-pulse" />
               <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="relative w-40 h-40 sm:w-52 sm:h-52 rounded-full overflow-hidden ring-4 ring-white/15 shadow-[0_0_60px_-10px_rgba(52,211,153,0.6)]"
+                animate={{ y: [0, -12, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="relative h-[300px] sm:h-[420px] w-[225px] sm:w-[315px]"
               >
-                <Image src="/capia-avatar.png" alt="Capia" fill sizes="208px" className="object-cover" priority />
+                <Image
+                  src="/capia-hero.png"
+                  alt="Capia, l'assistante IA de CAP Entreprendre France"
+                  fill
+                  sizes="(max-width: 640px) 225px, 315px"
+                  className="object-contain drop-shadow-[0_20px_50px_rgba(52,211,153,0.35)]"
+                  priority
+                />
               </motion.div>
             </motion.div>
           </div>

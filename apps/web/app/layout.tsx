@@ -29,12 +29,19 @@ export const metadata: Metadata = {
     title: "CAP Entreprendre France — L'IA qui résout les problèmes de votre entreprise",
     description:
       "Une équipe d'agents IA autonomes au service de votre croissance. Diagnostic gratuit avec Capia.",
+    images: [{ url: "/og-cap.png", width: 1200, height: 675, alt: "CAP Entreprendre France" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CAP Entreprendre France — L'IA qui résout les problèmes de votre entreprise",
+    description: "Une équipe d'agents IA autonomes au service de votre croissance.",
+    images: ["/og-cap.png"],
   },
   robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#4449e7",
+  themeColor: "#0a1626",
   width: "device-width",
   initialScale: 1,
 };
