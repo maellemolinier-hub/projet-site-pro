@@ -10,6 +10,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from sqlalchemy import (
+    Boolean,
     Column,
     DateTime,
     Integer,
@@ -60,6 +61,52 @@ sms_envoi_log = Table(
     Column("statut_envoi", String, nullable=False),
     Column("provider_ref", String),
     Column("erreur", String),
+    Column("created_at", DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)),
+)
+
+sms_event = Table(
+    "sms_event",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("categorie", String, nullable=False),
+        # sms_envoye | sms_erreur | reponse_prospect | stop_recu | rdv_pris | action_pilote | commande | alerte_technique
+    Column("niveau", String, nullable=False, default="info"),  # info | alerte
+    Column("titre", String, nullable=False),
+    Column("detail", String),
+    Column("prospect_id", Integer),
+    Column("lu", Boolean, nullable=False, default=False),
+    Column("created_at", DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)),
+)
+
+campaign_state = Table(
+    "campaign_state",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("en_pause", Boolean, nullable=False, default=False),
+    Column("motif", String),
+    Column("updated_at", DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)),
+)
+
+secteur_config = Table(
+    "secteur_config",
+    metadata,
+    Column("cle", String, primary_key=True),
+    Column("label_pluriel", String, nullable=False),
+    Column("assistant_ia", String, nullable=False),
+    Column("argumentaire", String, nullable=False),
+        # texte libre : description de l'offre / des explications utilisées
+        # à la fois dans le SMS et comme base du persona de l'assistant sectoriel
+    Column("updated_at", DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)),
+)
+
+sms_message = Table(
+    "sms_message",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("prospect_id", Integer, nullable=False),
+    Column("direction", String, nullable=False),   # entrant | sortant
+    Column("auteur", String, nullable=False),        # automatique | manuel | prospect
+    Column("texte", String, nullable=False),
     Column("created_at", DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)),
 )
 

@@ -18,14 +18,16 @@ from html import escape
 
 from fastapi import Body, FastAPI, Header, HTTPException
 from fastapi.responses import HTMLResponse
-from sqlalchemy import update
+from sqlalchemy import select, update
 
+from . import secteurs_store
 from .blacklist import add_to_blacklist
 from .booking import get_prospect_by_token
 from .config import settings
+from .conversations import journaliser_message
 from .db import get_engine, sms_prospect
+from .events import enregistrer_evenement
 from .google_calendar import Creneau, create_audit_event, list_free_slots
-from .secteurs import get_secteur
 
 logger = logging.getLogger(__name__)
 app = FastAPI(title="Assistant de prospection SMS — Pack Digitalisation")
@@ -52,23 +54,47 @@ def sms_inbound(
     _verifier_secret(x_webhook_secret)
 
     phone = payload.get("from") or payload.get("phone") or payload.get("msisdn")
-    texte = (payload.get("text") or payload.get("message") or "").strip().lower()
+    texte_brut = payload.get("text") or payload.get("message") or ""
+    texte = texte_brut.strip().lower()
 
     if not phone:
         raise HTTPException(status_code=400, detail="Champ 'from'/'phone' manquant")
 
+    engine = get_engine()
+    with engine.connect() as conn:
+        prospect_row = conn.execute(
+            select(sms_prospect).where(sms_prospect.c.phone == phone)
+        ).mappings().first()
+    prospect_id = prospect_row["id"] if prospect_row else None
+    prenom = prospect_row["prenom"] if prospect_row else phone
+
+    if prospect_id is not None:
+        journaliser_message(prospect_id, "entrant", "prospect", texte_brut)
+
     if any(mot in texte for mot in settings.stop_keywords):
         ajoute = add_to_blacklist(phone, source="stop_sms")
-        engine = get_engine()
         with engine.begin() as conn:
             conn.execute(
                 update(sms_prospect)
                 .where(sms_prospect.c.phone == phone)
                 .values(statut="stop")
             )
+        enregistrer_evenement(
+            "stop_recu",
+            f"{prenom} s'est désinscrit (STOP)",
+            detail=texte_brut,
+            niveau="alerte",
+            prospect_id=prospect_id,
+        )
         logger.info("STOP reçu de %s (nouvellement ajouté=%s)", phone, ajoute)
         return {"traite": True, "action": "blacklist", "nouveau": ajoute}
 
+    enregistrer_evenement(
+        "reponse_prospect",
+        f"Réponse de {prenom}",
+        detail=texte_brut,
+        prospect_id=prospect_id,
+    )
     return {"traite": True, "action": "aucune"}
 
 
@@ -96,7 +122,7 @@ def page_reservation(token: str) -> str:
     if prospect.statut == "rdv_pris":
         return _page_html(f"<h1>Rendez-vous déjà confirmé</h1><p>À bientôt, {escape(prospect.prenom)} !</p>")
 
-    secteur = get_secteur(prospect.secteur)
+    secteur = secteurs_store.get(prospect.secteur)
     creneaux = list_free_slots()
     boutons = "".join(
         f'<form method="post" action="/reserver/{token}">'
@@ -133,6 +159,13 @@ def confirmer_reservation(token: str, creneau: str = Body(..., embed=True)) -> s
             .where(sms_prospect.c.id == prospect.id)
             .values(statut="rdv_pris", date_rdv=debut)
         )
+
+    enregistrer_evenement(
+        "rdv_pris",
+        f"RDV pris — Audit de {prospect.nom_pour_rdv}",
+        detail=f"Créneau : {debut.strftime('%d/%m/%Y à %Hh%M')}",
+        prospect_id=prospect.id,
+    )
 
     return _page_html(
         f"<h1>Rendez-vous confirmé !</h1>"

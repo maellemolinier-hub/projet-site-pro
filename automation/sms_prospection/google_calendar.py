@@ -91,9 +91,9 @@ def list_free_slots(
 
 def create_audit_event(prospect: Prospect, creneau: Creneau) -> dict:
     """Crée l'événement Google Agenda "Audit de [Nom du Prospect]"."""
-    from .secteurs import get_secteur
+    from . import secteurs_store
 
-    secteur = get_secteur(prospect.secteur)
+    secteur = secteurs_store.get(prospect.secteur)
     event_body = {
         "summary": f"Audit de {prospect.nom_pour_rdv}",
         "description": (

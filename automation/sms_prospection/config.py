@@ -67,5 +67,14 @@ class Settings:
     # ── Webhook / serveur ────────────────────────────────────────────────
     webhook_shared_secret: str = os.environ.get("SMS_WEBHOOK_SECRET", "")
 
+    # ── Centre de pilotage (chat IA — Gemini) ───────────────────────────
+    gemini_api_key: str = os.environ.get("GEMINI_API_KEY", "")
+    gemini_model: str = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
+    copilot_cors_origins: tuple[str, ...] = tuple(
+        o.strip()
+        for o in os.environ.get("COPILOT_CORS_ORIGINS", "http://localhost:3010").split(",")
+        if o.strip()
+    )
+
 
 settings = Settings()

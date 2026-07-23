@@ -12,10 +12,13 @@ from pathlib import Path
 
 from sqlalchemy import insert, select, update
 
+from . import campagne_etat
 from .blacklist import is_blacklisted
 from .booking import ensure_booking_token
 from .config import settings
+from .conversations import journaliser_message
 from .db import get_engine, sms_envoi_log, sms_prospect
+from .events import enregistrer_evenement
 from .message_builder import build_sms_message
 from .models import Prospect
 from .phone_utils import NumeroInvalide, normaliser_e164
@@ -89,6 +92,70 @@ def importer_prospects_csv(chemin_csv: str | Path) -> int:
     return importes
 
 
+def obtenir_prospect(prospect_id: int) -> Prospect | None:
+    engine = get_engine()
+    with engine.connect() as conn:
+        row = conn.execute(
+            select(sms_prospect).where(sms_prospect.c.id == prospect_id)
+        ).mappings().first()
+    return _row_to_prospect(row) if row else None
+
+
+def rechercher_prospects(recherche: str, limite: int = 10) -> list[Prospect]:
+    """Recherche par prénom, nom ou numéro de téléphone (correspondance partielle,
+    insensible à la casse — `.ilike()` est portable SQLite/Postgres via SQLAlchemy)."""
+    motif = f"%{recherche.strip()}%"
+    engine = get_engine()
+    with engine.connect() as conn:
+        rows = conn.execute(
+            select(sms_prospect)
+            .where(
+                sms_prospect.c.phone.ilike(motif)
+                | sms_prospect.c.prenom.ilike(motif)
+                | sms_prospect.c.nom.ilike(motif)
+            )
+            .limit(limite)
+        ).mappings().all()
+    return [_row_to_prospect(r) for r in rows]
+
+
+def envoyer_message_manuel(prospect_id: int, texte: str, provider: SmsProvider | None = None) -> str:
+    """Envoie un SMS libre (hors template automatique) à un prospect précis,
+    depuis le centre de pilotage. Respecte la liste noire. Renvoie un message
+    de statut lisible (utilisé tel quel par l'assistant IA pilote)."""
+    prospect = obtenir_prospect(prospect_id)
+    if prospect is None:
+        return f"Prospect introuvable (id={prospect_id})."
+
+    if is_blacklisted(prospect.phone):
+        return f"Impossible : {prospect.prenom} ({prospect.phone}) est en liste noire (désinscrit)."
+
+    if settings.dry_run:
+        journaliser_message(prospect.id, "sortant", "manuel", texte)
+        return f"[DRY-RUN] Message à {prospect.prenom} simulé (aucun SMS réel envoyé) : {texte!r}"
+
+    provider = provider or get_provider()
+    resultat = provider.send(prospect.phone, texte)
+    if resultat.succes:
+        journaliser_message(prospect.id, "sortant", "manuel", texte)
+        enregistrer_evenement(
+            "sms_envoye",
+            f"Message manuel envoyé à {prospect.prenom}",
+            detail=texte,
+            prospect_id=prospect.id,
+        )
+        return f"Message envoyé à {prospect.prenom} ({prospect.phone})."
+
+    enregistrer_evenement(
+        "sms_erreur",
+        f"Échec de l'envoi manuel à {prospect.prenom}",
+        detail=resultat.erreur,
+        niveau="alerte",
+        prospect_id=prospect.id,
+    )
+    return f"Échec de l'envoi à {prospect.prenom} : {resultat.erreur}"
+
+
 def _prospects_a_contacter(limite: int) -> list[Prospect]:
     engine = get_engine()
     with engine.connect() as conn:
@@ -132,7 +199,13 @@ def envoyer_campagne(
 ) -> RapportEnvoi:
     """Envoie la campagne SMS aux prospects au statut 'nouveau', dans la limite
     du quota journalier, avec un délai entre chaque envoi (protège la
-    réputation de l'expéditeur et respecte les limites des fournisseurs)."""
+    réputation de l'expéditeur et respecte les limites des fournisseurs).
+    Ne fait rien si la campagne est en pause (voir campagne_etat.py) —
+    contrôlable depuis le centre de pilotage ou l'assistant IA pilote."""
+    if campagne_etat.obtenir_etat().en_pause:
+        logger.info("Campagne en pause — envoi ignoré.")
+        return RapportEnvoi()
+
     limite = min(limite or settings.daily_quota, settings.daily_quota)
     dry_run = settings.dry_run if dry_run is None else dry_run
     provider = provider or (None if dry_run else get_provider())
@@ -170,10 +243,24 @@ def envoyer_campagne(
                 prospect.id, "envoye", date_envoi=datetime.now(timezone.utc)
             )
             _journaliser(prospect.id, texte_final, "envoye", provider_ref=resultat.provider_ref)
+            journaliser_message(prospect.id, "sortant", "automatique", texte_final)
+            enregistrer_evenement(
+                "sms_envoye",
+                f"SMS envoyé à {prospect.prenom}",
+                detail=texte_final,
+                prospect_id=prospect.id,
+            )
             rapport.envoyes += 1
         else:
             _maj_statut_prospect(prospect.id, "echec")
             _journaliser(prospect.id, texte_final, "echec", erreur=resultat.erreur)
+            enregistrer_evenement(
+                "sms_erreur",
+                f"Échec de l'envoi à {prospect.prenom}",
+                detail=resultat.erreur,
+                niveau="alerte",
+                prospect_id=prospect.id,
+            )
             rapport.echecs += 1
 
         time.sleep(settings.seconds_between_sms)

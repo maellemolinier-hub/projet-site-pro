@@ -5,6 +5,8 @@ node_modules/
 # Next.js
 apps/web/.next/
 apps/web/out/
+apps/copilot/.next/
+apps/copilot/out/
 
 # Python
 __pycache__/

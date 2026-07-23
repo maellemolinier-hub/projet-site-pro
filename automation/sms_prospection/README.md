@@ -25,18 +25,26 @@ Deux façons d'exécuter ce système, au choix ou combinées :
 
 ```
 config.py            Configuration centralisée (variables d'environnement)
-secteurs.py           Mapping secteur d'activité -> assistant IA sectoriel
+secteurs.py           Mapping secteur d'activité -> assistant IA sectoriel (valeurs par défaut)
+secteurs_store.py      Version éditable en base (argumentaire modifiable depuis le centre de pilotage)
 models.py             Dataclass Prospect
 db.py                 Schéma SQLAlchemy (SQLite en dev, Postgres/Supabase en prod)
 phone_utils.py        Normalisation des numéros au format E.164
-blacklist.py          Liste noire RGPD (is_blacklisted / add_to_blacklist)
+blacklist.py          Liste noire RGPD (is_blacklisted / add_to_blacklist / lister / retirer)
 message_builder.py    Construction du SMS personnalisé (mention STOP garantie)
 shortener.py          Raccourcissement d'URL optionnel (TinyURL)
 booking.py            Génération/résolution des tokens de réservation
 providers/            Fournisseurs SMS (Brevo par défaut, Twilio en option)
 google_calendar.py    Créneaux libres + création de l'événement "Audit de [Nom]"
 campaign.py           Orchestrateur : import CSV -> filtrage -> envoi -> log
+campagne_etat.py       État pause/reprise de la campagne (piloté depuis le centre de pilotage)
+events.py              Journal d'activité/alertes par catégorie
+conversations.py        Fil de messages unifié par prospect (auto + manuel + entrant)
+gemini_client.py        Client REST Gemini avec function-calling (aucune dépendance SDK)
+assistant_pilote.py      Assistant IA qui pilote réellement la campagne (chat en langage naturel)
+assistant_sectoriel.py    Assistant IA sectoriel de démonstration (persona par secteur)
 webhook_server.py      API FastAPI : SMS entrants (STOP) + page de réservation
+copilot_api.py          API REST du centre de pilotage (utilisée par apps/copilot)
 cli.py                 Interface en ligne de commande
 sql/schema.sql         Schéma de référence PostgreSQL/Supabase
 data/                  Exemples de CSV (prospects, liste noire)
@@ -101,6 +109,71 @@ recevoir de SMS.
 
 La mention STOP est ajoutée par le code (`message_builder.py`) et ne peut pas
 être omise, même en modifiant le gabarit du message.
+
+## Centre de pilotage (application séparée `apps/copilot`)
+
+Une application web séparée permet de superviser et piloter l'ensemble du
+système : discuter en langage naturel avec l'assistant IA qui contrôle la
+campagne, discuter avec les assistants IA sectoriels (aperçu/test), voir
+toute l'activité classée par catégorie avec alertes, et intervenir
+manuellement à tout moment (pause, liste noire, réponse à un prospect,
+argumentaire).
+
+### Démarrage
+
+```bash
+# 1. API du centre de pilotage (ce dossier)
+uvicorn automation.sms_prospection.copilot_api:app --port 8020
+
+# 2. Frontend Next.js (dans un autre terminal)
+cd apps/copilot
+pnpm install
+pnpm dev   # http://localhost:3010
+```
+
+### Fonctionnalités
+
+- **Activité** (`/`) : journal filtrable par catégorie (SMS envoyés, erreurs,
+  réponses, désinscriptions STOP, RDV pris, actions du pilote IA...), avec
+  badge d'alerte dès qu'un événement n'est pas encore lu.
+- **Chat IA** (`/chat`) : deux modes —
+  - **Pilote** : exécute réellement les actions demandées (pause/reprise de
+    campagne, blocage/déblocage de numéro, recherche de prospect, envoi de
+    message manuel, consultation de l'activité, mise à jour de
+    l'argumentaire) via function-calling Gemini — jamais de simulation.
+  - **Assistant sectoriel** : prévisualise la façon dont l'assistant IA d'un
+    secteur donné répondrait à un client final, à partir de l'argumentaire
+    configuré dans Paramètres.
+- **Prospects** (`/prospects`) : fil de conversation complet par prospect
+  (SMS automatiques, réponses, messages manuels), avec reprise de main
+  possible à tout moment.
+- **Campagne** (`/campagne`) : pause/reprise des envois automatiques.
+- **Paramètres** (`/parametres`) : gestion de la liste noire et édition de
+  l'argumentaire commercial (explications sur l'offre) par secteur.
+
+### Configuration Gemini (chat IA)
+
+```bash
+GEMINI_API_KEY="..."          # https://aistudio.google.com/apikey — jamais commité
+GEMINI_MODEL="gemini-flash-latest"
+COPILOT_CORS_ORIGINS="http://localhost:3010"
+NEXT_PUBLIC_COPILOT_API_URL="http://localhost:8020"
+```
+
+**Important — quota gratuit très limité.** Sur la clé testée, le modèle
+`gemini-2.0-flash` renvoyait un quota gratuit à zéro (erreur 429), alors que
+l'alias `gemini-flash-latest` fonctionne mais reste plafonné à environ
+**20 requêtes/jour** sur le palier gratuit (`GenerateRequestsPerDayPerProjectPerModel-FreeTier`).
+Ce plafond est bien trop bas pour un usage réel (chat pilote + assistants
+sectoriels + campagne) : activez la facturation sur le projet Google AI
+Studio associé à la clé avant toute mise en production, sans quoi le chat
+s'arrêtera de répondre après quelques messages par jour.
+
+### Sécurité de la clé
+
+`GEMINI_API_KEY` ne doit **jamais** apparaître dans le code, un commit, ou un
+message — uniquement dans un fichier `.env` non versionné (déjà ignoré par
+`.gitignore`) ou dans le gestionnaire de secrets de votre hébergeur.
 
 ## Conformité RGPD / réglementation SMS commerciaux en France
 

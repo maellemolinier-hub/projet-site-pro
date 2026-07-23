@@ -10,9 +10,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from . import secteurs_store
 from .config import settings
 from .models import Prospect
-from .secteurs import get_secteur
 
 # GSM-7 : 160 caractères/segment (153 si multi-segments).
 # Dès qu'un caractère hors GSM-7 est présent (emoji, certains accents rares),
@@ -50,7 +50,7 @@ def build_sms_message(prospect: Prospect, lien_reservation: str | None = None) -
        Réservez un audit gratuit : https://.../reserver/abc123
        Rép STOP pour ne plus recevoir de SMS."
     """
-    secteur = get_secteur(prospect.secteur)
+    secteur = secteurs_store.get(prospect.secteur)
     lien = lien_reservation or build_booking_link(prospect)
 
     corps = (
