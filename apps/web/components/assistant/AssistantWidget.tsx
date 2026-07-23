@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MessageCircle, X, Send, ArrowRight, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send, ArrowRight, Sparkles, UserPlus, Check } from "lucide-react";
 import type { Offer } from "@/lib/offers";
 import { cn } from "@/lib/utils";
 
@@ -26,11 +26,27 @@ export function AssistantWidget() {
   const [messages, setMessages] = useState<Msg[]>([GREETING]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showLead, setShowLead] = useState(false);
+  const [leadSent, setLeadSent] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, loading, open]);
+  }, [messages, loading, open, showLead]);
+
+  // Dernière offre recommandée + résumé de la conversation (pour le lead).
+  const lastOfferId = [...messages].reverse().find((m) => m.offers && m.offers.length > 0)
+    ?.offers?.[0]?.id;
+  const hasRecommendation = messages.some((m) => m.offers && m.offers.length > 0);
+  const conversationSummary = messages
+    .filter((m) => m.role === "user")
+    .map((m) => m.content)
+    .join(" | ")
+    .slice(0, 3000);
+
+  useEffect(() => {
+    if (hasRecommendation && !leadSent) setShowLead(true);
+  }, [hasRecommendation, leadSent]);
 
   async function send() {
     const text = input.trim();
@@ -106,6 +122,14 @@ export function AssistantWidget() {
                 Assistante IA · CAP Entreprendre France
               </p>
             </div>
+            <button
+              onClick={() => setShowLead((v) => !v)}
+              className="p-1.5 rounded-lg hover:bg-white/10 transition"
+              aria-label="Être recontacté"
+              title="Être recontacté(e)"
+            >
+              <UserPlus className="w-4 h-4" />
+            </button>
             <button
               onClick={() => setOpen(false)}
               className="p-1.5 rounded-lg hover:bg-white/10 transition"
@@ -187,6 +211,34 @@ export function AssistantWidget() {
             )}
           </div>
 
+          {/* Lead capture */}
+          {leadSent ? (
+            <div className="mx-3 mb-2 flex items-center gap-2 rounded-xl bg-emerald-50 text-emerald-700 px-3 py-2 text-xs font-medium">
+              <Check className="w-4 h-4" />
+              Merci ! Vos coordonnées sont bien enregistrées, on vous recontacte très vite.
+            </div>
+          ) : (
+            showLead && (
+              <LeadForm
+                offerId={lastOfferId}
+                summary={conversationSummary}
+                onSent={() => {
+                  setLeadSent(true);
+                  setShowLead(false);
+                  setMessages((prev) => [
+                    ...prev,
+                    {
+                      role: "assistant",
+                      content:
+                        "Parfait, c'est noté ! Un expert CAP Entreprendre France vous recontacte très vite. À bientôt.",
+                    },
+                  ]);
+                }}
+                onClose={() => setShowLead(false)}
+              />
+            )
+          )}
+
           {/* Input */}
           <div className="p-3 bg-white border-t border-slate-100">
             <div className="flex items-end gap-2">
@@ -228,5 +280,96 @@ function Dot({ delay = "0s" }: { delay?: string }) {
       className="w-1.5 h-1.5 rounded-full bg-slate-300 animate-bounce"
       style={{ animationDelay: delay }}
     />
+  );
+}
+
+function LeadForm({
+  offerId,
+  summary,
+  onSent,
+  onClose,
+}: {
+  offerId?: string;
+  summary: string;
+  onSent: () => void;
+  onClose: () => void;
+}) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim() || (!email.trim() && !phone.trim())) {
+      setError("Votre nom et un email ou téléphone, s'il vous plaît.");
+      return;
+    }
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/assistant/lead", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          clientName: name,
+          clientEmail: email || undefined,
+          clientPhone: phone || undefined,
+          offerId,
+          summary,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Erreur");
+      }
+      onSent();
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="mx-3 mb-2 rounded-2xl border border-slate-200 bg-slate-50 p-3 space-y-2">
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-semibold text-slate-800">Être recontacté(e)</p>
+        <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600" aria-label="Masquer">
+          <X className="w-3.5 h-3.5" />
+        </button>
+      </div>
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Votre nom / entreprise"
+        className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-200"
+      />
+      <div className="grid grid-cols-2 gap-2">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          className="px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-200"
+        />
+        <input
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="Téléphone"
+          className="px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-200"
+        />
+      </div>
+      {error && <p className="text-[11px] text-red-500">{error}</p>}
+      <button
+        type="submit"
+        disabled={submitting}
+        className="w-full inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-white bg-gradient-to-r from-blue-600 to-emerald-500 px-3 py-2 rounded-xl hover:opacity-90 disabled:opacity-50 transition"
+      >
+        {submitting ? "Envoi…" : "Je veux être recontacté(e)"}
+      </button>
+    </form>
   );
 }
