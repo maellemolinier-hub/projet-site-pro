@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import type { AgentCatalogEntry } from "@immoexpert/agents";
 import {
   Stethoscope,
@@ -229,8 +230,12 @@ export function PilotageDashboard({ catalog, integrations, userName }: Props) {
                 </thead>
                 <tbody>
                   {orders.map((order) => (
-                    <tr key={order.id} className="border-b border-gray-50 last:border-0">
-                      <td className="px-4 py-3 font-medium text-gray-900">{order.clientName}</td>
+                    <tr key={order.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50">
+                      <td className="px-4 py-3 font-medium text-gray-900">
+                        <Link href={`/pilotage/commande/${order.id}`} className="hover:text-indigo-600">
+                          {order.clientName}
+                        </Link>
+                      </td>
                       <td className="px-4 py-3 text-gray-600">{order.type}</td>
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap gap-1">
