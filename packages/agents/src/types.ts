@@ -2,27 +2,36 @@
  * Types partagés de la plateforme d'agents Cap Entreprendre France.
  */
 
-/** Les 5 agents structurels autonomes de l'entreprise. */
+/** Les agents structurels autonomes de l'entreprise. */
 export type AgentRole =
+  | "business_diagnosis"
   | "developer"
   | "seo_social"
   | "cinematic_visuals"
+  | "lead_prospecting"
+  | "voice_appointment"
   | "phone_prospecting"
   | "client_followup";
 
 export const ALL_AGENT_ROLES: AgentRole[] = [
+  "business_diagnosis",
   "developer",
   "seo_social",
   "cinematic_visuals",
+  "lead_prospecting",
+  "voice_appointment",
   "phone_prospecting",
   "client_followup",
 ];
 
 /** Libellés lisibles (FR) pour l'affichage / le reporting. */
 export const AGENT_LABELS: Record<AgentRole, string> = {
+  business_diagnosis: "Agent Diagnostic métier",
   developer: "Agent Développeur",
   seo_social: "Agent SEO & Réseaux sociaux",
   cinematic_visuals: "Agent Visuels cinématographiques",
+  lead_prospecting: "Agent Prospection entreprises",
+  voice_appointment: "Assistant vocal (RDV & qualification)",
   phone_prospecting: "Agent Prospection téléphonique",
   client_followup: "Agent Relance client",
 };
