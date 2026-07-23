@@ -11,6 +11,7 @@ export { LLMError } from "./llm/provider";
 export { MakeClient, parseInboundOrder } from "./integrations/make";
 export { GoogleSheetsClient } from "./integrations/googleSheets";
 export { HubSpotClient } from "./integrations/hubspot";
+export { SlackClient } from "./integrations/slack";
 export {
   VoiceClient,
   type VoiceConfig,

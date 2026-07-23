@@ -31,6 +31,10 @@ export interface AgentsConfig {
     /** Token de Private App HubSpot. */
     token?: string;
   };
+  slack: {
+    /** Incoming Webhook Slack pour la supervision. */
+    webhookUrl?: string;
+  };
   voice: {
     provider: VoiceProvider;
     apiKey?: string;
@@ -89,6 +93,9 @@ export function getConfig(overrides: Partial<AgentsConfig> = {}): AgentsConfig {
     },
     hubspot: {
       token: env("HUBSPOT_ACCESS_TOKEN") ?? env("HUBSPOT_API_KEY"),
+    },
+    slack: {
+      webhookUrl: env("SLACK_WEBHOOK_URL"),
     },
     voice: {
       provider: (env("VOICE_PROVIDER") as VoiceProvider) ?? "vapi",

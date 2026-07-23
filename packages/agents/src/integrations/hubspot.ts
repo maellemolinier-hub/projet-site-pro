@@ -83,6 +83,22 @@ export class HubSpotClient {
     return deal.id;
   }
 
+  /** Journalise un appel de prospection sur le contact (crée le contact si besoin). */
+  async logCall(order: OrderInput, body: string): Promise<void> {
+    if (!this.enabled) return;
+    const contactId = await this.upsertContact(order).catch(() => undefined);
+    if (!contactId) return;
+    await this.request("/crm/v3/objects/notes", "POST", {
+      properties: { hs_note_body: body, hs_timestamp: Date.now() },
+      associations: [
+        {
+          to: { id: contactId },
+          types: [{ associationCategory: "HUBSPOT_DEFINED", associationTypeId: 202 }],
+        },
+      ],
+    });
+  }
+
   /** Journalise la synthèse d'orchestration en note sur le deal. */
   async logResult(dealId: string, result: OrchestrationResult): Promise<void> {
     if (!this.enabled) return;
