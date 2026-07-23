@@ -29,6 +29,16 @@ export class ProviderRouter {
     return this.resolve(preferred);
   }
 
+  /** Fournisseur par défaut (hors rôle d'agent), ex: assistant conversationnel du site. */
+  default(): LLMProvider {
+    return this.resolve(this.config.defaultProvider);
+  }
+
+  /** Vrai si au moins un vrai LLM (Claude/Gemini) est configuré. */
+  hasLLM(): boolean {
+    return this.available().some((p) => p !== "dryrun");
+  }
+
   private resolve(name: ProviderName): LLMProvider {
     const usable = this.available();
     const chosen = usable.includes(name) ? name : usable[0];

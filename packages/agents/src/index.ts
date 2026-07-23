@@ -6,7 +6,7 @@ export { planOrder } from "./orchestrator/planner";
 export { buildAgentRegistry } from "./agents/registry";
 export { BaseAgent } from "./agents/base";
 export { ProviderRouter } from "./llm/router";
-export type { LLMProvider, LLMRequest, LLMResponse } from "./llm/provider";
+export type { LLMProvider, LLMRequest, LLMResponse, LLMMessage } from "./llm/provider";
 export { LLMError } from "./llm/provider";
 export { MakeClient, parseInboundOrder } from "./integrations/make";
 export { GoogleSheetsClient } from "./integrations/googleSheets";
