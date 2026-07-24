@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { api, SecteurConfig } from "@/lib/api";
+import { renderMarkdown } from "@/lib/markdown";
 
 type Tour = { role: "user" | "model"; texte: string; actions?: { name: string; resultat: string }[] };
 
@@ -78,7 +79,7 @@ export default function ChatPage() {
           {tours.length === 0 && <p className="muted">Aucun message. Commencez la conversation ci-dessous.</p>}
           {tours.map((t, i) => (
             <div key={i} className={`bulle ${t.role === "user" ? "utilisateur" : "assistant"}`}>
-              {t.texte}
+              {t.role === "model" ? renderMarkdown(t.texte) : t.texte}
               {t.actions && t.actions.length > 0 && (
                 <div className="muted" style={{ marginTop: 6, fontSize: "0.78rem" }}>
                   {t.actions.map((a, j) => (
