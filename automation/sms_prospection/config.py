@@ -23,8 +23,8 @@ def _bool(name: str, default: bool) -> bool:
 @dataclass(frozen=True)
 class Settings:
     # ── Identité de l'expéditeur (obligatoire pour la conformité RGPD/SMS) ──
-    company_name: str = os.environ.get("COMPANY_NAME", "Votre Entreprise")
-    sms_sender_id: str = os.environ.get("SMS_SENDER_ID", "PackDigital")
+    company_name: str = os.environ.get("COMPANY_NAME", "Cap Entreprendre France")
+    sms_sender_id: str = os.environ.get("SMS_SENDER_ID", "CapEntFR")
 
     # ── Fournisseur SMS ──────────────────────────────────────────────────
     sms_provider: str = os.environ.get("SMS_PROVIDER", "brevo")  # brevo | twilio
@@ -37,7 +37,7 @@ class Settings:
     #    sinon fichier SQLite local — zéro configuration en dev) ──────────
     database_url: str = os.environ.get(
         "SMS_PROSPECTION_DATABASE_URL",
-        os.environ.get("DATABASE_URL", "") or "sqlite:///./sms_prospection.db",
+        os.environ.get("DATABASE_URL", "") or "sqlite:////tmp/sms_prospection.db",
     )
 
     # ── Prise de rendez-vous / Google Agenda ────────────────────────────
@@ -58,7 +58,7 @@ class Settings:
     # ── Campagne ─────────────────────────────────────────────────────────
     daily_quota: int = int(os.environ.get("CAMPAIGN_DAILY_QUOTA", "200"))
     seconds_between_sms: float = float(os.environ.get("SECONDS_BETWEEN_SMS", "2"))
-    dry_run: bool = _bool("CAMPAIGN_DRY_RUN", False)
+    dry_run: bool = _bool("CAMPAIGN_DRY_RUN", True)
 
     # ── Conformité RGPD ──────────────────────────────────────────────────
     stop_keywords: tuple[str, ...] = ("stop", "arret", "arrêt", "desinscription", "désinscription")
@@ -72,7 +72,10 @@ class Settings:
     gemini_model: str = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
     copilot_cors_origins: tuple[str, ...] = tuple(
         o.strip()
-        for o in os.environ.get("COPILOT_CORS_ORIGINS", "http://localhost:3010").split(",")
+        for o in os.environ.get(
+            "COPILOT_CORS_ORIGINS",
+            "http://localhost:3010,https://cap-entreprendre-copilot.vercel.app",
+        ).split(",")
         if o.strip()
     )
 

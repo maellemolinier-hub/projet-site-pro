@@ -1,5 +1,5 @@
 const API_BASE =
-  process.env.NEXT_PUBLIC_COPILOT_API_URL || "http://localhost:8020";
+  process.env.NEXT_PUBLIC_COPILOT_API_URL || "https://cap-entreprendre-api.vercel.app";
 
 async function requete<T>(chemin: string, options?: RequestInit): Promise<T> {
   const reponse = await fetch(`${API_BASE}${chemin}`, {
