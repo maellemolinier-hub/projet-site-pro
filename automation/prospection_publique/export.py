@@ -4,14 +4,20 @@ Ce CSV n'est volontairement PAS directement injectable dans la campagne SMS
 (`automation.sms_prospection.campaign.importer_prospects_csv`) : il manque le
 prénom du contact, le téléphone et l'e-mail, qui ne sont pas des données
 publiques. Colonnes vides "telephone"/"email" à compléter lors de l'étape
-d'enrichissement (voir README.md).
+d'enrichissement (voir README.md et `osm_enrichment.py` pour un enrichissement
+automatique gratuit via OpenStreetMap).
 """
 from __future__ import annotations
 
 import csv
+import logging
+import time
 from pathlib import Path
 
+from .osm_enrichment import enrichir_entreprise
 from .sirene_client import EntrepriseCaptee
+
+logger = logging.getLogger(__name__)
 
 COLONNES = [
     "siren",
@@ -25,6 +31,8 @@ COLONNES = [
     "ville",
     "telephone",
     "email",
+    "site_web",
+    "source_enrichissement",
 ]
 
 
@@ -51,6 +59,57 @@ def exporter_csv(entreprises: list[EntrepriseCaptee], chemin_csv: str | Path) ->
                     "ville": e.ville or "",
                     "telephone": "",
                     "email": "",
+                    "site_web": "",
+                    "source_enrichissement": "",
                 }
             )
     return len(entreprises)
+
+
+def enrichir_csv(
+    chemin_entree: str | Path,
+    chemin_sortie: str | Path,
+    delai_entre_appels: float = 1.1,
+) -> tuple[int, int]:
+    """Relit un CSV produit par `exporter_csv` et tente de compléter les
+    colonnes telephone/email/site_web via OpenStreetMap (gratuit, sans clé API
+    — voir osm_enrichment.py pour les limites de couverture et le respect du
+    rythme d'appel imposé par Nominatim).
+
+    Renvoie (nombre de lignes total, nombre de lignes enrichies avec succès)."""
+    chemin_entree = Path(chemin_entree)
+    chemin_sortie = Path(chemin_sortie)
+    chemin_sortie.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(chemin_entree, newline="", encoding="utf-8") as f_in:
+        lignes = list(csv.DictReader(f_in))
+
+    trouvees = 0
+    for i, ligne in enumerate(lignes):
+        if i > 0:
+            time.sleep(delai_entre_appels)
+        try:
+            contact = enrichir_entreprise(
+                nom=ligne.get("nom", ""),
+                adresse=ligne.get("adresse"),
+                code_postal=ligne.get("code_postal"),
+                ville=ligne.get("ville"),
+            )
+        except Exception as exc:  # noqa: BLE001 — on ne bloque pas tout le lot sur une entreprise
+            logger.warning("Enrichissement échoué pour %s : %s", ligne.get("nom"), exc)
+            continue
+
+        if contact.source == "osm":
+            trouvees += 1
+        ligne["telephone"] = contact.telephone or ligne.get("telephone", "")
+        ligne["email"] = contact.email or ligne.get("email", "")
+        ligne["site_web"] = contact.site_web or ligne.get("site_web", "")
+        ligne["source_enrichissement"] = contact.source
+
+    with open(chemin_sortie, "w", newline="", encoding="utf-8") as f_out:
+        writer = csv.DictWriter(f_out, fieldnames=COLONNES)
+        writer.writeheader()
+        for ligne in lignes:
+            writer.writerow({colonne: ligne.get(colonne, "") for colonne in COLONNES})
+
+    return len(lignes), trouvees
