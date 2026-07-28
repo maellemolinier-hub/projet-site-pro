@@ -11,6 +11,7 @@ app = Celery(
     include=[
         "data.pipelines.tasks.daily_refresh",
         "data.pipelines.tasks.ml_retrain",
+        "data.pipelines.tasks.indicators_refresh",
     ],
 )
 
@@ -49,5 +50,20 @@ app.conf.beat_schedule = {
     "ml-weekly-retrain": {
         "task": "data.pipelines.tasks.ml_retrain.retrain_model",
         "schedule": crontab(hour=4, minute=0, day_of_week=0),
+    },
+
+    # ── Mensuel (2 du mois à 5h) : référentiel communes + indicateurs de zone ─
+    "indicators-monthly-communes": {
+        "task": "data.pipelines.tasks.indicators_refresh.refresh_communes",
+        "schedule": crontab(hour=5, minute=0, day_of_month=2),
+    },
+    "indicators-monthly-vacant-housing": {
+        "task": "data.pipelines.tasks.indicators_refresh.refresh_vacant_housing",
+        "schedule": crontab(hour=5, minute=30, day_of_month=2),
+    },
+    # ── Annuel (15 janvier 6h) : décès de l'année N-1 par commune ─────────────
+    "indicators-yearly-deaths": {
+        "task": "data.pipelines.tasks.indicators_refresh.refresh_deaths",
+        "schedule": crontab(hour=6, minute=0, day_of_month=15, month_of_year=1),
     },
 }
