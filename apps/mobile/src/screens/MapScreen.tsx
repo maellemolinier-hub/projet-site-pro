@@ -10,17 +10,14 @@ import {
 import MapLibreGL from "@maplibre/maplibre-react-native";
 import { useLocation } from "@/hooks/useLocation";
 import { useQuery } from "@tanstack/react-query";
-import { getZoneStats } from "@/lib/api";
+import { getMarketPrediction, type MarketPrediction, type MarketFactor } from "@/lib/api";
 
 MapLibreGL.setAccessToken(null);
 
 const STYLE_URL = "https://demotiles.maplibre.org/style.json";
 
-interface ZoneStats {
-  median_price: number;
-  avg_price: number;
-  transaction_count: number;
-  price_per_sqm: number;
+function scoreColor(score: number): string {
+  return score >= 70 ? "#059669" : score >= 50 ? "#D97706" : "#DC2626";
 }
 
 export default function MapScreen() {
@@ -28,9 +25,9 @@ export default function MapScreen() {
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(null);
   const [infoVisible, setInfoVisible] = useState(false);
 
-  const { data: zoneStats, isLoading: statsLoading } = useQuery<ZoneStats>({
-    queryKey: ["zone-stats", selectedCoords?.[0], selectedCoords?.[1]],
-    queryFn: () => getZoneStats(selectedCoords![1], selectedCoords![0]),
+  const { data: prediction, isLoading: statsLoading } = useQuery<MarketPrediction>({
+    queryKey: ["market-prediction", selectedCoords?.[0], selectedCoords?.[1]],
+    queryFn: () => getMarketPrediction(selectedCoords![1], selectedCoords![0]),
     enabled: !!selectedCoords,
   });
 
@@ -57,7 +54,7 @@ export default function MapScreen() {
     <View style={styles.container}>
       <MapLibreGL.MapView
         style={styles.map}
-        styleURL={STYLE_URL}
+        mapStyle={STYLE_URL}
         onPress={handleMapPress}
         compassEnabled
         logoEnabled={false}
@@ -113,29 +110,53 @@ export default function MapScreen() {
         >
           <View style={styles.infoPanel}>
             <View style={styles.infoPanelHandle} />
-            <Text style={styles.infoPanelTitle}>Prix dans cette zone</Text>
+            <Text style={styles.infoPanelTitle}>
+              {prediction?.zone.city
+                ? `${prediction.zone.city} (${prediction.zone.postal_code ?? ""})`
+                : "Prédiction de marché"}
+            </Text>
 
             {statsLoading ? (
               <ActivityIndicator color="#1D4ED8" style={{ marginTop: 16 }} />
-            ) : zoneStats ? (
-              <View style={styles.statsGrid}>
-                <View style={styles.statItem}>
-                  <Text style={styles.statItemValue}>
-                    {Math.round(zoneStats.median_price / 1000)}k€
-                  </Text>
-                  <Text style={styles.statItemLabel}>Prix médian</Text>
+            ) : prediction ? (
+              <>
+                {/* Score + niveau */}
+                <View style={styles.scoreRow}>
+                  <View style={[styles.scoreCircle, { backgroundColor: scoreColor(prediction.score) + "20" }]}>
+                    <Text style={[styles.scoreValue, { color: scoreColor(prediction.score) }]}>
+                      {prediction.score}
+                    </Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.scoreLevel}>Potentiel de vente : {prediction.level}</Text>
+                    <Text style={styles.scoreSub}>
+                      {prediction.market.median_price_sqm
+                        ? `${Math.round(prediction.market.median_price_sqm).toLocaleString("fr-FR")} €/m² médian · ${prediction.market.transactions} transactions`
+                        : `${prediction.market.transactions} transactions`}
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.statItem}>
-                  <Text style={styles.statItemValue}>
-                    {Math.round(zoneStats.price_per_sqm).toLocaleString("fr-FR")} €/m²
-                  </Text>
-                  <Text style={styles.statItemLabel}>Prix au m²</Text>
-                </View>
-                <View style={styles.statItem}>
-                  <Text style={styles.statItemValue}>{zoneStats.transaction_count}</Text>
-                  <Text style={styles.statItemLabel}>Transactions</Text>
-                </View>
-              </View>
+
+                {/* Facteurs (indicateurs agrégés) */}
+                <Text style={styles.factorsTitle}>Indicateurs de la zone</Text>
+                {prediction.factors.slice(0, 5).map((f: MarketFactor) => (
+                  <View key={f.label} style={styles.factorRow}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.factorLabel}>{f.label}</Text>
+                      <Text style={styles.factorDetail}>{f.detail}</Text>
+                    </View>
+                    <Text
+                      style={[
+                        styles.factorContribution,
+                        { color: f.contribution >= 0 ? "#059669" : "#DC2626" },
+                      ]}
+                    >
+                      {f.contribution >= 0 ? "+" : ""}
+                      {f.contribution}
+                    </Text>
+                  </View>
+                ))}
+              </>
             ) : (
               <Text style={styles.noData}>Aucune donnée pour cette zone</Text>
             )}
@@ -173,6 +194,16 @@ const styles = StyleSheet.create({
   statItem: { alignItems: "center" },
   statItemValue: { fontSize: 20, fontWeight: "700", color: "#1D4ED8" },
   statItemLabel: { fontSize: 11, color: "#9CA3AF", marginTop: 2 },
+  scoreRow: { flexDirection: "row", alignItems: "center", gap: 14, marginBottom: 20 },
+  scoreCircle: { width: 64, height: 64, borderRadius: 32, justifyContent: "center", alignItems: "center" },
+  scoreValue: { fontSize: 24, fontWeight: "800" },
+  scoreLevel: { fontSize: 16, fontWeight: "700", color: "#111827" },
+  scoreSub: { fontSize: 12, color: "#6B7280", marginTop: 2 },
+  factorsTitle: { fontSize: 13, fontWeight: "700", color: "#374151", marginBottom: 8 },
+  factorRow: { flexDirection: "row", alignItems: "center", paddingVertical: 8, borderTopWidth: 1, borderTopColor: "#F3F4F6" },
+  factorLabel: { fontSize: 13, fontWeight: "600", color: "#111827" },
+  factorDetail: { fontSize: 11, color: "#9CA3AF", marginTop: 1 },
+  factorContribution: { fontSize: 15, fontWeight: "800", marginLeft: 12 },
   noData: { color: "#9CA3AF", textAlign: "center", marginVertical: 16 },
   closeBtn: { backgroundColor: "#F3F4F6", borderRadius: 12, padding: 14, alignItems: "center" },
   closeBtnText: { color: "#374151", fontWeight: "600" },
