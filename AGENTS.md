@@ -56,6 +56,13 @@ PGPASSWORD=immoexpert psql -h localhost -U immoexpert -d immoexpert -f data/sql/
 ### Routing
 Dashboard pages live under the real `app/dashboard/` segment, so all authenticated routes are `/dashboard`, `/dashboard/carte`, `/dashboard/formation`, `/dashboard/parametres`, etc. (matching the sidebar links and post-signup redirect). The public marketing site is at `/`, and `/experts`, `/connexion`, `/inscription` are public.
 
+### Prédiction de marché par zone + agent d'indicateurs
+- Modèles `ZoneIndicator` (indicateurs publics agrégés par commune, RGPD-safe) et `MarketIndicator` (séries nationales, ex. taux de crédit) dans `packages/db/prisma/schema.prisma`.
+- Agent d'ingestion : `data/pipelines/tasks/indicators_refresh.py` (tâches Celery `refresh_communes` via `geo.api.gouv.fr`, `refresh_deaths`, `refresh_vacant_housing`, `refresh_credit_rate`). Les URLs des gros fichiers INSEE (décès, logements) sont surchargeables par env (`INSEE_DECES_URL`, `INSEE_LOGEMENTS_URL`) car millésimées. Pas de clé pour `geo.api.gouv.fr`.
+- Pour peupler en dev : `refresh_communes` (référentiel + population) puis `psql ... -f data/sql/indicators_seed.sql` (valeurs de démo par ville).
+- Endpoint : `GET /predict/zone?lat&lng&radius_m` → score 0–100 + détail des facteurs (moteur transparent `apps/api/ml/market_score.py`). Recalcul temps réel à chaque requête (DVF + indicateurs commune + taux crédit + saison).
+- Mobile : l'écran Carte (`MapScreen`) appelle `/predict/zone`. Expo lit les URLs backend depuis `apps/mobile/.env` (git-ignoré) : `EXPO_PUBLIC_API_URL` / `EXPO_PUBLIC_WEB_URL`. Sur appareil Android physique, remplacer `localhost` par l'IP LAN.
+
 ### API geo queries (asyncpg strict typing)
 The FastAPI geo endpoints run raw SQL through the asyncpg driver, which is strict about parameter/return types. When editing these queries keep the explicit casts:
 - `ROUND(<double precision expr>::numeric, n)` (asyncpg has no `round(double precision, int)`).
