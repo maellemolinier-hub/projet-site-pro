@@ -14,6 +14,7 @@ import logging
 import time
 from pathlib import Path
 
+from .bodacc_client import AvisCreationBodacc
 from .osm_enrichment import enrichir_entreprise
 from .sirene_client import EntrepriseCaptee
 
@@ -26,6 +27,7 @@ COLONNES = [
     "secteur",
     "code_naf",
     "date_creation",
+    "date_parution_bodacc",
     "adresse",
     "code_postal",
     "ville",
@@ -33,6 +35,7 @@ COLONNES = [
     "email",
     "site_web",
     "source_enrichissement",
+    "source_capture",
 ]
 
 
@@ -54,6 +57,7 @@ def exporter_csv(entreprises: list[EntrepriseCaptee], chemin_csv: str | Path) ->
                     "secteur": e.secteur,
                     "code_naf": e.code_naf,
                     "date_creation": e.date_creation.isoformat() if e.date_creation else "",
+                    "date_parution_bodacc": "",
                     "adresse": e.adresse or "",
                     "code_postal": e.code_postal or "",
                     "ville": e.ville or "",
@@ -61,9 +65,83 @@ def exporter_csv(entreprises: list[EntrepriseCaptee], chemin_csv: str | Path) ->
                     "email": "",
                     "site_web": "",
                     "source_enrichissement": "",
+                    "source_capture": "sirene",
                 }
             )
     return len(entreprises)
+
+
+def exporter_csv_bodacc(avis: list[AvisCreationBodacc], chemin_csv: str | Path) -> int:
+    """Écrit les avis de création BODACC dans un CSV au même format que
+    `exporter_csv` (mêmes colonnes), pour pouvoir les fusionner ensuite avec
+    `fusionner_csv`. Le BODACC ne fournit ni SIRET, ni code NAF, ni adresse
+    complète — ces colonnes restent vides ; `date_creation` reste vide aussi
+    (on ne connaît que la date de *publication* de l'avis, pas la date exacte
+    de création — voir `date_parution_bodacc`)."""
+    chemin_csv = Path(chemin_csv)
+    chemin_csv.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(chemin_csv, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=COLONNES)
+        writer.writeheader()
+        for a in avis:
+            writer.writerow(
+                {
+                    "siren": a.siren or "",
+                    "siret": "",
+                    "nom": a.nom,
+                    "secteur": a.secteur,
+                    "code_naf": "",
+                    "date_creation": "",
+                    "date_parution_bodacc": a.date_parution.isoformat() if a.date_parution else "",
+                    "adresse": "",
+                    "code_postal": "",
+                    "ville": a.ville or "",
+                    "telephone": "",
+                    "email": "",
+                    "site_web": "",
+                    "source_enrichissement": "",
+                    "source_capture": "bodacc",
+                }
+            )
+    return len(avis)
+
+
+def fusionner_csv(chemins: list[str | Path], chemin_sortie: str | Path) -> tuple[int, int]:
+    """Fusionne plusieurs CSV (même format que COLONNES, ex: une capture
+    SIRENE + une capture BODACC) en dédoublonnant les entreprises : par SIREN
+    quand il est connu, sinon par (nom, ville). En cas de doublon, la première
+    occurrence rencontrée est conservée — passer le fichier SIRENE avant le
+    fichier BODACC en argument pour privilégier les données SIRENE (plus
+    complètes : SIRET, code NAF, adresse) en cas de recoupement.
+
+    Renvoie (nombre de lignes lues au total, nombre de lignes après
+    dédoublonnage)."""
+    chemin_sortie = Path(chemin_sortie)
+    chemin_sortie.parent.mkdir(parents=True, exist_ok=True)
+
+    total_lu = 0
+    vues: set[str] = set()
+    lignes_uniques: list[dict] = []
+
+    for chemin in chemins:
+        with open(chemin, newline="", encoding="utf-8") as f:
+            for ligne in csv.DictReader(f):
+                total_lu += 1
+                siren = (ligne.get("siren") or "").strip()
+                cle = siren if siren else f"{(ligne.get('nom') or '').strip().lower()}|{(ligne.get('ville') or '').strip().lower()}"
+                if cle in vues:
+                    continue
+                vues.add(cle)
+                lignes_uniques.append(ligne)
+
+    with open(chemin_sortie, "w", newline="", encoding="utf-8") as f_out:
+        writer = csv.DictWriter(f_out, fieldnames=COLONNES)
+        writer.writeheader()
+        for ligne in lignes_uniques:
+            writer.writerow({colonne: ligne.get(colonne, "") for colonne in COLONNES})
+
+    return total_lu, len(lignes_uniques)
 
 
 def enrichir_csv(
