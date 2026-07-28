@@ -104,3 +104,16 @@ def test_desabonnement_token_invalide_affiche_un_message_clair():
     r = client.get("/desabonnement/token-inexistant")
     assert r.status_code == 200
     assert "Lien invalide" in r.text
+
+
+def test_routes_webhook_server_montees_sur_lapp_publiee():
+    # Les liens de réservation envoyés par SMS/e-mail pointent vers ce même
+    # déploiement (voir montage en fin de copilot_api.py) : un token inconnu
+    # doit renvoyer l'erreur métier de webhook_server.py, pas un 404 de
+    # routage (qui signalerait que la route n'existe pas du tout).
+    r = client.get("/reserver/token-inexistant")
+    assert r.status_code == 404
+    assert r.json()["detail"] == "Lien de réservation invalide"
+
+    r = client.get("/health")
+    assert r.json() == {"status": "ok"}

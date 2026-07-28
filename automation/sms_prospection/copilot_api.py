@@ -7,6 +7,11 @@
 - Secteurs : argumentaire/offres éditables par secteur.
 - Chat IA : pilote (function-calling, actions réelles) et assistants sectoriels.
 
+Monte également les routes de `webhook_server.py` (page de réservation
+`/reserver/{token}`, webhook SMS entrant) : les deux vivaient dans des apps
+FastAPI séparées, mais un seul déploiement public existe (celui-ci) — sans ce
+montage, les liens de réservation envoyés par SMS/e-mail renvoient un 404.
+
 Lancement : `uvicorn automation.sms_prospection.copilot_api:app --port 8020`
 """
 from __future__ import annotations
@@ -247,3 +252,13 @@ def chat_secteur(cle: str, body: ChatBody) -> dict:
     except GeminiError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
     return {"texte": reponse.texte}
+
+
+# ── Réservation & webhook SMS (webhook_server.py) ────────────────────────
+# Montées ici (et non déployées séparément) : un seul déploiement public
+# expose donc à la fois le centre de pilotage et les liens envoyés aux
+# prospects (réservation, STOP SMS).
+
+from .webhook_server import app as _webhook_app  # noqa: E402
+
+app.mount("/", _webhook_app)
