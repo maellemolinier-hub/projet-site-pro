@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from pydantic import BaseModel
 from typing import List, Optional
 
-from routers import prices, prospects, tiles, formations
+from routers import prices, prospects, tiles, formations, predict
 
 
 @asynccontextmanager
@@ -34,6 +34,7 @@ app.include_router(prices.router, prefix="/prices", tags=["Prix immobiliers"])
 app.include_router(prospects.router, prefix="/prospects", tags=["Prospection prédictive"])
 app.include_router(tiles.router, prefix="/tiles", tags=["Tuiles vectorielles"])
 app.include_router(formations.router, prefix="/formations", tags=["Formations"])
+app.include_router(predict.router, prefix="/predict", tags=["Prédiction marché"])
 
 
 @app.get("/health")

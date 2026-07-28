@@ -403,3 +403,52 @@ model Report {
 
   @@index([userId])
 }
+
+// ─── INDICATEURS DE ZONE (données publiques agrégées, RGPD-safe) ──────────────
+// Une ligne par commune (code INSEE). Toutes les métriques sont AGRÉGÉES au
+// niveau du territoire — jamais nominatives. Alimentées par l'agent d'ingestion
+// (data/pipelines) depuis les sources ouvertes (INSEE, data.gouv.fr).
+
+model ZoneIndicator {
+  id            String   @id @default(cuid())
+  codeInsee     String   @unique // code commune INSEE
+  postalCode    String? // code postal principal (jointure avec PricePoint)
+  city          String?
+  department    String?
+  population    Int?
+
+  // État civil (agrégé commune / département)
+  deaths        Int? // décès annuels (commune)
+  deathRate     Float? // pour 1000 habitants
+  births        Int? // naissances annuelles
+  birthRate     Float? // pour 1000 habitants
+  divorceRate   Float? // pour 1000 habitants (niveau départemental)
+
+  // Logement
+  vacantHousing Int? // nombre de logements vacants
+  vacancyRate   Float? // % du parc
+
+  // Niveau de vie
+  medianIncome  Float? // revenu médian disponible (€/an)
+
+  referenceYear Int? // année de référence des données
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([postalCode])
+  @@index([department])
+}
+
+// Indicateurs nationaux datés (séries temporelles) : taux de crédit, etc.
+model MarketIndicator {
+  id        String   @id @default(cuid())
+  key       String // ex: "credit_rate_20y"
+  value     Float
+  unit      String? // ex: "%"
+  date      DateTime // date de référence de la valeur
+  source    String?
+  createdAt DateTime @default(now())
+
+  @@unique([key, date])
+  @@index([key])
+}
