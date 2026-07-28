@@ -22,6 +22,10 @@ Exemples :
     python -m automation.prospection_publique.cli fusionner \
         --entree data/nouvelles_entreprises.csv --entree data/nouvelles_entreprises_bodacc.csv \
         --sortie data/nouvelles_entreprises_fusionnees.csv
+
+    # Entreprises sans site web sur Google Maps (payant à l'usage, nécessite GOOGLE_PLACES_API_KEY) :
+    python -m automation.prospection_publique.cli capturer-google-places \
+        --secteur "plombier" --ville "Bordeaux" --sortie data/plombiers_bordeaux_sans_site.csv
 """
 from __future__ import annotations
 
@@ -30,7 +34,14 @@ import logging
 from datetime import date, timedelta
 
 from .bodacc_client import BodaccError, rechercher_creations_bodacc
-from .export import enrichir_csv, exporter_csv, exporter_csv_bodacc, fusionner_csv
+from .export import (
+    enrichir_csv,
+    exporter_csv,
+    exporter_csv_bodacc,
+    exporter_csv_google_places,
+    fusionner_csv,
+)
+from .google_places_gap import GooglePlacesError, rechercher_sans_site_web
 from .secteurs_naf import SECTEURS_NAF, codes_naf_pour, secteurs_prioritaires
 from .sirene_client import SireneError, rechercher_nouvelles_entreprises
 
@@ -93,6 +104,15 @@ def main() -> None:
         help="CSV à fusionner (répétable ; en cas de doublon, le premier fichier passé est prioritaire).",
     )
     p_fusionner.add_argument("--sortie", required=True, help="Chemin du CSV fusionné de sortie.")
+
+    p_places = sous_commandes.add_parser(
+        "capturer-google-places",
+        help="Repère les établissements sans site web sur Google Maps (payant à l'usage, clé GOOGLE_PLACES_API_KEY requise).",
+    )
+    p_places.add_argument("--secteur", required=True, help="Texte libre de recherche (ex: 'plombier', 'jardinier paysagiste').")
+    p_places.add_argument("--ville", required=True, help="Ville de recherche (ex: 'Bordeaux').")
+    p_places.add_argument("--max", type=int, default=20, help="Nombre maximum d'établissements sans site à capter (défaut 20).")
+    p_places.add_argument("--sortie", required=True, help="Chemin du CSV de sortie.")
 
     args = parser.parse_args()
 
@@ -162,6 +182,22 @@ def main() -> None:
     elif args.commande == "fusionner":
         total, uniques = fusionner_csv(args.entree, args.sortie)
         print(f"{uniques}/{total} entreprise(s) unique(s) après fusion -> {args.sortie}")
+
+    elif args.commande == "capturer-google-places":
+        logger.info("Recherche Google Places : %s à %s...", args.secteur, args.ville)
+        try:
+            etablissements = rechercher_sans_site_web(
+                secteur_recherche=args.secteur,
+                ville=args.ville,
+                max_resultats=args.max,
+            )
+        except GooglePlacesError as exc:
+            logger.error("Échec de la capture Google Places : %s", exc)
+            raise SystemExit(1) from exc
+
+        n = exporter_csv_google_places(etablissements, args.sortie)
+        print(f"{n} établissement(s) sans site web trouvé(s) -> {args.sortie}")
+        print("Rappel : ces établissements ont déjà une fiche Google Maps mais pas de site — prospects prioritaires.")
 
 
 if __name__ == "__main__":

@@ -15,6 +15,7 @@ import time
 from pathlib import Path
 
 from .bodacc_client import AvisCreationBodacc
+from .google_places_gap import EtablissementSansSite
 from .osm_enrichment import enrichir_entreprise
 from .sirene_client import EntrepriseCaptee
 
@@ -105,6 +106,40 @@ def exporter_csv_bodacc(avis: list[AvisCreationBodacc], chemin_csv: str | Path) 
                 }
             )
     return len(avis)
+
+
+def exporter_csv_google_places(etablissements: list[EtablissementSansSite], chemin_csv: str | Path) -> int:
+    """Écrit les établissements sans site web (Google Places) dans un CSV au
+    même format que COLONNES. Contrairement à SIRENE/BODACC, le téléphone est
+    ici souvent déjà renseigné (fiche Google Maps) — la colonne 'telephone'
+    n'est donc pas systématiquement vide."""
+    chemin_csv = Path(chemin_csv)
+    chemin_csv.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(chemin_csv, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=COLONNES)
+        writer.writeheader()
+        for e in etablissements:
+            writer.writerow(
+                {
+                    "siren": "",
+                    "siret": "",
+                    "nom": e.nom,
+                    "secteur": e.secteur_recherche,
+                    "code_naf": "",
+                    "date_creation": "",
+                    "date_parution_bodacc": "",
+                    "adresse": e.adresse or "",
+                    "code_postal": "",
+                    "ville": "",
+                    "telephone": e.telephone or "",
+                    "email": "",
+                    "site_web": "",
+                    "source_enrichissement": "",
+                    "source_capture": "google_places",
+                }
+            )
+    return len(etablissements)
 
 
 def fusionner_csv(chemins: list[str | Path], chemin_sortie: str | Path) -> tuple[int, int]:

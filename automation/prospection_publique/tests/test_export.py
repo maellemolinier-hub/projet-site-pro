@@ -8,8 +8,10 @@ from automation.prospection_publique.export import (
     enrichir_csv,
     exporter_csv,
     exporter_csv_bodacc,
+    exporter_csv_google_places,
     fusionner_csv,
 )
+from automation.prospection_publique.google_places_gap import EtablissementSansSite
 from automation.prospection_publique.osm_enrichment import ContactEnrichi
 from automation.prospection_publique.sirene_client import EntrepriseCaptee
 
@@ -130,3 +132,24 @@ def test_fusionner_csv_deduplique_par_nom_et_ville_sans_siren(tmp_path):
 
     assert total == 2
     assert uniques == 1
+
+
+def test_exporter_csv_google_places_colonnes(tmp_path):
+    chemin = tmp_path / "google_places.csv"
+    etablissement = EtablissementSansSite(
+        place_id="abc123",
+        nom="Plomberie Dupont",
+        secteur_recherche="plombier",
+        adresse="12 rue de la Paix, 33000 Bordeaux",
+        telephone="0611223344",
+    )
+
+    n = exporter_csv_google_places([etablissement], chemin)
+
+    assert n == 1
+    with open(chemin, newline="", encoding="utf-8") as f:
+        lignes = list(csv.DictReader(f))
+    assert lignes[0]["source_capture"] == "google_places"
+    assert lignes[0]["telephone"] == "0611223344"
+    assert lignes[0]["secteur"] == "plombier"
+    assert lignes[0]["siren"] == ""

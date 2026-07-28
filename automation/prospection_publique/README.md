@@ -81,6 +81,10 @@ python -m automation.prospection_publique.cli fusionner \
 # Enrichissement gratuit (OpenStreetMap) du CSV fusionné
 python -m automation.prospection_publique.cli enrichir \
     --entree data/nouvelles_entreprises_fusionnees.csv --sortie data/nouvelles_entreprises_enrichi.csv
+
+# Établissements sans site web sur Google Maps (payant à l'usage, clé GOOGLE_PLACES_API_KEY requise)
+python -m automation.prospection_publique.cli capturer-google-places \
+    --secteur "plombier" --ville "Bordeaux" --sortie data/plombiers_bordeaux_sans_site.csv
 ```
 
 Colonnes du CSV : `siren, siret, nom, secteur, code_naf, date_creation,
@@ -123,15 +127,32 @@ code NAF de SIRENE. Utilisez `fusionner` pour combiner les deux sources sans
 doublon (priorité donnée à SIRENE en cas de recoupement, plus complet : SIRET,
 code NAF, adresse).
 
+## Détection "entreprises sans site" via Google Places (`google_places_gap.py`)
+
+Contrairement à tout ce qui précède, cette source est **payante à l'usage**
+(Google offre un crédit gratuit mensuel qui couvre largement ce volume) et
+nécessite un projet Google Cloud avec l'API "Places API (New)" activée et la
+facturation active — comme pour la clé Gemini utilisée ailleurs dans ce dépôt,
+c'est une étape que seule la propriétaire du compte peut faire. Une fois la
+clé obtenue, passez-la via la variable d'environnement
+`GOOGLE_PLACES_API_KEY`.
+
+Principe : recherche des établissements par secteur/ville sur Google Maps, et
+ne retient que ceux **sans site web renseigné** — un signal direct qu'ils ont
+besoin de nos services. Contrairement à SIRENE/BODACC, le téléphone est
+souvent déjà disponible directement (fiche Google Maps).
+
 ## Statut de test
 
 Les tests unitaires (`tests/`) simulent les appels HTTP (`httpx.Client.get`/`post`
 mockés) — aucun appel réseau réel n'est fait. L'accès réel à
 `recherche-entreprises.api.gouv.fr`, `nominatim.openstreetmap.org`,
-`overpass-api.de` et `bodacc-datadila.opendatasoft.com` n'a pas pu être testé en
-conditions réelles depuis cet environnement de développement (proxy sortant
-bloqué sur ces domaines). Le code a été écrit conformément à la documentation
-publique de ces API (avec une extraction volontairement défensive côté BODACC,
-dont le schéma exact des champs n'a pas pu être vérifié en direct) ; un test de
-connexion réel est recommandé avant la première utilisation en production
-(depuis un poste ou serveur ayant un accès internet normal).
+`overpass-api.de`, `bodacc-datadila.opendatasoft.com` et
+`places.googleapis.com` n'a pas pu être testé en conditions réelles depuis cet
+environnement de développement (proxy sortant bloqué sur ces domaines, et
+aucune clé Google Places disponible ici). Le code a été écrit conformément à la
+documentation publique de ces API (avec une extraction volontairement
+défensive côté BODACC, dont le schéma exact des champs n'a pas pu être vérifié
+en direct) ; un test de connexion réel est recommandé avant la première
+utilisation en production (depuis un poste ou serveur ayant un accès internet
+normal, avec une vraie clé pour Google Places).
