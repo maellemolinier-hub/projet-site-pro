@@ -1,1 +1,1 @@
-"""Assistant de prospection SMS BtoB — artisans & commerçants (Pack Digitalisation)."""
+"""Assistant de prospection SMS & e-mail BtoB — artisans & commerçants (sites internet + assistants IA)."""

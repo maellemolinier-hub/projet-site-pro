@@ -21,7 +21,8 @@ def test_email_contient_prenom_secteur_et_assistant_ia():
     assert "Julien" in message.html
     assert "plombiers" in message.html
     assert "Assistant IA Plomberie" in message.html
-    assert "Pack Digitalisation" in message.html
+    assert "propriété" in message.html.lower()  # propriété du site mise en avant, pas une location
+    assert "Pack Digitalisation" not in message.html
     assert "Julien" in message.sujet
 
 

@@ -97,7 +97,7 @@ def create_audit_event(prospect: Prospect, creneau: Creneau) -> dict:
     event_body = {
         "summary": f"Audit de {prospect.nom_pour_rdv}",
         "description": (
-            f"Audit Pack Digitalisation — {secteur.assistant_ia}\n"
+            f"Audit digital gratuit — {secteur.assistant_ia}\n"
             f"Prospect : {prospect.prenom} {prospect.nom or ''}\n"
             f"Secteur : {prospect.secteur}\n"
             f"Téléphone : {prospect.phone}\n"

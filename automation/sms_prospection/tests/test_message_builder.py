@@ -20,7 +20,9 @@ def test_message_contient_prenom_secteur_et_assistant_ia():
     assert "Julien" in message.texte
     assert "plombiers" in message.texte
     assert "Assistant IA Plomberie" in message.texte
-    assert "Pack Digitalisation" in message.texte
+    assert "site" in message.texte.lower()
+    assert "appartien" in message.texte.lower()  # met en avant la propriété du site pour le client
+    assert "Pack Digitalisation" not in message.texte
 
 
 def test_message_contient_toujours_la_mention_stop():

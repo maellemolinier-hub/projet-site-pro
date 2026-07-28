@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Assistant de prospection SMS — Pack Digitalisation")
+    parser = argparse.ArgumentParser(description="Assistant de prospection SMS & e-mail — Cap Entreprendre France")
     sous_commandes = parser.add_subparsers(dest="commande", required=True)
 
     p_import = sous_commandes.add_parser("import-csv", help="Importe des prospects depuis un CSV")

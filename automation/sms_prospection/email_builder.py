@@ -53,16 +53,16 @@ _GABARIT_HTML = """<!DOCTYPE html>
         Audit digital gratuit
       </p>
       <h1 style="color:#fff; font-size:22px; line-height:1.35; margin:0 0 16px; font-weight:700; font-family: Arial, Helvetica, sans-serif;">
-        Bonjour {prenom}, votre activité mérite d'être visible en ligne.
+        Bonjour {prenom}, et si votre site internet vous appartenait enfin&nbsp;?
       </h1>
       <p style="color:#c3cad6; font-size:14.5px; line-height:1.65; margin:0 0 15px; font-family: Arial, Helvetica, sans-serif;">
-        Nous accompagnons les <span style="color:#35d0c0; font-weight:700;">{secteur_label}</span> partout en France
-        à se digitaliser rapidement&nbsp;: site internet professionnel, prise de rendez-vous en ligne,
-        et {assistant_ia} pour répondre à vos clients même quand vous êtes sur un chantier.
+        Nous créons des sites internet et des assistants IA pour les <span style="color:#35d0c0; font-weight:700;">{secteur_label}</span>
+        partout en France — votre site est <span style="color:#35d0c0; font-weight:700;">votre propriété</span>, pas une location&nbsp;:
+        vous en gardez le contrôle total, quoi qu'il arrive.
       </p>
       <p style="color:#c3cad6; font-size:14.5px; line-height:1.65; margin:0 0 15px; font-family: Arial, Helvetica, sans-serif;">
-        Avec le <span style="color:#35d0c0; font-weight:700;">Pack Digitalisation</span>, tout est prêt en quelques jours —
-        aucune compétence technique requise de votre côté.
+        {assistant_ia} répond à vos clients même quand vous êtes sur un chantier, pendant que votre
+        site travaille pour vous 24h/24.
       </p>
       <div style="text-align:center; margin:26px 0 6px;">
         <a href="{lien_reservation}" style="display:inline-block; background:#ff6b35; color:#0d1420; font-weight:700; font-size:14.5px; padding:13px 26px; border-radius:7px; text-decoration:none; font-family: Arial, Helvetica, sans-serif;">
@@ -102,7 +102,7 @@ def build_email_message(
     lien_res = lien_reservation or build_booking_link(prospect)
     lien_desab = lien_desabonnement or build_unsubscribe_link(prospect)
 
-    sujet = f"{prospect.prenom}, votre activité mérite d'être visible en ligne"
+    sujet = f"{prospect.prenom}, un site internet qui vous appartient enfin"
     html = _GABARIT_HTML.format(
         prenom=prospect.prenom,
         secteur_label=secteur.label_pluriel,

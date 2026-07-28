@@ -30,7 +30,7 @@ from .events import enregistrer_evenement
 from .google_calendar import Creneau, create_audit_event, list_free_slots
 
 logger = logging.getLogger(__name__)
-app = FastAPI(title="Assistant de prospection SMS — Pack Digitalisation")
+app = FastAPI(title="Assistant de prospection SMS & e-mail — Cap Entreprendre France")
 
 
 def _verifier_secret(x_webhook_secret: str | None) -> None:
@@ -101,7 +101,7 @@ def sms_inbound(
 def _page_html(corps: str) -> str:
     return f"""<!doctype html>
 <html lang="fr"><head><meta charset="utf-8">
-<title>Réserver un audit — Pack Digitalisation</title>
+<title>Réserver un audit gratuit — Cap Entreprendre France</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {{ font-family: system-ui, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; }}

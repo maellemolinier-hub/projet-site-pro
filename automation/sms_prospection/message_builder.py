@@ -45,8 +45,8 @@ def build_sms_message(prospect: Prospect, lien_reservation: str | None = None) -
     """Construit le SMS de prospection BtoB personnalisé.
 
     Exemple de rendu :
-      "Bonjour Julien, Votre Entreprise aide les plombiers à digitaliser leur
-       activité avec le Pack Digitalisation et l'Assistant IA Plomberie.
+      "Bonjour Julien, Votre Entreprise crée des sites internet qui vous
+       appartiennent et des assistants IA pour les plombiers.
        Réservez un audit gratuit : https://.../reserver/abc123
        Rép STOP pour ne plus recevoir de SMS."
     """
@@ -54,9 +54,9 @@ def build_sms_message(prospect: Prospect, lien_reservation: str | None = None) -
     lien = lien_reservation or build_booking_link(prospect)
 
     corps = (
-        f"Bonjour {prospect.prenom}, {settings.company_name} aide les "
-        f"{secteur.label_pluriel} à digitaliser leur activité avec le Pack "
-        f"Digitalisation et {secteur.assistant_ia}. "
+        f"Bonjour {prospect.prenom}, {settings.company_name} crée des sites "
+        f"internet qui vous appartiennent et des assistants IA ({secteur.assistant_ia}) "
+        f"pour les {secteur.label_pluriel}. "
         f"Réservez un audit gratuit : {lien}"
     )
     texte = f"{corps} {settings.stop_mention}"

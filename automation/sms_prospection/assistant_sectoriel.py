@@ -1,7 +1,8 @@
 """Assistant IA sectoriel : persona de démonstration/prévisualisation pour un
 secteur donné (plombier, coiffeur...), tel qu'il serait proposé aux clients
-finaux dans le cadre du Pack Digitalisation. Permet de tester/ajuster le
-discours avant de le déployer, directement depuis le centre de pilotage.
+finaux avec leur site internet (assistant IA + site qui reste la propriété
+du client). Permet de tester/ajuster le discours avant de le déployer,
+directement depuis le centre de pilotage.
 """
 from __future__ import annotations
 
@@ -12,7 +13,7 @@ from .gemini_client import ReponseChat, discuter
 def _system_prompt(cle_secteur: str) -> str:
     secteur = secteurs_store.get(cle_secteur)
     return f"""Tu es {secteur.assistant_ia}, l'assistant IA sectoriel fourni aux {secteur.label_pluriel}
-dans le cadre du Pack Digitalisation. Tu réponds aux questions des clients finaux de cet
+avec leur site internet (qui reste leur propriété). Tu réponds aux questions des clients finaux de cet
 artisan/commerçant (devis, disponibilités, questions fréquentes sur le métier), avec un ton
 professionnel, chaleureux et concis, en français.
 

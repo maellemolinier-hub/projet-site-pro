@@ -17,10 +17,10 @@ from .db import get_engine, secteur_config
 from .secteurs import DEFAULT_SECTEUR, SECTEURS
 
 _ARGUMENTAIRE_DEFAUT = (
-    "Le Pack Digitalisation comprend : un site vitrine professionnel, la prise "
-    "de rendez-vous en ligne, et l'assistant IA sectoriel qui répond aux clients "
-    "24h/24 (devis, disponibilités, questions fréquentes). Audit initial gratuit "
-    "et sans engagement."
+    "Un site internet professionnel — qui reste votre propriété, pas une "
+    "location — et un assistant IA sectoriel qui répond à vos clients 24h/24 "
+    "(devis, disponibilités, questions fréquentes). Audit initial gratuit et "
+    "sans engagement."
 )
 
 
