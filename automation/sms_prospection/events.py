@@ -14,6 +14,8 @@ from .db import get_engine, sms_event
 CATEGORIES = (
     "sms_envoye",
     "sms_erreur",
+    "email_envoye",
+    "email_erreur",
     "reponse_prospect",
     "stop_recu",
     "rdv_pris",

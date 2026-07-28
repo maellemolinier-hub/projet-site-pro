@@ -17,13 +17,16 @@ from .blacklist import is_blacklisted
 from .booking import ensure_booking_token
 from .config import settings
 from .conversations import journaliser_message
-from .db import get_engine, sms_envoi_log, sms_prospect
+from .db import email_envoi_log, get_engine, sms_envoi_log, sms_prospect
+from .email_blacklist import is_blacklisted as is_email_blacklisted
+from .email_builder import build_email_message
 from .events import enregistrer_evenement
 from .message_builder import build_sms_message
 from .models import Prospect
 from .phone_utils import NumeroInvalide, normaliser_e164
 from .providers import get_provider
 from .providers.base import SmsProvider
+from .providers.brevo_email import BrevoEmailProvider
 from .shortener import shorten_url
 
 logger = logging.getLogger(__name__)
@@ -36,6 +39,15 @@ class RapportEnvoi:
     bloques_blacklist: int = 0
     echecs: int = 0
     ignores_quota: int = 0
+
+
+@dataclass
+class RapportEnvoiEmail:
+    total: int = 0
+    envoyes: int = 0
+    bloques_blacklist: int = 0
+    ignores_sans_email: int = 0
+    echecs: int = 0
 
 
 def _row_to_prospect(row) -> Prospect:
@@ -257,6 +269,111 @@ def envoyer_campagne(
             enregistrer_evenement(
                 "sms_erreur",
                 f"Échec de l'envoi à {prospect.prenom}",
+                detail=resultat.erreur,
+                niveau="alerte",
+                prospect_id=prospect.id,
+            )
+            rapport.echecs += 1
+
+        time.sleep(settings.seconds_between_sms)
+
+    return rapport
+
+
+def _prospects_email_a_contacter(limite: int) -> list[Prospect]:
+    engine = get_engine()
+    with engine.connect() as conn:
+        rows = conn.execute(
+            select(sms_prospect)
+            .where(sms_prospect.c.statut_email == "nouveau")
+            .where(sms_prospect.c.email.isnot(None))
+            .limit(limite)
+        ).mappings().all()
+    return [_row_to_prospect(r) for r in rows]
+
+
+def _maj_statut_email_prospect(prospect_id: int, statut_email: str, **champs) -> None:
+    engine = get_engine()
+    with engine.begin() as conn:
+        conn.execute(
+            update(sms_prospect)
+            .where(sms_prospect.c.id == prospect_id)
+            .values(statut_email=statut_email, **champs)
+        )
+
+
+def _journaliser_email(prospect_id: int, sujet: str, statut_envoi: str, provider_ref=None, erreur=None) -> None:
+    engine = get_engine()
+    with engine.begin() as conn:
+        conn.execute(
+            insert(email_envoi_log).values(
+                prospect_id=prospect_id,
+                sujet=sujet,
+                statut_envoi=statut_envoi,
+                provider_ref=provider_ref,
+                erreur=erreur,
+            )
+        )
+
+
+def envoyer_email_campagne(
+    limite: int | None = None,
+    provider: BrevoEmailProvider | None = None,
+    dry_run: bool | None = None,
+) -> RapportEnvoiEmail:
+    """Envoie la campagne e-mail aux prospects ayant une adresse renseignée et
+    un statut_email 'nouveau', dans la limite du quota journalier partagé avec
+    le SMS. Ne fait rien si la campagne est en pause (voir campagne_etat.py).
+    Respecte la liste noire e-mail (désabonnement), équivalent du STOP SMS."""
+    if campagne_etat.obtenir_etat().en_pause:
+        logger.info("Campagne en pause — envoi e-mail ignoré.")
+        return RapportEnvoiEmail()
+
+    limite = min(limite or settings.daily_quota, settings.daily_quota)
+    dry_run = settings.dry_run if dry_run is None else dry_run
+    provider = provider or (None if dry_run else BrevoEmailProvider())
+
+    rapport = RapportEnvoiEmail()
+    prospects = _prospects_email_a_contacter(limite)
+    rapport.total = len(prospects)
+
+    for prospect in prospects:
+        if not prospect.email:
+            rapport.ignores_sans_email += 1
+            continue
+
+        if is_email_blacklisted(prospect.email):
+            _maj_statut_email_prospect(prospect.id, "desabonne")
+            rapport.bloques_blacklist += 1
+            logger.info("Prospect %s ignoré (liste noire e-mail)", prospect.email)
+            continue
+
+        prospect = ensure_booking_token(prospect)
+        message = build_email_message(prospect)
+
+        if dry_run:
+            logger.info("[DRY-RUN] E-mail à %s : %s", prospect.email, message.sujet)
+            _journaliser_email(prospect.id, message.sujet, "dry_run")
+            rapport.envoyes += 1
+            continue
+
+        resultat = provider.send(prospect.email, message.sujet, message.html)
+        if resultat.succes:
+            _maj_statut_email_prospect(prospect.id, "envoye", date_envoi_email=datetime.now(timezone.utc))
+            _journaliser_email(prospect.id, message.sujet, "envoye", provider_ref=resultat.provider_ref)
+            enregistrer_evenement(
+                "email_envoye",
+                f"E-mail envoyé à {prospect.prenom}",
+                detail=message.sujet,
+                prospect_id=prospect.id,
+            )
+            rapport.envoyes += 1
+        else:
+            _maj_statut_email_prospect(prospect.id, "echec")
+            _journaliser_email(prospect.id, message.sujet, "echec", erreur=resultat.erreur)
+            enregistrer_evenement(
+                "email_erreur",
+                f"Échec de l'envoi e-mail à {prospect.prenom}",
                 detail=resultat.erreur,
                 niveau="alerte",
                 prospect_id=prospect.id,

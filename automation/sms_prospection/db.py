@@ -38,7 +38,11 @@ sms_prospect = Table(
     Column("email", String),
     Column("booking_token", String, unique=True),
     Column("statut", String, nullable=False, default="nouveau"),
+    # Statut du canal e-mail, indépendant de `statut` (SMS) : un même prospect
+    # peut être contacté par les deux canaux séparément.
+    Column("statut_email", String, nullable=False, default="nouveau"),
     Column("date_envoi", DateTime),
+    Column("date_envoi_email", DateTime),
     Column("date_rdv", DateTime),
     Column("created_at", DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)),
 )
@@ -49,6 +53,27 @@ sms_blacklist = Table(
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("phone", String, nullable=False, unique=True),
     Column("source", String, nullable=False, default="stop_sms"),
+    Column("created_at", DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)),
+)
+
+email_blacklist = Table(
+    "email_blacklist",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("email", String, nullable=False, unique=True),
+    Column("source", String, nullable=False, default="desabonnement_email"),
+    Column("created_at", DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)),
+)
+
+email_envoi_log = Table(
+    "email_envoi_log",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("prospect_id", Integer, nullable=False),
+    Column("sujet", String, nullable=False),
+    Column("statut_envoi", String, nullable=False),
+    Column("provider_ref", String),
+    Column("erreur", String),
     Column("created_at", DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)),
 )
 

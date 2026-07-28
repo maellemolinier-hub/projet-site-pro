@@ -61,3 +61,46 @@ def test_activite_liste_et_compteurs():
 def test_prospect_introuvable_renvoie_404():
     r = client.get("/api/prospects/999999")
     assert r.status_code == 404
+
+
+def test_cycle_liste_noire_email():
+    r = client.post("/api/blacklist-email", json={"email": "Test@Exemple.fr"})
+    assert r.status_code == 200
+    assert r.json()["nouveau"] is True
+
+    emails = client.get("/api/blacklist-email").json()["emails"]
+    assert any(e["email"] == "test@exemple.fr" for e in emails)
+
+    r = client.delete("/api/blacklist-email/test@exemple.fr")
+    assert r.json()["retire"] is True
+
+    r = client.delete("/api/blacklist-email/test@exemple.fr")
+    assert r.json()["retire"] is False
+
+
+def test_desabonnement_email_valide_ajoute_a_la_liste_noire():
+    from pathlib import Path
+
+    from automation.sms_prospection.booking import ensure_booking_token
+    from automation.sms_prospection.campaign import importer_prospects_csv, rechercher_prospects
+    from automation.sms_prospection.email_blacklist import is_blacklisted
+
+    csv_exemple = Path(__file__).resolve().parent.parent / "data" / "prospects_exemple.csv"
+    importer_prospects_csv(csv_exemple)
+    # Recherche par téléphone (pas par prénom) : "Julien" seul est ambigu dans la
+    # base de test partagée (voir JulienTestPilote dans test_assistant_pilote.py).
+    prospect = rechercher_prospects("+33612345678")[0]
+    prospect = ensure_booking_token(prospect)
+
+    assert not is_blacklisted(prospect.email)
+
+    r = client.get(f"/desabonnement/{prospect.booking_token}")
+    assert r.status_code == 200
+    assert "Désabonnement confirmé" in r.text
+    assert is_blacklisted(prospect.email)
+
+
+def test_desabonnement_token_invalide_affiche_un_message_clair():
+    r = client.get("/desabonnement/token-inexistant")
+    assert r.status_code == 200
+    assert "Lien invalide" in r.text

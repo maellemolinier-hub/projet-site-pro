@@ -73,6 +73,12 @@ python -m automation.sms_prospection.cli send --dry-run
 # 3. Envoyer réellement (nécessite BREVO_API_KEY ou les identifiants Twilio)
 python -m automation.sms_prospection.cli send --limite 50
 
+# 3bis. Envoyer la campagne e-mail (mode simulation)
+python -m automation.sms_prospection.cli send-email --dry-run
+
+# 3ter. Envoyer réellement les e-mails (nécessite BREVO_API_KEY + EMAIL_SENDER vérifié dans Brevo)
+python -m automation.sms_prospection.cli send-email --limite 50
+
 # 4. Démarrer le serveur de réservation + webhook SMS entrants
 python -m automation.sms_prospection.cli serve
 ```
@@ -109,6 +115,24 @@ recevoir de SMS.
 
 La mention STOP est ajoutée par le code (`message_builder.py`) et ne peut pas
 être omise, même en modifiant le gabarit du message.
+
+## E-mail de prospection (Brevo)
+
+Canal complémentaire au SMS, avec la même rigueur de conformité :
+
+- Contenu possédé par le code (`email_builder.py`), pas par un template géré
+  côté Brevo — une seule source de vérité, comme pour le SMS.
+- **Lien de désabonnement obligatoire**, toujours inséré par le code (jamais
+  omissible), pointant vers `UNSUBSCRIBE_BASE_URL/{token}` — la page
+  correspondante (`copilot_api.py`, route `/desabonnement/{token}`) inscrit
+  immédiatement l'adresse dans `email_blacklist.py`, l'équivalent e-mail du
+  STOP SMS. Toute logique d'envoi vérifie cette liste noire avant d'envoyer.
+- Réutilise le `booking_token` déjà attribué au prospect (`booking.py`) comme
+  identifiant sécurisé, à la fois pour le lien de réservation et le lien de
+  désabonnement — pas de colonne supplémentaire nécessaire.
+- Envoi via l'API transactionnelle Brevo (`providers/brevo_email.py`),
+  expéditeur configurable via `EMAIL_SENDER`/`EMAIL_SENDER_NAME` (doit être un
+  expéditeur vérifié dans votre compte Brevo).
 
 ## Centre de pilotage (application séparée `apps/copilot`)
 

@@ -33,6 +33,13 @@ class Settings:
     twilio_auth_token: str = os.environ.get("TWILIO_AUTH_TOKEN", "")
     twilio_from_number: str = os.environ.get("TWILIO_FROM_NUMBER", "")
 
+    # ── E-mail (Brevo, transactionnel) ──────────────────────────────────
+    email_sender: str = os.environ.get("EMAIL_SENDER", "maelle.molinier@gmail.com")
+    email_sender_name: str = os.environ.get("EMAIL_SENDER_NAME", "Cap entreprendre France")
+    unsubscribe_base_url: str = os.environ.get(
+        "UNSUBSCRIBE_BASE_URL", "http://localhost:8020/desabonnement"
+    )
+
     # ── Base de données (Postgres/Supabase si DATABASE_URL défini,
     #    sinon fichier SQLite local — zéro configuration en dev) ──────────
     database_url: str = os.environ.get(

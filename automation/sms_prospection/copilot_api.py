@@ -13,12 +13,17 @@ from __future__ import annotations
 
 from fastapi import Body, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 from . import assistant_pilote, assistant_sectoriel, campagne_etat, conversations, secteurs_store
 from .blacklist import add_to_blacklist, lister_blacklist, retirer_de_la_blacklist
+from .booking import get_prospect_by_token
 from .campaign import envoyer_message_manuel, obtenir_prospect
 from .config import settings
+from .email_blacklist import add_to_blacklist as add_email_to_blacklist
+from .email_blacklist import lister_blacklist as lister_email_blacklist
+from .email_blacklist import retirer_de_la_blacklist as retirer_email_de_la_blacklist
 from .events import CATEGORIES, compter_non_lus_par_categorie, lister_evenements, marquer_categorie_lue, marquer_lu
 from .gemini_client import GeminiError
 from .phone_utils import NumeroInvalide, normaliser_e164
@@ -120,6 +125,49 @@ def blacklist_retirer(phone: str) -> dict:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     retire = retirer_de_la_blacklist(numero)
     return {"ok": True, "retire": retire}
+
+
+class BlacklistEmailBody(BaseModel):
+    email: str
+    source: str = "manuel_pilotage"
+
+
+@app.get("/api/blacklist-email")
+def blacklist_email_lister() -> dict:
+    return {"emails": lister_email_blacklist()}
+
+
+@app.post("/api/blacklist-email")
+def blacklist_email_ajouter(body: BlacklistEmailBody) -> dict:
+    ajoute = add_email_to_blacklist(body.email, source=body.source)
+    return {"ok": True, "nouveau": ajoute, "email": body.email.strip().lower()}
+
+
+@app.delete("/api/blacklist-email/{email}")
+def blacklist_email_retirer(email: str) -> dict:
+    retire = retirer_email_de_la_blacklist(email)
+    return {"ok": True, "retire": retire}
+
+
+# ── Désabonnement e-mail (page publique, cliquée depuis un e-mail) ───────
+
+@app.get("/desabonnement/{token}", response_class=HTMLResponse)
+def desabonnement(token: str) -> str:
+    prospect = get_prospect_by_token(token)
+    if prospect is None or not prospect.email:
+        titre, message = "Lien invalide", "Ce lien de désabonnement n'est plus valide."
+    else:
+        add_email_to_blacklist(prospect.email, source="desabonnement_email")
+        titre, message = "Désabonnement confirmé", f"{prospect.email} ne recevra plus d'e-mails de Cap Entreprendre France."
+
+    return f"""<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8" /><title>{titre}</title></head>
+<body style="font-family: Arial, Helvetica, sans-serif; background:#0d1420; color:#e9ebef; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0;">
+  <div style="max-width:420px; text-align:center; padding:32px;">
+    <h1 style="font-size:20px;">{titre}</h1>
+    <p style="color:#9aa2ad; font-size:14px; line-height:1.6;">{message}</p>
+  </div>
+</body></html>"""
 
 
 # ── Prospects & conversations ────────────────────────────────────────────

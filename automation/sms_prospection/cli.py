@@ -10,7 +10,7 @@ from __future__ import annotations
 import argparse
 import logging
 
-from .campaign import envoyer_campagne, importer_prospects_csv
+from .campaign import envoyer_campagne, envoyer_email_campagne, importer_prospects_csv
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
@@ -26,6 +26,10 @@ def main() -> None:
     p_send.add_argument("--limite", type=int, default=None)
     p_send.add_argument("--dry-run", action="store_true")
 
+    p_send_email = sous_commandes.add_parser("send-email", help="Envoie la campagne e-mail")
+    p_send_email.add_argument("--limite", type=int, default=None)
+    p_send_email.add_argument("--dry-run", action="store_true")
+
     sous_commandes.add_parser("serve", help="Démarre le serveur webhook/réservation")
 
     args = parser.parse_args()
@@ -38,6 +42,13 @@ def main() -> None:
         print(
             f"Total: {rapport.total} | Envoyés: {rapport.envoyes} | "
             f"Bloqués (liste noire): {rapport.bloques_blacklist} | Échecs: {rapport.echecs}"
+        )
+    elif args.commande == "send-email":
+        rapport = envoyer_email_campagne(limite=args.limite, dry_run=args.dry_run or None)
+        print(
+            f"Total: {rapport.total} | Envoyés: {rapport.envoyes} | "
+            f"Bloqués (liste noire): {rapport.bloques_blacklist} | "
+            f"Sans e-mail: {rapport.ignores_sans_email} | Échecs: {rapport.echecs}"
         )
     elif args.commande == "serve":
         import uvicorn
