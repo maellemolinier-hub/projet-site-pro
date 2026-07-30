@@ -97,12 +97,21 @@ réseau réel** (aucune clé API requise pour les faire passer).
 
 1. Créer un projet sur [Google Cloud Console](https://console.cloud.google.com),
    activer l'API **Google Calendar**.
-2. Créer un **compte de service**, générer une clé JSON, l'enregistrer sous
-   `service-account.json` (chemin configurable via `GOOGLE_SERVICE_ACCOUNT_FILE`).
-3. Partager votre agenda Google (Paramètres > Partager avec des personnes
-   spécifiques) avec l'adresse e-mail du compte de service, droits
-   "Modifier les événements".
-4. Renseigner `GOOGLE_CALENDAR_ID` (adresse e-mail de l'agenda, ou `primary`).
+2. Créer un **compte de service**, générer une clé JSON.
+3. Partager **votre** agenda Google (Paramètres > Partager avec des personnes
+   spécifiques) avec l'adresse e-mail du compte de service (visible dans le
+   JSON, champ `client_email`), droits "Modifier les événements". Sans cette
+   étape, le compte de service n'a accès à aucun agenda.
+4. Renseigner `GOOGLE_CALENDAR_ID` avec **votre propre adresse e-mail**
+   (celle dont l'agenda a été partagé à l'étape 3) — `primary` ne fonctionne
+   que pour l'agenda du compte de service lui-même, que personne ne consulte.
+5. Fournir la clé JSON au code, selon l'environnement :
+   - **En local** : enregistrer le fichier JSON (ex: `service-account.json`)
+     et renseigner `GOOGLE_SERVICE_ACCOUNT_FILE` avec son chemin.
+   - **En production serverless (Vercel...)** : impossible de déposer un
+     fichier — copier le **contenu JSON complet** de la clé dans la variable
+     d'environnement `GOOGLE_SERVICE_ACCOUNT_JSON` (prioritaire sur
+     `GOOGLE_SERVICE_ACCOUNT_FILE` quand renseignée).
 
 ## Format du SMS envoyé
 

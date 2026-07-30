@@ -48,10 +48,19 @@ class Settings:
     )
 
     # ── Prise de rendez-vous / Google Agenda ────────────────────────────
+    # "primary" ne fonctionne QUE si l'agenda appartient au compte de service
+    # lui-même — pour agir sur votre propre agenda, mettez ici l'adresse
+    # e-mail du compte Google dont l'agenda a été partagé avec le compte de
+    # service (voir README.md).
     google_calendar_id: str = os.environ.get("GOOGLE_CALENDAR_ID", "primary")
     google_service_account_file: str = os.environ.get(
         "GOOGLE_SERVICE_ACCOUNT_FILE", "service-account.json"
     )
+    # Contenu JSON complet de la clé de compte de service, en variable
+    # d'environnement — nécessaire en production serverless (Vercel), où
+    # déposer un fichier n'est pas possible. Prioritaire sur
+    # GOOGLE_SERVICE_ACCOUNT_FILE quand renseigné.
+    google_service_account_json: str = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON", "")
     booking_base_url: str = os.environ.get(
         "BOOKING_BASE_URL", "http://localhost:8010/reserver"
     )

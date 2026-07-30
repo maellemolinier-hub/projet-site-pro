@@ -1,9 +1,16 @@
 """Intégration Google Agenda : créneaux libres + création de l'événement de RDV.
 
 L'événement créé est systématiquement nommé "Audit de [Nom du Prospect]",
-conformément à la demande. Authentification via compte de service Google
-(fichier JSON, cf. GOOGLE_SERVICE_ACCOUNT_FILE) avec délégation sur l'agenda
-cible (GOOGLE_CALENDAR_ID) — voir README.md pour la procédure de configuration.
+conformément à la demande. Authentification via compte de service Google,
+avec délégation sur l'agenda cible (GOOGLE_CALENDAR_ID) — voir README.md
+pour la procédure de configuration complète.
+
+Deux façons de fournir les identifiants du compte de service :
+- GOOGLE_SERVICE_ACCOUNT_JSON : le contenu JSON complet de la clé, dans une
+  variable d'environnement — nécessaire sur les plateformes serverless
+  (Vercel...) qui ne permettent pas d'y déposer un fichier.
+- GOOGLE_SERVICE_ACCOUNT_FILE : chemin vers un fichier JSON local — pratique
+  en développement, mais inutilisable en production serverless.
 
 Les imports Google (googleapiclient / google-auth) sont volontairement faits
 à l'intérieur des fonctions : les modules de personnalisation/liste noire du
@@ -11,6 +18,7 @@ projet restent utilisables (et testables) sans cette dépendance installée.
 """
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 
@@ -18,6 +26,10 @@ from .config import settings
 from .models import Prospect
 
 _SCOPES = ["https://www.googleapis.com/auth/calendar"]
+
+
+class GoogleCalendarConfigError(RuntimeError):
+    pass
 
 
 @dataclass
@@ -30,9 +42,18 @@ def _get_service():
     from google.oauth2 import service_account
     from googleapiclient.discovery import build
 
-    credentials = service_account.Credentials.from_service_account_file(
-        settings.google_service_account_file, scopes=_SCOPES
-    )
+    if settings.google_service_account_json:
+        try:
+            infos = json.loads(settings.google_service_account_json)
+        except json.JSONDecodeError as exc:
+            raise GoogleCalendarConfigError(
+                "GOOGLE_SERVICE_ACCOUNT_JSON n'est pas un JSON valide."
+            ) from exc
+        credentials = service_account.Credentials.from_service_account_info(infos, scopes=_SCOPES)
+    else:
+        credentials = service_account.Credentials.from_service_account_file(
+            settings.google_service_account_file, scopes=_SCOPES
+        )
     return build("calendar", "v3", credentials=credentials, cache_discovery=False)
 
 
