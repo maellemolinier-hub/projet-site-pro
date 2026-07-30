@@ -156,7 +156,7 @@ async def get_price_trend(
             COUNT(*)                           AS transactions
         FROM "PricePoint"
         WHERE "postalCode" = :postal_code
-        AND "saleDate" > NOW() - (:months || ' months')::INTERVAL
+        AND "saleDate" > NOW() - make_interval(months => :months)
         AND "pricePerSqm" BETWEEN 500 AND 50000
         GROUP BY DATE_TRUNC('month', "saleDate")
         ORDER BY month ASC
