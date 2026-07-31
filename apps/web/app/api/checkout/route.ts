@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   }
 
   const { plan, annual } = parsed.data;
-  const origin = req.headers.get("origin") ?? "https://immoexpert.fr";
+  const origin = req.headers.get("origin") ?? "https://cap-entreprendre-france.fr";
 
   const session = await createCheckoutSession({
     userId,
