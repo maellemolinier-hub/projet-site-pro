@@ -5,10 +5,10 @@ import Link from "next/link";
 import { Menu, X, MapPin } from "lucide-react";
 
 const navLinks = [
-  { href: "#fonctionnalites", label: "Fonctionnalités" },
+  { href: "#fonctionnalites", label: "Services" },
   { href: "#comment-ca-marche", label: "Comment ça marche" },
-  { href: "#experts", label: "Experts certifiés" },
   { href: "#tarifs", label: "Tarifs" },
+  { href: "/contact-entreprise", label: "Contact" },
 ];
 
 export function Navbar() {
@@ -37,7 +37,7 @@ export function Navbar() {
               <MapPin className="w-4 h-4 text-white" />
             </div>
             <span className="font-bold text-gray-900 text-lg tracking-tight">
-              Immo<span className="text-brand-600">Expert</span>
+              Cap Entreprendre France
             </span>
           </Link>
 
@@ -66,7 +66,7 @@ export function Navbar() {
               href="/inscription"
               className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors shadow-sm"
             >
-              Essai gratuit 14 jours
+              Démarrer mon projet
             </Link>
           </div>
 
@@ -104,7 +104,7 @@ export function Navbar() {
                 href="/inscription"
                 className="text-center py-2 text-sm font-semibold text-white bg-brand-600 rounded-lg hover:bg-brand-700"
               >
-                Essai gratuit 14 jours
+                Démarrer mon projet
               </Link>
             </div>
           </div>
