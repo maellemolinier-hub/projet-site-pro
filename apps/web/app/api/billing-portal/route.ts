@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Aucun abonnement actif" }, { status: 404 });
   }
 
-  const origin = req.headers.get("origin") ?? "https://immoexpert.fr";
+  const origin = req.headers.get("origin") ?? "https://cap-entreprendre-france.fr";
   const session = await createBillingPortalSession(
     user.subscription.stripeCustomerId,
     `${origin}/dashboard/parametres`
