@@ -1,70 +1,70 @@
 import {
-  Map,
-  Smartphone,
-  GraduationCap,
-  Star,
-  Zap,
+  Palette,
   Globe,
+  Megaphone,
+  PenTool,
+  Zap,
+  Image as ImageIcon,
   BarChart3,
-  Shield,
+  Lightbulb,
 } from "lucide-react";
 
 const features = [
   {
-    icon: Map,
+    icon: Palette,
     color: "bg-blue-50 text-blue-600",
-    title: "Carte prix temps réel",
+    title: "Identité visuelle",
     description:
-      "Visualisez les prix au m² rue par rue sur toute la France. Heatmap dynamique, vue satellite et bascule 3D des bâtiments.",
-  },
-  {
-    icon: Smartphone,
-    color: "bg-orange-50 text-orange-600",
-    title: "Prospection prédictive IA",
-    description:
-      "Notre IA identifie les propriétaires susceptibles de vendre dans les 6 mois. Prioritisez votre terrain et rentrez plus de mandats.",
-  },
-  {
-    icon: GraduationCap,
-    color: "bg-purple-50 text-purple-600",
-    title: "Formation Expert Valeur Vénale",
-    description:
-      "Parcours certifiant 100% en ligne pour maîtriser l'expertise immobilière. Vidéos, quiz, cas pratiques et certificat officiel.",
-  },
-  {
-    icon: Star,
-    color: "bg-yellow-50 text-yellow-600",
-    title: "Badge Expert certifié",
-    description:
-      "Référencé dans notre annuaire national. Vos clients vous trouvent avant vos concurrents. Badge visible sur votre site.",
+      "Logo, charte graphique, palette de couleurs et typographies. Une identité forte qui vous distingue de vos concurrents.",
   },
   {
     icon: Globe,
-    color: "bg-green-50 text-green-600",
-    title: "Intégration sur votre site",
+    color: "bg-orange-50 text-orange-600",
+    title: "Création de sites web",
     description:
-      "Widget carte et landing page en marque blanche à intégrer sur votre site en 5 minutes. Convertit vos visiteurs en mandats.",
+      "Sites vitrines, e-commerce et applications web. Modernes, rapides et optimisés pour le référencement.",
+  },
+  {
+    icon: Megaphone,
+    color: "bg-purple-50 text-purple-600",
+    title: "Communication digitale",
+    description:
+      "Gestion des réseaux sociaux, campagnes publicitaires et stratégie de contenu. Votre marque visible partout.",
+  },
+  {
+    icon: PenTool,
+    color: "bg-yellow-50 text-yellow-600",
+    title: "Stratégie de marque",
+    description:
+      "Positionnement, valeurs, ton de communication. On construit une marque cohérente qui parle à votre audience.",
+  },
+  {
+    icon: ImageIcon,
+    color: "bg-green-50 text-green-600",
+    title: "Design graphique",
+    description:
+      "Flyers, cartes de visite, brochures, bannières. Des supports print et digitaux qui attirent l'œil.",
   },
   {
     icon: BarChart3,
     color: "bg-red-50 text-red-600",
-    title: "Rapports de marché",
+    title: "Refonte de marque",
     description:
-      "Générez des PDF de marché personnalisés par secteur pour impressionner vos clients. Données DVF + annonces actives.",
+      "Modernisation de votre identité existante. On garde votre ADN tout en vous donnant un coup de jeune.",
   },
   {
     icon: Zap,
     color: "bg-brand-50 text-brand-600",
-    title: "Données quasi temps réel",
+    title: "Accompagnement entrepreneurial",
     description:
-      "Annonces scrapées quotidiennement + DVF trimestriel + PERVAL notaires. La source la plus fraîche du marché.",
+      "Conseils et support pour lancer ou développer votre activité. On vous aide à communiquer dès le premier jour.",
   },
   {
-    icon: Shield,
+    icon: Lightbulb,
     color: "bg-teal-50 text-teal-600",
-    title: "Analyse foncière promoteurs",
+    title: "Conseils & formation",
     description:
-      "Potentiel constructible, PLU, prix foncier historique. L'outil indispensable pour sourcer les meilleurs terrains.",
+      "Ateliers et formations en communication. Apprenez à gérer votre image et celle de votre entreprise.",
   },
 ];
 
@@ -78,15 +78,15 @@ export function Features() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="inline-block text-xs font-semibold tracking-widest text-brand-600 uppercase mb-3">
-            Fonctionnalités
+            Nos services
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Tout ce dont un professionnel{" "}
-            <span className="gradient-text">a vraiment besoin</span>
+            Tout ce dont votre entreprise{" "}
+            <span className="gradient-text">a besoin pour communiquer</span>
           </h2>
           <p className="text-gray-500 text-lg">
-            Une seule plateforme remplace cinq abonnements. Et vous donne un
-            avantage que vos concurrents n&apos;ont pas encore.
+            Un studio complet pour gérer votre image de A à Z. De l'identité
+            visuelle à la stratégie digitale, on couvre tous vos besoins.
           </p>
         </div>
 
