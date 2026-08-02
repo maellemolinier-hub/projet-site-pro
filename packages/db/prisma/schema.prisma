@@ -72,6 +72,9 @@ model User {
   prospects     Prospect[]
   reports       Report[]
 
+  leadAssistantSettings LeadAssistantSettings?
+  leadConversations     LeadConversation[]
+
   @@index([email])
 }
 
@@ -402,4 +405,98 @@ model Report {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+// ─── ASSISTANT IA DE PROSPECTION (LEAD ASSISTANT) ────────────────────────────
+// Surveille les canaux connectés (Slack en priorité — les autres réseaux
+// sociaux nécessitent leurs API officielles de messagerie business, pas de
+// scraping), qualifie l'intention d'achat par IA, rédige et envoie une
+// proposition, puis oriente le lead vers la prise de rendez-vous.
+
+model LeadAssistantSettings {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  businessDescription String?  @db.Text
+  bookingLink         String?
+  minIntentScore      Float    @default(0.6)
+
+  slackTeamId    String? @unique
+  slackTeamName  String?
+  slackBotToken  String? @db.Text
+  slackUserId    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([slackTeamId])
+}
+
+model LeadConversation {
+  id            String     @id @default(cuid())
+  userId        String
+  channel       String     @default("SLACK")
+  externalId    String
+  contactName   String?
+  contactHandle String?
+  intentScore   Float      @default(0)
+  intentSummary String?
+  status        LeadStatus @default(NEW)
+  lastMessageAt DateTime   @default(now())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  LeadMessage[]
+  proposals LeadProposal[]
+
+  @@unique([userId, channel, externalId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum LeadStatus {
+  NEW
+  QUALIFYING
+  QUALIFIED
+  PROPOSAL_SENT
+  MEETING_REQUESTED
+  MEETING_BOOKED
+  LOST
+}
+
+model LeadMessage {
+  id             String        @id @default(cuid())
+  conversationId String
+  direction      MessageDirection
+  body           String        @db.Text
+  createdAt      DateTime      @default(now())
+
+  conversation LeadConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+}
+
+enum MessageDirection {
+  IN
+  OUT
+}
+
+model LeadProposal {
+  id             String         @id @default(cuid())
+  conversationId String
+  content        String         @db.Text
+  status         ProposalStatus @default(DRAFT)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  conversation LeadConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+}
+
+enum ProposalStatus {
+  DRAFT
+  SENT
 }
