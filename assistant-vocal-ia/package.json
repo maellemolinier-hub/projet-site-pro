@@ -11,6 +11,8 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",
     "dotenv": "^16.4.5",
+    "node-record-lpcm16": "^1.0.1",
+    "nodejs-whisper": "^0.3.1",
     "playwright": "^1.48.0",
     "zod": "^3.23.8"
   },
