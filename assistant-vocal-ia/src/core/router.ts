@@ -5,6 +5,7 @@ import { organizePhotosByDate } from "../tools/organizeFiles.js";
 import { openApplication } from "../tools/openApp.js";
 import { fetchCredential } from "../tools/bitwarden.js";
 import { loginToSite } from "../tools/loginToSite.js";
+import { listRecentEmails } from "../tools/mail/gmail.js";
 
 const client = new Anthropic();
 
@@ -61,7 +62,30 @@ const loginToSiteTool = betaZodTool({
   run: async ({ siteName, url }) => loginToSite(siteName, url),
 });
 
-const SYSTEM_PROMPT = `Tu es un assistant vocal personnel qui execute des actions sur l'ordinateur de l'utilisateur : ranger des fichiers/photos, lancer des logiciels, et se connecter a des comptes en ligne deja enregistres dans le gestionnaire de mots de passe.
+const listEmailsTool = betaZodTool({
+  name: "list_recent_emails",
+  description:
+    "Liste les emails recents de la boite Gmail connectee (lecture seule - ne peut ni envoyer ni supprimer). Utilise ceci quand l'utilisateur demande de consulter ses mails ou ses non-lus.",
+  inputSchema: z.object({
+    maxResults: z
+      .number()
+      .int()
+      .min(1)
+      .max(20)
+      .optional()
+      .describe("Nombre d'emails a recuperer (5 par defaut)"),
+    unreadOnly: z
+      .boolean()
+      .optional()
+      .describe("true pour ne montrer que les emails non lus"),
+  }),
+  run: async ({ maxResults, unreadOnly }) => {
+    const emails = await listRecentEmails({ maxResults, unreadOnly });
+    return JSON.stringify(emails);
+  },
+});
+
+const SYSTEM_PROMPT = `Tu es un assistant vocal personnel qui execute des actions sur l'ordinateur de l'utilisateur : ranger des fichiers/photos, lancer des logiciels, consulter les mails recents (lecture seule), et se connecter a des comptes en ligne deja enregistres dans le gestionnaire de mots de passe.
 Confirme toujours en une phrase ce que tu as fait apres avoir execute une action. Si une commande est ambigue, demande une precision plutot que de deviner.`;
 
 export async function runCommand(command: string): Promise<string> {
@@ -77,6 +101,7 @@ export async function runCommand(command: string): Promise<string> {
       openAppTool,
       fetchCredentialTool,
       loginToSiteTool,
+      listEmailsTool,
     ],
     messages: [{ role: "user", content: command }],
   });
