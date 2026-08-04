@@ -33,11 +33,14 @@ src/                  (tourne sur le PC - c'est la que vivent les actions)
     loginToSite.ts          -> ouvre un site et remplit les champs de connexion
     shell.ts                 -> execute une commande shell (tache generique non couverte ailleurs)
     destructiveCommand.ts     -> detecte les commandes shell potentiellement destructrices
+    confirmation.ts             -> verifie "CONFIRME <code secret>" dans la demande d'origine
     mail/
       auth.ts                -> autorisation OAuth Gmail + stockage token local
       gmail.ts                 -> liste/recherche/lit n'importe quel email (lecture seule)
       bridgeParser.ts           -> logique pure : detecte/parse les mails de commande
       bridge.ts                 -> pont mail : lit, execute, repond, marque comme lu
+  connectors/
+    gemini.ts             -> delegue a Gemini (Google) l'analyse de fichiers (video, image, audio)
   scripts/
     authorizeGmail.ts     -> a lancer une fois pour autoriser l'acces Gmail
     mailBridge.ts          -> point d'entree de `pnpm run mail-bridge`
@@ -110,6 +113,25 @@ toujours le PC qui range les fichiers, lance les logiciels, etc.
   pont mail (personne ne regarde en temps reel quand une commande arrive
   par mail - si `TRUSTED_SENDER_EMAIL` est compromis, `CONFIRMATION_CODE`
   reste la derniere ligne de defense pour les actions destructrices).
+- **Confirmer par la voix marche deja, sans rien ajouter.** En mode
+  `--voice` ou `--wake`, ta phrase est transcrite en texte (Whisper) avant
+  d'arriver au meme controle que le mode texte - dire "CONFIRME" suivi de
+  ton code a voix haute fonctionne exactement comme le taper. Ce n'est pas
+  de la **reconnaissance vocale biometrique** (verifier que c'est bien *ta*
+  voix, pas juste les bons mots) : ca, c'est une fonctionnalite differente
+  et plus lourde a construire (enrolement d'une empreinte vocale, modele de
+  verification du locuteur) - non implementee ici. A envisager en prochaine
+  etape uniquement si le code seul ne suffit pas a ton usage.
+- **Outils IA supplementaires (`web_search`, `code_execution`, `ask_gemini`)
+  envoient des donnees hors de ton PC.** `web_search` envoie tes requetes de
+  recherche aux serveurs Anthropic (necessaire pour chercher sur le web).
+  `code_execution` tourne dans un bac a sable heberge par Anthropic (donc
+  plus sur que `run_shell_command` puisqu'il n'a aucun acces a ton PC, mais
+  le code envoye y transite). `ask_gemini` envoie le prompt - et le contenu
+  du fichier s'il y en a un (video, image...) - a l'API Google Gemini.
+  Aucun de ces trois n'a besoin d'etre configure pour que le reste de
+  Serv'IA fonctionne (`ask_gemini` echoue juste proprement sans
+  `GEMINI_API_KEY`).
 - **Mode reveil "Hey Serv'IA" = micro actif en continu.** Contrairement au
   mode `--voice` (push-to-talk, micro actif seulement entre deux appuis sur
   Entree), le mode `--wake` enregistre et transcrit en continu par fenetres
@@ -136,6 +158,10 @@ toujours le PC qui range les fichiers, lance les logiciels, etc.
   activee et des identifiants OAuth de type "Application de bureau" (menu
   *Identifiants > Creer des identifiants > ID client OAuth*). Renseigne
   `GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET` dans `.env`.
+- **Pour `ask_gemini` uniquement (optionnel)** : une cle API Gemini,
+  gratuite sur [Google AI Studio](https://aistudio.google.com/apikey).
+  Renseigne `GEMINI_API_KEY` dans `.env`. Sans elle, `ask_gemini` renvoie
+  juste une erreur claire - le reste de Serv'IA fonctionne normalement.
 
 ## Installation (PC)
 
@@ -211,6 +237,34 @@ pre-remplis ; c'est toi qui appuies sur "Envoyer" dans ton app mail (rien
 n'est envoye automatiquement en arriere-plan). La reponse arrive ensuite par
 mail, pas dans l'app.
 
+## Connecteurs IA
+
+Au-dela des 8 outils "action locale", Serv'IA peut deleguer a d'autres IA
+pour des taches qu'il ne sait pas faire lui-meme :
+
+- **`web_search`** - recherche web native de Claude. Aucune config
+  supplementaire (utilise `ANTHROPIC_API_KEY`).
+- **`code_execution`** - execute du code dans un bac a sable heberge par
+  Anthropic (analyse de donnees, generation de fichiers...). Aucune config
+  supplementaire.
+- **`ask_gemini`** - envoie une question a Gemini (Google), avec en option
+  un fichier local (video, image, audio, document). C'est la reponse
+  concrete a "faire une commande de video" : demande par exemple *"resume
+  cette video : /Users/moi/Videos/reunion.mp4"* et Serv'IA uploade le
+  fichier vers Gemini, attend qu'il soit traite, et renvoie le resume.
+  Necessite `GEMINI_API_KEY` (gratuit a obtenir sur
+  [Google AI Studio](https://aistudio.google.com/apikey)).
+
+**Ce qui n'est PAS fait : generer une video (texte -> video).** Techniquement
+possible (Google Veo via l'API Gemini, ou d'autres fournisseurs comme
+Runway), mais c'est un vrai choix a faire avant de coder quoi que ce soit -
+les fournisseurs different fortement en cout, qualite et disponibilite, et
+je ne voulais pas deviner a ta place ni improviser une integration sur une
+API que je n'ai pas pu verifier en detail. Dis-moi si c'est ca que tu veux
+(et avec quel fournisseur) et je prepare le connecteur en consequence -
+l'architecture `connectors/` est faite pour recevoir un `veo.ts` a cote de
+`gemini.ts` sans rien casser.
+
 ## Tests
 
 ```bash
@@ -233,7 +287,15 @@ destructrice (`destructiveCommand.ts`) est testee sur des cas positifs
 public, `/command` qui rejette les requetes sans le bon token) ; le pont
 mail refuse bien de demarrer sans `TRUSTED_SENDER_EMAIL`/`COMMAND_PASSPHRASE` ;
 `runShellCommand` a ete execute manuellement ici (commande normale et
-commande en erreur, capture correcte de stdout/stderr).
+commande en erreur, capture correcte de stdout/stderr) ; le garde-fou de
+confirmation (`confirmation.ts`) est teste sur le bon code, un mauvais code,
+le mot CONFIRME seul, l'absence de `CONFIRMATION_CODE`, et la casse.
+`connectors/gemini.ts` compile contre les vrais types du SDK
+`@google/genai` installe (verifie a la main dans le code source du package :
+signatures de `files.upload`, `files.get`, `createPartFromUri`,
+`models.generateContent`) mais **n'a pas pu etre execute contre l'API
+Gemini reelle** ici (pas de cle, pas de reseau externe autorise vers
+Google) - a tester en priorite avant de t'y fier.
 
 **Ce qui ne peut pas etre teste dans cet environnement sandbox** (pas de
 microphone, pas de cle API Anthropic, pas de session Bitwarden active, pas
@@ -247,6 +309,8 @@ ton poste avant usage reel :
 - `fetch_credential` / `login_to_site` (necessitent Bitwarden deverrouille)
 - `list_recent_emails` / `search_emails` / `read_email` et le pont mail de
   bout en bout (necessitent l'autorisation OAuth Gmail et un vrai mail)
+- `web_search`, `code_execution` et `ask_gemini` de bout en bout (necessitent
+  respectivement une cle Anthropic active, la meme, et une cle Gemini)
 - l'app mobile en conditions reelles (Wi-Fi et mail, Expo Go)
 
 ## Limites actuelles (prototype)
@@ -269,23 +333,34 @@ ton poste avant usage reel :
   les autres outils (mails, connexion a un site, ouverture de logiciel)
   s'executent directement des qu'ils passent les verifications
   d'authenticite du canal utilise.
+- Pas de reconnaissance vocale biometrique (verifier que c'est *ta* voix) -
+  seulement le code secret, dit ou tape indifferemment.
+- Pas de generation de video (texte -> video) - decision de fournisseur en
+  attente, voir "Connecteurs IA".
+- `connectors/gemini.ts` n'a jamais ete execute contre l'API Gemini reelle
+  (voir "Tests").
 
 ## Prochaines etapes
 
 1. Valider tous les modes en conditions reelles (micro PC dont `--wake`,
-   app mobile en Wi-Fi, pont mail de bout en bout, `run_shell_command`) -
-   c'est la priorite avant d'ajouter de nouvelles briques.
-2. Remplacer la detection "Hey Serv'IA" par un vrai moteur de mot-cle
+   app mobile en Wi-Fi, pont mail de bout en bout, `run_shell_command`,
+   `ask_gemini`) - c'est la priorite avant d'ajouter de nouvelles briques.
+2. Decider du fournisseur de generation video (Google Veo, Runway, autre) et
+   brancher le connecteur correspondant.
+3. Remplacer la detection "Hey Serv'IA" par un vrai moteur de mot-cle
    local (ex: openWakeWord) si l'usage reel montre que le CPU/la latence de
    la version actuelle sont genants.
-3. Ajouter la voix a l'app mobile (dictee native iOS/Android ou meme
+4. Ajouter la voix a l'app mobile (dictee native iOS/Android ou meme
    pipeline Whisper que le PC).
-4. Notification push mobile quand une reponse arrive par mail, plutot que
+5. Notification push mobile quand une reponse arrive par mail, plutot que
    de devoir aller consulter la boite de reception.
-5. Elargir le connecteur mail (Outlook) une fois Gmail valide en usage reel.
-6. Renforcer le garde-fou du shell (ex: demander confirmation orale/textuelle
+6. Elargir le connecteur mail (Outlook) une fois Gmail valide en usage reel.
+7. Renforcer le garde-fou du shell (ex: demander confirmation orale/textuelle
    explicite juste avant execution plutot qu'un mot-cle dans la demande
    d'origine, journal des commandes executees consultable).
+8. Si le code secret ne suffit pas : reconnaissance vocale biometrique
+   (necessite enrolement d'une empreinte vocale + modele de verification du
+   locuteur - hors scope actuel, a chiffrer separement si voulu).
 
 ## Scalabilite / monetisation
 

@@ -9,6 +9,7 @@ import { listRecentEmails, searchEmails, readEmailById } from "../tools/mail/gma
 import { runShellCommand } from "../tools/shell.js";
 import { isDestructiveCommand } from "../tools/destructiveCommand.js";
 import { isPreConfirmed } from "../tools/confirmation.js";
+import { askGemini } from "../connectors/gemini.js";
 
 const client = new Anthropic();
 
@@ -117,6 +118,20 @@ const readEmailTool = betaZodTool({
   },
 });
 
+const askGeminiTool = betaZodTool({
+  name: "ask_gemini",
+  description:
+    "Envoie une question a Gemini (Google), avec en option un fichier local a analyser (video, image, audio, document). Utilise ceci pour comprendre le contenu d'une video ou de tout fichier que Serv'IA ne sait pas interpreter directement - ex: 'resume cette video', 'qu'est-ce qu'il y a sur cette photo'. Necessite GEMINI_API_KEY dans .env.",
+  inputSchema: z.object({
+    prompt: z.string().describe("Question ou instruction pour Gemini"),
+    filePath: z
+      .string()
+      .optional()
+      .describe("Chemin absolu d'un fichier local a analyser (video, image, audio, document)"),
+  }),
+  run: async ({ prompt, filePath }) => askGemini(prompt, filePath),
+});
+
 /**
  * L'outil shell est construit par requete plutot que declare une seule fois,
  * pour pouvoir fermer sur `preConfirmed` (calcule a partir du texte brut de
@@ -141,7 +156,7 @@ function buildRunShellCommandTool(preConfirmed: boolean) {
   });
 }
 
-const SYSTEM_PROMPT = `Tu es Serv'IA, un assistant personnel qui execute des actions sur l'ordinateur de l'utilisateur : ranger des fichiers/photos, lancer des logiciels, chercher et lire n'importe quel email (lecture seule), se connecter a des comptes en ligne deja enregistres, et executer des commandes shell pour toute autre tache demandee (run_shell_command).
+const SYSTEM_PROMPT = `Tu es Serv'IA, un assistant personnel qui execute des actions sur l'ordinateur de l'utilisateur : ranger des fichiers/photos, lancer des logiciels, chercher et lire n'importe quel email (lecture seule), se connecter a des comptes en ligne deja enregistres, executer des commandes shell pour toute autre tache demandee (run_shell_command), chercher sur le web, executer du code dans un bac a sable pour analyser des donnees ou generer des fichiers, et deleguer a Gemini (ask_gemini) l'analyse de fichiers qu'il comprend nativement (video, image, audio).
 Si run_shell_command refuse une commande car elle a l'air destructrice, explique a l'utilisateur qu'il doit reformuler sa demande en incluant "CONFIRME" suivi de son code secret personnel - n'insiste pas et n'essaie pas de contourner, et ne devine jamais ce code.
 Confirme toujours en une phrase ce que tu as fait apres avoir execute une action. Si une commande est ambigue, demande une precision plutot que de deviner.`;
 
@@ -155,6 +170,7 @@ export async function runCommand(command: string): Promise<string> {
     // NB: `output_config.effort` (controle du niveau de reflexion) n'est pas
     // encore type dans @anthropic-ai/sdk@0.68.0 installe ici. A ajouter des
     // que le SDK est mis a jour vers une version qui l'expose.
+    betas: ["code-execution-2025-05-22"],
     tools: [
       organizePhotosTool,
       openAppTool,
@@ -163,6 +179,9 @@ export async function runCommand(command: string): Promise<string> {
       listEmailsTool,
       searchEmailsTool,
       readEmailTool,
+      askGeminiTool,
+      { type: "web_search_20250305", name: "web_search" },
+      { type: "code_execution_20250522", name: "code_execution" },
       buildRunShellCommandTool(preConfirmed),
     ],
     messages: [{ role: "user", content: command }],
