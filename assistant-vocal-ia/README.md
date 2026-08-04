@@ -92,17 +92,24 @@ toujours le PC qui range les fichiers, lance les logiciels, etc.
   majeur.** Ce n'est plus une liste fixe d'actions predefinies : le modele
   peut executer n'importe quelle commande shell, avec les memes droits que
   le compte utilisateur qui a lance Serv'IA. **Il n'y a pas de sandbox.**
-  Le seul garde-fou est `destructiveCommand.ts` : une liste de motifs connus
+  Le garde-fou est `destructiveCommand.ts` : une liste de motifs connus
   (suppression recursive, formatage, arret systeme, `sudo`, requetes SQL
   destructrices, `git push --force`...) qui, s'ils matchent, bloquent
-  l'execution **sauf si le mot `CONFIRME` etait present dans la demande
-  d'origine** (texte tape, transcrit du micro, ou mail recu). Cette
-  verification se fait cote code sur le texte brut de la demande, pas sur ce
-  que le modele affirme avoir verifie lui-meme. C'est une **heuristique, pas
-  une garantie** : une commande destructrice qui ne matche aucun motif
-  connu s'executerait sans demander confirmation. A ne pas utiliser sans
-  comprendre ce risque, en particulier via le pont mail (personne ne
-  regarde en temps reel quand une commande arrive par mail).
+  l'execution **sauf si la demande d'origine contient `CONFIRME <code
+  secret>`** (texte tape, transcrit du micro, ou mail recu) - le code secret
+  est `CONFIRMATION_CODE` dans `.env`, propre a ton installation. **Le mot
+  CONFIRME seul ne suffit pas** : c'est un mot public (documente ici), donc
+  sans le code il n'apporte aucune securite - quelqu'un qui devine juste
+  qu'il faut dire "confirme" ne debloque rien. Cette verification se fait
+  cote code sur le texte brut de la demande, pas sur ce que le modele
+  affirme avoir verifie lui-meme, et compare le code de facon exacte
+  (sensible a la casse). C'est quand meme une **heuristique, pas une
+  garantie absolue** : une commande destructrice qui ne matche aucun motif
+  connu de `destructiveCommand.ts` s'executerait sans demander de code. A ne
+  pas utiliser sans comprendre ce risque residuel, en particulier via le
+  pont mail (personne ne regarde en temps reel quand une commande arrive
+  par mail - si `TRUSTED_SENDER_EMAIL` est compromis, `CONFIRMATION_CODE`
+  reste la derniere ligne de defense pour les actions destructrices).
 - **Mode reveil "Hey Serv'IA" = micro actif en continu.** Contrairement au
   mode `--voice` (push-to-talk, micro actif seulement entre deux appuis sur
   Entree), le mode `--wake` enregistre et transcrit en continu par fenetres

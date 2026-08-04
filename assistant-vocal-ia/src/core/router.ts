@@ -8,6 +8,7 @@ import { loginToSite } from "../tools/loginToSite.js";
 import { listRecentEmails, searchEmails, readEmailById } from "../tools/mail/gmail.js";
 import { runShellCommand } from "../tools/shell.js";
 import { isDestructiveCommand } from "../tools/destructiveCommand.js";
+import { isPreConfirmed } from "../tools/confirmation.js";
 
 const client = new Anthropic();
 
@@ -126,13 +127,13 @@ function buildRunShellCommandTool(preConfirmed: boolean) {
   return betaZodTool({
     name: "run_shell_command",
     description:
-      "Execute une commande shell sur le PC pour accomplir toute tache non couverte par les autres outils (creer/deplacer/renommer fichiers ou dossiers, verifier l'espace disque, installer un paquet, lancer un script...). Dossier de travail : dossier utilisateur. ATTENTION : aucune sandbox, la commande a les memes droits que l'utilisateur. Pour une commande potentiellement destructrice (suppression, formatage, arret systeme, sudo...), le mot CONFIRME doit avoir ete present dans la demande d'origine, sinon l'outil refuse et il faut le dire a l'utilisateur.",
+      "Execute une commande shell sur le PC pour accomplir toute tache non couverte par les autres outils (creer/deplacer/renommer fichiers ou dossiers, verifier l'espace disque, installer un paquet, lancer un script...). Dossier de travail : dossier utilisateur. ATTENTION : aucune sandbox, la commande a les memes droits que l'utilisateur. Pour une commande potentiellement destructrice (suppression, formatage, arret systeme, sudo...), la demande d'origine doit contenir 'CONFIRME <code secret>' (le code secret de l'utilisateur, pas le mot CONFIRME seul), sinon l'outil refuse et il faut le dire a l'utilisateur.",
     inputSchema: z.object({
       command: z.string().describe("Commande shell a executer"),
     }),
     run: async ({ command }) => {
       if (isDestructiveCommand(command) && !preConfirmed) {
-        return "REFUSE : cette commande a l'air destructrice. Redemande a l'utilisateur de reformuler en incluant explicitement le mot CONFIRME s'il est sur de lui.";
+        return "REFUSE : cette commande a l'air destructrice. Redemande a l'utilisateur de reformuler en incluant 'CONFIRME <son code secret>' s'il est sur de lui - le mot CONFIRME seul ne suffit pas.";
       }
       const result = await runShellCommand(command);
       return JSON.stringify(result);
@@ -141,11 +142,11 @@ function buildRunShellCommandTool(preConfirmed: boolean) {
 }
 
 const SYSTEM_PROMPT = `Tu es Serv'IA, un assistant personnel qui execute des actions sur l'ordinateur de l'utilisateur : ranger des fichiers/photos, lancer des logiciels, chercher et lire n'importe quel email (lecture seule), se connecter a des comptes en ligne deja enregistres, et executer des commandes shell pour toute autre tache demandee (run_shell_command).
-Si run_shell_command refuse une commande car elle a l'air destructrice, explique a l'utilisateur qu'il doit reformuler sa demande en incluant le mot CONFIRME - n'insiste pas et n'essaie pas de contourner.
+Si run_shell_command refuse une commande car elle a l'air destructrice, explique a l'utilisateur qu'il doit reformuler sa demande en incluant "CONFIRME" suivi de son code secret personnel - n'insiste pas et n'essaie pas de contourner, et ne devine jamais ce code.
 Confirme toujours en une phrase ce que tu as fait apres avoir execute une action. Si une commande est ambigue, demande une precision plutot que de deviner.`;
 
 export async function runCommand(command: string): Promise<string> {
-  const preConfirmed = /\bconfirme\b/i.test(command);
+  const preConfirmed = isPreConfirmed(command, process.env.CONFIRMATION_CODE);
 
   const finalMessage = await client.beta.messages.toolRunner({
     model: "claude-opus-5",
