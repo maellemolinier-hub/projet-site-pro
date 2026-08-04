@@ -11,7 +11,14 @@ import {
   View,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { getServerConfig, saveServerConfig, sendCommand } from "./src/assistantClient";
+import {
+  getServerConfig,
+  saveServerConfig,
+  sendCommand,
+  getMailConfig,
+  saveMailConfig,
+  sendCommandByMail,
+} from "./src/assistantClient";
 
 interface Exchange {
   command: string;
@@ -20,9 +27,16 @@ interface Exchange {
 }
 
 export default function App() {
+  // Connexion Wi-Fi (reseau local, reponse immediate)
   const [serverUrl, setServerUrl] = useState("");
   const [token, setToken] = useState("");
-  const [configSaved, setConfigSaved] = useState(false);
+  const [wifiConfigSaved, setWifiConfigSaved] = useState(false);
+
+  // Connexion par mail (fonctionne de partout, reponse asynchrone)
+  const [mailRecipient, setMailRecipient] = useState("");
+  const [mailPassphrase, setMailPassphrase] = useState("");
+  const [mailConfigSaved, setMailConfigSaved] = useState(false);
+
   const [command, setCommand] = useState("");
   const [history, setHistory] = useState<Exchange[]>([]);
   const [sending, setSending] = useState(false);
@@ -31,16 +45,30 @@ export default function App() {
     getServerConfig().then(({ serverUrl: savedUrl, token: savedToken }) => {
       if (savedUrl) setServerUrl(savedUrl);
       if (savedToken) setToken(savedToken);
-      setConfigSaved(Boolean(savedUrl && savedToken));
+      setWifiConfigSaved(Boolean(savedUrl && savedToken));
+    });
+    getMailConfig().then(({ recipient, passphrase }) => {
+      if (recipient) setMailRecipient(recipient);
+      if (passphrase) setMailPassphrase(passphrase);
+      setMailConfigSaved(Boolean(recipient && passphrase));
     });
   }, []);
 
-  async function handleSaveConfig() {
+  async function handleSaveWifiConfig() {
     await saveServerConfig(serverUrl, token);
-    setConfigSaved(true);
+    setWifiConfigSaved(true);
   }
 
-  async function handleSend() {
+  async function handleSaveMailConfig() {
+    await saveMailConfig(mailRecipient, mailPassphrase);
+    setMailConfigSaved(true);
+  }
+
+  function addToHistory(currentCommand: string, response: string, isError: boolean) {
+    setHistory((prev) => [{ command: currentCommand, response, isError }, ...prev]);
+  }
+
+  async function handleSendWifi() {
     if (!command.trim() || !serverUrl || !token) return;
     const currentCommand = command.trim();
     setSending(true);
@@ -48,16 +76,37 @@ export default function App() {
 
     try {
       const response = await sendCommand(serverUrl, token, currentCommand);
-      setHistory((prev) => [{ command: currentCommand, response, isError: false }, ...prev]);
+      addToHistory(currentCommand, response, false);
     } catch (error) {
-      setHistory((prev) => [
-        {
-          command: currentCommand,
-          response: error instanceof Error ? error.message : "Erreur inconnue.",
-          isError: true,
-        },
-        ...prev,
-      ]);
+      addToHistory(
+        currentCommand,
+        error instanceof Error ? error.message : "Erreur inconnue.",
+        true,
+      );
+    } finally {
+      setSending(false);
+    }
+  }
+
+  async function handleSendMail() {
+    if (!command.trim() || !mailRecipient || !mailPassphrase) return;
+    const currentCommand = command.trim();
+    setSending(true);
+
+    try {
+      await sendCommandByMail(mailRecipient, mailPassphrase, currentCommand);
+      setCommand("");
+      addToHistory(
+        currentCommand,
+        "Mail envoye - la reponse arrivera dans ta boite mail une fois le PC connecte a traite la commande.",
+        false,
+      );
+    } catch (error) {
+      addToHistory(
+        currentCommand,
+        error instanceof Error ? error.message : "Erreur inconnue.",
+        true,
+      );
     } finally {
       setSending(false);
     }
@@ -70,13 +119,14 @@ export default function App() {
     >
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <StatusBar style="auto" />
-        <Text style={styles.title}>Assistant Vocal IA</Text>
+        <Text style={styles.title}>Serv'IA</Text>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Serveur (PC)</Text>
+          <Text style={styles.sectionTitle}>Connexion Wi-Fi (reseau local)</Text>
           <Text style={styles.hint}>
             Lance `npm run server` sur ton PC, puis renseigne son adresse locale
-            (ex: http://192.168.1.23:4174) et le token defini dans .env.
+            (ex: http://192.168.1.23:4174) et le token defini dans .env. Reponse
+            immediate, mais telephone et PC doivent etre sur le meme Wi-Fi.
           </Text>
           <TextInput
             style={styles.input}
@@ -95,10 +145,40 @@ export default function App() {
             value={token}
             onChangeText={setToken}
           />
-          <TouchableOpacity style={styles.buttonSecondary} onPress={handleSaveConfig}>
+          <TouchableOpacity style={styles.buttonSecondary} onPress={handleSaveWifiConfig}>
             <Text style={styles.buttonSecondaryText}>Enregistrer</Text>
           </TouchableOpacity>
-          {configSaved ? <Text style={styles.ok}>Configuration enregistree.</Text> : null}
+          {wifiConfigSaved ? <Text style={styles.ok}>Configuration Wi-Fi enregistree.</Text> : null}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Connexion par mail (partout)</Text>
+          <Text style={styles.hint}>
+            Lance `npm run mail-bridge` sur ton PC. Fonctionne meme hors Wi-Fi
+            local, mais la reponse arrive par mail (pas immediate).
+          </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Adresse mail surveillee par le PC"
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="email-address"
+            value={mailRecipient}
+            onChangeText={setMailRecipient}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Phrase secrete (COMMAND_PASSPHRASE)"
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry
+            value={mailPassphrase}
+            onChangeText={setMailPassphrase}
+          />
+          <TouchableOpacity style={styles.buttonSecondary} onPress={handleSaveMailConfig}>
+            <Text style={styles.buttonSecondaryText}>Enregistrer</Text>
+          </TouchableOpacity>
+          {mailConfigSaved ? <Text style={styles.ok}>Configuration mail enregistree.</Text> : null}
         </View>
 
         <View style={styles.section}>
@@ -112,14 +192,21 @@ export default function App() {
           />
           <TouchableOpacity
             style={[styles.button, sending && styles.buttonDisabled]}
-            onPress={handleSend}
+            onPress={handleSendWifi}
             disabled={sending || !command.trim() || !serverUrl || !token}
           >
             {sending ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.buttonText}>Envoyer</Text>
+              <Text style={styles.buttonText}>Envoyer en Wi-Fi</Text>
             )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.buttonSecondary, sending && styles.buttonDisabled]}
+            onPress={handleSendMail}
+            disabled={sending || !command.trim() || !mailRecipient || !mailPassphrase}
+          >
+            <Text style={styles.buttonSecondaryText}>Envoyer par mail</Text>
           </TouchableOpacity>
         </View>
 

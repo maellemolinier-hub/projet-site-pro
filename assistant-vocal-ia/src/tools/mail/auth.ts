@@ -8,9 +8,18 @@ import { URL } from "node:url";
 const TOKEN_PATH = path.resolve(".gmail-token.json");
 const REDIRECT_URI = "http://localhost:53682/oauth2callback";
 
-// Lecture seule : l'assistant peut consulter les mails mais jamais en
-// envoyer ou en supprimer tant que ce scope n'est pas elargi explicitement.
-const SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"];
+// gmail.readonly  : consulter les mails (list_recent_emails)
+// gmail.send      : repondre aux commandes recues par mail (pont telephone <-> PC)
+// gmail.modify    : marquer une commande traitee comme lue, pour ne pas la
+//                   rejouer indefiniment (n'autorise pas la suppression definitive)
+// Toujours pas d'acces "envoyer au nom de l'utilisateur vers n'importe qui" -
+// gmail.send permet d'envoyer mais uniquement declenche par le code ci-dessous,
+// jamais expose comme action libre au modele.
+const SCOPES = [
+  "https://www.googleapis.com/auth/gmail.readonly",
+  "https://www.googleapis.com/auth/gmail.send",
+  "https://www.googleapis.com/auth/gmail.modify",
+];
 
 function createOAuthClient(): OAuth2Client {
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -56,7 +65,7 @@ export async function runInteractiveAuthorization(): Promise<void> {
   });
 
   console.log(
-    "Ouvre cette URL dans ton navigateur pour autoriser l'acces en lecture seule a Gmail :\n",
+    "Ouvre cette URL dans ton navigateur pour autoriser l'acces a Gmail (lecture, reponse et marquage comme lu - voir README > Securite du pont mail) :\n",
   );
   console.log(authUrl, "\n");
 

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Assistant Vocal IA",
+    "name": "Serv'IA",
     "slug": "assistant-vocal-ia-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,6 +20,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": ["expo-mail-composer"]
   }
 }

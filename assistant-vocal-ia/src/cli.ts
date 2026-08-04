@@ -10,8 +10,8 @@ const voiceMode = process.argv.includes("--voice");
 async function main() {
   console.log(
     voiceMode
-      ? "Assistant vocal IA - prototype (mode vocal, push-to-talk)."
-      : "Assistant vocal IA - prototype (mode texte).",
+      ? "Serv'IA - prototype (mode vocal, push-to-talk)."
+      : "Serv'IA - prototype (mode texte).",
   );
   console.log(
     voiceMode
