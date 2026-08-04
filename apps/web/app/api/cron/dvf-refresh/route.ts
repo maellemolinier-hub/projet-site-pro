@@ -8,7 +8,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "https://api.immoexpert.fr";
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "https://api.cap-entreprendre-france.fr";
 
   try {
     const res = await fetch(`${apiUrl}/admin/refresh-dvf`, {

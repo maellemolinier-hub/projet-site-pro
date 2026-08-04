@@ -2,23 +2,18 @@ import Link from "next/link";
 import { MapPin } from "lucide-react";
 
 const links = {
-  Produit: [
-    { href: "#fonctionnalites", label: "Fonctionnalités" },
+  Services: [
+    { href: "#fonctionnalites", label: "Nos services" },
     { href: "#tarifs", label: "Tarifs" },
-    { href: "/experts", label: "Annuaire experts" },
-    { href: "/formation", label: "Formation certifiante" },
+    { href: "/contact-entreprise", label: "Contact" },
   ],
   Ressources: [
-    { href: "/blog", label: "Blog immobilier" },
-    { href: "/api-docs", label: "Documentation API" },
-    { href: "/integrations", label: "Intégrations CRM" },
-    { href: "/changelog", label: "Nouveautés" },
+    { href: "/articles", label: "Blog" },
+    { href: "/contact-entreprise", label: "Demander un devis" },
   ],
   Entreprise: [
-    { href: "/a-propos", label: "À propos" },
-    { href: "/contact", label: "Contact" },
-    { href: "/promoteurs", label: "Promoteurs & Réseaux" },
-    { href: "/presse", label: "Presse" },
+    { href: "/contact-entreprise", label: "À propos" },
+    { href: "/contact-entreprise", label: "Contact" },
   ],
   Légal: [
     { href: "/cgu", label: "CGU" },
@@ -40,17 +35,16 @@ export function Footer() {
                 <MapPin className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-lg">
-                Immo<span className="text-brand-400">Expert</span>
+                Cap Entreprendre France
               </span>
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed">
-              La plateforme de référence pour les professionnels de
-              l&apos;immobilier en France.
+              Agence de communication et studio graphique accompagnant les entrepreneurs à Grasse.
             </p>
             <p className="text-xs text-gray-600">
-              Données DVF · PERVAL · INSEE
+              Identité visuelle · Sites web · Stratégie de marque
               <br />
-              Mises à jour quotidiennes
+              Basé à Grasse (06130)
             </p>
           </div>
 
@@ -78,10 +72,10 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-gray-600">
-            © 2026 ImmoExpert SAS. Tous droits réservés.
+            © 2026 Cap Entreprendre France. Tous droits réservés.
           </p>
           <p className="text-xs text-gray-600">
-            Fait avec ❤️ pour les professionnels de l&apos;immobilier français
+            Studio de communication &amp; graphisme à Grasse
           </p>
         </div>
       </div>
