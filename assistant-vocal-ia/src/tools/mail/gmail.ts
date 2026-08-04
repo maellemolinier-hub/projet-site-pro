@@ -1,16 +1,30 @@
 import { google } from "googleapis";
 import { getAuthorizedClient } from "./auth.js";
+import { extractPlainTextBody } from "./bridgeParser.js";
 
 export interface EmailSummary {
+  id: string;
   from: string;
   subject: string;
   date: string;
   snippet: string;
 }
 
+export interface EmailDetail {
+  id: string;
+  from: string;
+  subject: string;
+  date: string;
+  body: string;
+}
+
 export interface ListEmailsOptions {
   maxResults?: number;
   unreadOnly?: boolean;
+}
+
+function getHeader(headers: { name?: string | null; value?: string | null }[], name: string) {
+  return headers.find((header) => header.name === name)?.value ?? "";
 }
 
 /**
@@ -20,13 +34,25 @@ export interface ListEmailsOptions {
 export async function listRecentEmails(
   options: ListEmailsOptions = {},
 ): Promise<EmailSummary[]> {
+  return searchEmails(options.unreadOnly ? "is:unread" : "", options.maxResults ?? 5);
+}
+
+/**
+ * Recherche des emails avec une requete de recherche Gmail classique
+ * (from:, subject:, after:, before:, texte libre...) - pas limite aux
+ * emails recents. Toujours en lecture seule.
+ */
+export async function searchEmails(
+  query: string,
+  maxResults = 10,
+): Promise<EmailSummary[]> {
   const auth = await getAuthorizedClient();
   const gmail = google.gmail({ version: "v1", auth });
 
   const { data } = await gmail.users.messages.list({
     userId: "me",
-    maxResults: options.maxResults ?? 5,
-    q: options.unreadOnly ? "is:unread" : undefined,
+    maxResults,
+    q: query || undefined,
   });
 
   const messages = data.messages ?? [];
@@ -43,16 +69,39 @@ export async function listRecentEmails(
     });
 
     const headers = full.payload?.headers ?? [];
-    const getHeader = (name: string) =>
-      headers.find((header) => header.name === name)?.value ?? "";
-
     summaries.push({
-      from: getHeader("From"),
-      subject: getHeader("Subject"),
-      date: getHeader("Date"),
+      id: message.id,
+      from: getHeader(headers, "From"),
+      subject: getHeader(headers, "Subject"),
+      date: getHeader(headers, "Date"),
       snippet: full.snippet ?? "",
     });
   }
 
   return summaries;
+}
+
+/**
+ * Lit le contenu complet (corps du message, pas juste un extrait) d'un
+ * email a partir de son id (obtenu via listRecentEmails / searchEmails).
+ */
+export async function readEmailById(emailId: string): Promise<EmailDetail> {
+  const auth = await getAuthorizedClient();
+  const gmail = google.gmail({ version: "v1", auth });
+
+  const { data: full } = await gmail.users.messages.get({
+    userId: "me",
+    id: emailId,
+    format: "full",
+  });
+
+  const headers = full.payload?.headers ?? [];
+
+  return {
+    id: emailId,
+    from: getHeader(headers, "From"),
+    subject: getHeader(headers, "Subject"),
+    date: getHeader(headers, "Date"),
+    body: extractPlainTextBody(full.payload) || full.snippet || "",
+  };
 }

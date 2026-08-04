@@ -17,21 +17,25 @@ l'utiliser, independantes les unes des autres :
 
 ```
 src/                  (tourne sur le PC - c'est la que vivent les actions)
-  cli.ts               -> boucle interactive (mode texte, ou mode vocal avec --voice)
+  cli.ts               -> boucle interactive (texte, --voice push-to-talk, ou --wake "Hey Serv'IA")
   server.ts             -> API locale (Express) pour piloter l'assistant en Wi-Fi
   core/router.ts         -> le "cerveau" : envoie la commande a Claude (Anthropic API)
                             avec la liste des outils disponibles, execute l'outil choisi
   voice/
     record.ts             -> enregistrement micro (push-to-talk) via SoX
     transcribe.ts           -> transcription locale (Whisper / whisper.cpp, aucun cloud)
+    wakeWordUtils.ts         -> logique pure : detecte "Hey Serv'IA" dans un transcript
+    wakeWord.ts               -> ecoute en continu par fenetres, declenche sur le mot-cle
   tools/
     organizeFiles.ts     -> range les photos d'un dossier en sous-dossiers AAAA-MM
     openApp.ts            -> lance un logiciel installe sur la machine
     bitwarden.ts           -> recupere un identifiant depuis Bitwarden (CLI `bw`)
     loginToSite.ts          -> ouvre un site et remplit les champs de connexion
+    shell.ts                 -> execute une commande shell (tache generique non couverte ailleurs)
+    destructiveCommand.ts     -> detecte les commandes shell potentiellement destructrices
     mail/
       auth.ts                -> autorisation OAuth Gmail + stockage token local
-      gmail.ts                 -> liste les emails recents (tool "consulte mes mails")
+      gmail.ts                 -> liste/recherche/lit n'importe quel email (lecture seule)
       bridgeParser.ts           -> logique pure : detecte/parse les mails de commande
       bridge.ts                 -> pont mail : lit, execute, repond, marque comme lu
   scripts/
@@ -84,6 +88,29 @@ toujours le PC qui range les fichiers, lance les logiciels, etc.
   confirmer a un inconnu que le declencheur existe). Genere ces deux valeurs
   de facon aleatoire et longue (`openssl rand -hex 8` par exemple) et ne les
   partage avec personne.
+- **Acces shell (`run_shell_command`) = changement de niveau de risque
+  majeur.** Ce n'est plus une liste fixe d'actions predefinies : le modele
+  peut executer n'importe quelle commande shell, avec les memes droits que
+  le compte utilisateur qui a lance Serv'IA. **Il n'y a pas de sandbox.**
+  Le seul garde-fou est `destructiveCommand.ts` : une liste de motifs connus
+  (suppression recursive, formatage, arret systeme, `sudo`, requetes SQL
+  destructrices, `git push --force`...) qui, s'ils matchent, bloquent
+  l'execution **sauf si le mot `CONFIRME` etait present dans la demande
+  d'origine** (texte tape, transcrit du micro, ou mail recu). Cette
+  verification se fait cote code sur le texte brut de la demande, pas sur ce
+  que le modele affirme avoir verifie lui-meme. C'est une **heuristique, pas
+  une garantie** : une commande destructrice qui ne matche aucun motif
+  connu s'executerait sans demander confirmation. A ne pas utiliser sans
+  comprendre ce risque, en particulier via le pont mail (personne ne
+  regarde en temps reel quand une commande arrive par mail).
+- **Mode reveil "Hey Serv'IA" = micro actif en continu.** Contrairement au
+  mode `--voice` (push-to-talk, micro actif seulement entre deux appuis sur
+  Entree), le mode `--wake` enregistre et transcrit en continu par fenetres
+  de 4 secondes pour detecter le mot-cle. Rien n'est envoye a un service
+  externe (Whisper tourne en local, comme pour `--voice`), mais le micro est
+  actif tout le temps que ce mode tourne - une consideration a avoir en
+  tete si tu l'utilises dans un contexte ou la confidentialite des
+  conversations ambiantes compte.
 
 ## Prerequis
 
@@ -115,7 +142,17 @@ pnpm run auth:gmail    # une seule fois, ouvre le navigateur pour autoriser Gmai
 
 pnpm start             # mode texte
 pnpm start -- --voice  # mode vocal (push-to-talk : Entree pour parler, Entree pour arreter)
+pnpm start -- --wake   # mode reveil : dis "Hey Serv'IA" suivi de ta commande (ecoute en continu)
 ```
+
+**A propos du mode `--wake`** : ce n'est pas un vrai moteur de mot-cle comme
+Porcupine ou "Hey Siri" (qui utilisent un petit modele dedie, quasi gratuit
+en CPU). C'est une transcription Whisper repetee toutes les 4 secondes tant
+qu'il n'a pas entendu "Serv'IA" - donc du CPU utilise en continu, et une
+detection moins reactive/fiable qu'un moteur dedie. Une fois reveille, il
+enregistre la commande sur une fenetre fixe de 10 secondes (pas de detection
+de fin de phrase). Suffisant pour un prototype a tester ; un vrai moteur de
+mot-cle est note en prochaine etape si l'usage reel le justifie.
 
 ## Mode 2 - App mobile en Wi-Fi (reseau local)
 
@@ -181,25 +218,38 @@ fichiers temporaires (tri par mois, fichiers non-image ignores) ; la
 logique du pont mail (`bridgeParser.ts` - detection du declencheur "Serv'IA"
 avec ses variantes, extraction de la phrase secrete et de la commande,
 decodage du corps d'un mail multipart) est testee sans reseau ni compte
-Google ; `src/server.ts` a ete demarre et teste manuellement ici (`/health`
+Google ; la detection du mot-cle "Hey Serv'IA" (`wakeWordUtils.ts`) est
+testee avec plusieurs variantes de transcription ; la detection de commande
+destructrice (`destructiveCommand.ts`) est testee sur des cas positifs
+(`rm -rf`, `sudo`, `shutdown`, `DROP TABLE`...) et negatifs (`ls`, `mkdir`,
+`mv`...) ; `src/server.ts` a ete demarre et teste manuellement ici (`/health`
 public, `/command` qui rejette les requetes sans le bon token) ; le pont
-mail refuse bien de demarrer sans `TRUSTED_SENDER_EMAIL`/`COMMAND_PASSPHRASE`.
+mail refuse bien de demarrer sans `TRUSTED_SENDER_EMAIL`/`COMMAND_PASSPHRASE` ;
+`runShellCommand` a ete execute manuellement ici (commande normale et
+commande en erreur, capture correcte de stdout/stderr).
 
 **Ce qui ne peut pas etre teste dans cet environnement sandbox** (pas de
 microphone, pas de cle API Anthropic, pas de session Bitwarden active, pas
 de compte Gmail autorise, pas de telephone/Expo Go) - a valider toi-meme sur
 ton poste avant usage reel :
-- le mode `--voice` (enregistrement SoX + transcription Whisper)
-- le routeur complet avec une vraie reponse du modele (`runCommand`)
+- le mode `--voice` et le mode `--wake` (enregistrement SoX + transcription
+  Whisper + declenchement reel sur le mot-cle)
+- le routeur complet avec une vraie reponse du modele (`runCommand`),
+  y compris le choix du bon outil par le modele et le respect du garde-fou
+  CONFIRME en conditions reelles
 - `fetch_credential` / `login_to_site` (necessitent Bitwarden deverrouille)
-- `list_recent_emails` et le pont mail de bout en bout (necessitent
-  l'autorisation OAuth Gmail et un vrai mail de commande recu)
+- `list_recent_emails` / `search_emails` / `read_email` et le pont mail de
+  bout en bout (necessitent l'autorisation OAuth Gmail et un vrai mail)
 - l'app mobile en conditions reelles (Wi-Fi et mail, Expo Go)
 
 ## Limites actuelles (prototype)
 
-- Mode vocal PC en **push-to-talk** (pas d'ecoute continue par mot-cle type
-  "Hey Siri") et non teste en conditions reelles - a valider sur ton poste.
+- Mode `--wake` = transcription Whisper en boucle, pas un vrai moteur de
+  mot-cle (voir "A propos du mode --wake" plus haut) - non teste en
+  conditions reelles (pas de micro dans cet environnement).
+- `run_shell_command` n'est **pas sandboxe** et le garde-fou CONFIRME est
+  une **heuristique** (liste de motifs), pas une garantie de securite
+  complete - voir "Choix de securite" plus haut.
 - L'app mobile est en **texte uniquement** pour l'instant (pas de micro sur
   mobile).
 - Le pont mail interroge Gmail toutes les 30 secondes (pas instantane) et
@@ -208,23 +258,27 @@ ton poste avant usage reel :
   formulaires standards, pas garanti sur tous les sites.
 - Le connecteur mail (lecture + pont) ne couvre que Gmail (pas encore
   Outlook).
-- Aucune confirmation graduee par niveau de risque pour l'instant - toutes
-  les commandes s'executent directement des qu'elles passent les
-  verifications d'authenticite. A ajouter avant tout usage au-dela du test
-  personnel (cf. discussion securite).
+- Aucune confirmation graduee au-dela du garde-fou CONFIRME sur le shell -
+  les autres outils (mails, connexion a un site, ouverture de logiciel)
+  s'executent directement des qu'ils passent les verifications
+  d'authenticite du canal utilise.
 
 ## Prochaines etapes
 
-1. Valider les trois modes en conditions reelles (micro PC, app mobile en
-   Wi-Fi, pont mail de bout en bout) - c'est la priorite avant d'ajouter de
-   nouvelles briques.
-2. Ajouter la voix a l'app mobile (dictee native iOS/Android ou meme
+1. Valider tous les modes en conditions reelles (micro PC dont `--wake`,
+   app mobile en Wi-Fi, pont mail de bout en bout, `run_shell_command`) -
+   c'est la priorite avant d'ajouter de nouvelles briques.
+2. Remplacer la detection "Hey Serv'IA" par un vrai moteur de mot-cle
+   local (ex: openWakeWord) si l'usage reel montre que le CPU/la latence de
+   la version actuelle sont genants.
+3. Ajouter la voix a l'app mobile (dictee native iOS/Android ou meme
    pipeline Whisper que le PC).
-3. Notification push mobile quand une reponse arrive par mail, plutot que
+4. Notification push mobile quand une reponse arrive par mail, plutot que
    de devoir aller consulter la boite de reception.
-4. Elargir le connecteur mail (Outlook) une fois Gmail valide en usage reel.
-5. Permissions par niveau de risque + confirmation orale pour les actions
-   sensibles (cf. discussion sur la securite).
+5. Elargir le connecteur mail (Outlook) une fois Gmail valide en usage reel.
+6. Renforcer le garde-fou du shell (ex: demander confirmation orale/textuelle
+   explicite juste avant execution plutot qu'un mot-cle dans la demande
+   d'origine, journal des commandes executees consultable).
 
 ## Scalabilite / monetisation
 

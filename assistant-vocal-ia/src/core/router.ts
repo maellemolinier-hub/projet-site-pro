@@ -5,7 +5,9 @@ import { organizePhotosByDate } from "../tools/organizeFiles.js";
 import { openApplication } from "../tools/openApp.js";
 import { fetchCredential } from "../tools/bitwarden.js";
 import { loginToSite } from "../tools/loginToSite.js";
-import { listRecentEmails } from "../tools/mail/gmail.js";
+import { listRecentEmails, searchEmails, readEmailById } from "../tools/mail/gmail.js";
+import { runShellCommand } from "../tools/shell.js";
+import { isDestructiveCommand } from "../tools/destructiveCommand.js";
 
 const client = new Anthropic();
 
@@ -65,7 +67,7 @@ const loginToSiteTool = betaZodTool({
 const listEmailsTool = betaZodTool({
   name: "list_recent_emails",
   description:
-    "Liste les emails recents de la boite Gmail connectee (lecture seule - ne peut ni envoyer ni supprimer). Utilise ceci quand l'utilisateur demande de consulter ses mails ou ses non-lus.",
+    "Liste les emails recents de la boite Gmail connectee (lecture seule). Utilise ceci quand l'utilisateur demande ses derniers mails ou ses non-lus.",
   inputSchema: z.object({
     maxResults: z
       .number()
@@ -85,10 +87,66 @@ const listEmailsTool = betaZodTool({
   },
 });
 
-const SYSTEM_PROMPT = `Tu es un assistant vocal personnel qui execute des actions sur l'ordinateur de l'utilisateur : ranger des fichiers/photos, lancer des logiciels, consulter les mails recents (lecture seule), et se connecter a des comptes en ligne deja enregistres dans le gestionnaire de mots de passe.
+const searchEmailsTool = betaZodTool({
+  name: "search_emails",
+  description:
+    "Recherche n'importe quel email (pas seulement les plus recents) avec une requete de recherche Gmail classique (from:, subject:, after:, before:, ou texte libre). Lecture seule. Utilise ceci pour trouver un mail precis.",
+  inputSchema: z.object({
+    query: z
+      .string()
+      .describe("Requete de recherche Gmail, ex: \"from:banque facture\""),
+    maxResults: z.number().int().min(1).max(20).optional(),
+  }),
+  run: async ({ query, maxResults }) => {
+    const emails = await searchEmails(query, maxResults ?? 10);
+    return JSON.stringify(emails);
+  },
+});
+
+const readEmailTool = betaZodTool({
+  name: "read_email",
+  description:
+    "Lit le contenu complet (corps entier, pas juste un extrait) d'un email a partir de son id, obtenu via list_recent_emails ou search_emails.",
+  inputSchema: z.object({
+    emailId: z.string().describe("Id du message Gmail"),
+  }),
+  run: async ({ emailId }) => {
+    const email = await readEmailById(emailId);
+    return JSON.stringify(email);
+  },
+});
+
+/**
+ * L'outil shell est construit par requete plutot que declare une seule fois,
+ * pour pouvoir fermer sur `preConfirmed` (calcule a partir du texte brut de
+ * la demande de l'utilisateur - CLI, transcription vocale ou mail) sans
+ * dependre de ce que le modele affirme lui-meme avoir verifie.
+ */
+function buildRunShellCommandTool(preConfirmed: boolean) {
+  return betaZodTool({
+    name: "run_shell_command",
+    description:
+      "Execute une commande shell sur le PC pour accomplir toute tache non couverte par les autres outils (creer/deplacer/renommer fichiers ou dossiers, verifier l'espace disque, installer un paquet, lancer un script...). Dossier de travail : dossier utilisateur. ATTENTION : aucune sandbox, la commande a les memes droits que l'utilisateur. Pour une commande potentiellement destructrice (suppression, formatage, arret systeme, sudo...), le mot CONFIRME doit avoir ete present dans la demande d'origine, sinon l'outil refuse et il faut le dire a l'utilisateur.",
+    inputSchema: z.object({
+      command: z.string().describe("Commande shell a executer"),
+    }),
+    run: async ({ command }) => {
+      if (isDestructiveCommand(command) && !preConfirmed) {
+        return "REFUSE : cette commande a l'air destructrice. Redemande a l'utilisateur de reformuler en incluant explicitement le mot CONFIRME s'il est sur de lui.";
+      }
+      const result = await runShellCommand(command);
+      return JSON.stringify(result);
+    },
+  });
+}
+
+const SYSTEM_PROMPT = `Tu es Serv'IA, un assistant personnel qui execute des actions sur l'ordinateur de l'utilisateur : ranger des fichiers/photos, lancer des logiciels, chercher et lire n'importe quel email (lecture seule), se connecter a des comptes en ligne deja enregistres, et executer des commandes shell pour toute autre tache demandee (run_shell_command).
+Si run_shell_command refuse une commande car elle a l'air destructrice, explique a l'utilisateur qu'il doit reformuler sa demande en incluant le mot CONFIRME - n'insiste pas et n'essaie pas de contourner.
 Confirme toujours en une phrase ce que tu as fait apres avoir execute une action. Si une commande est ambigue, demande une precision plutot que de deviner.`;
 
 export async function runCommand(command: string): Promise<string> {
+  const preConfirmed = /\bconfirme\b/i.test(command);
+
   const finalMessage = await client.beta.messages.toolRunner({
     model: "claude-opus-5",
     max_tokens: 2048,
@@ -102,6 +160,9 @@ export async function runCommand(command: string): Promise<string> {
       fetchCredentialTool,
       loginToSiteTool,
       listEmailsTool,
+      searchEmailsTool,
+      readEmailTool,
+      buildRunShellCommandTool(preConfirmed),
     ],
     messages: [{ role: "user", content: command }],
   });
