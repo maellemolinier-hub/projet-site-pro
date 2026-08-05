@@ -56,10 +56,10 @@ export function Experts() {
 
             <ul className="space-y-4">
               {[
-                "Profil public avec zone de compétence sur carte",
+                "Profil public avec portfolio en ligne",
                 "Badge certifié visible sur votre propre site",
-                "Formation de contact direct (leads entrants gratuits)",
-                "Pages SEO optimisées par ville et quartier",
+                "Formulaire de contact direct (leads entrants gratuits)",
+                "Pages SEO optimisées par ville et spécialité",
                 "Mise en avant sur les requêtes locales Google",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
