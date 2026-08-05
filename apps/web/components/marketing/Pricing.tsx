@@ -15,8 +15,8 @@ const plans = [
     buttonClass: "bg-gray-900 hover:bg-gray-800 text-white",
     popular: false,
     features: [
-      "Carte des prix nationale",
-      "Historique DVF 5 ans",
+      "Identité visuelle de base",
+      "Bibliothèque de modèles",
       "10 rapports de marché / mois",
       "Accès web uniquement",
       "Support email",
@@ -40,11 +40,11 @@ const plans = [
     popular: true,
     features: [
       "Tout du Starter",
-      "App terrain prospection prédictive IA",
+      "App terrain prospection prédicative IA",
       "Vue 3D bâtiments CesiumJS",
       "Rapports illimités",
       "Widget intégration sur votre site",
-      "Formation Expert Valeur Vénale",
+      "Formation Expert Valable Vénale",
       "Badge certifié + référencement annuaire",
       "Support prioritaire",
     ],
@@ -63,9 +63,9 @@ const plans = [
       "Tout du plan Expert",
       "Jusqu'à 10 utilisateurs",
       "Dashboard agence centralisé",
-      "Statistiques équipe",
-      "Landing page agence branded",
-      "Intégration CRM (Apimo, Hektor…)",
+      "Statistiques d'équipe",
+      "Landing page agence brandée",
+      "Intégration CRM (Apimo, Hector…)",
       "Onboarding dédié",
       "SLA 99,9%",
     ],
@@ -90,39 +90,41 @@ export function Pricing() {
           <p className="text-gray-500 text-lg">
             Commencez gratuitement 14 jours. Aucune carte bancaire requise.
           </p>
-
-          {/* Toggle */}
-          <div className="flex items-center justify-center gap-4 mt-8">
-            <span
-              className={`text-sm font-medium ${!annual ? "text-gray-900" : "text-gray-400"}`}
-            >
-              Mensuel
-            </span>
-            <button
-              onClick={() => setAnnual(!annual)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                annual ? "bg-brand-600" : "bg-gray-300"
-              }`}
-              aria-label="Facturation annuelle"
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${
-                  annual ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
-            <span
-              className={`text-sm font-medium ${annual ? "text-gray-900" : "text-gray-400"}`}
-            >
-              Annuel{" "}
-              <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold ml-1">
-                <Zap className="w-3 h-3" />2 mois offerts
-              </span>
-            </span>
-          </div>
         </div>
 
-        {/* Cards */}
+        {/* Toggle */}
+        <div className="flex items-center justify-center gap-4 mt-8">
+          <span
+            className={`text-sm font-medium ${!annual ? "text-gray-900" : "text-gray-400"}`}
+          >
+            Mensuel
+          </span>
+          <button
+            onClick={() => setAnnual(!annual)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              annual ? "bg-brand-600" : "bg-gray-300"
+            }`}
+            aria-label="Facturation annuelle"
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${
+                annual ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+          <span
+            className={`text-sm font-medium ${annual ? "text-gray-900" : "text-gray-400"}`}
+          >
+            Annuel
+            <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold ml-1">
+              <Zap className="w-3 h-3" />2 mois offerts
+            </span>
+          </span>
+        </div>
+      </div>
+
+      {/* Cards */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         <div className="grid lg:grid-cols-3 gap-8 items-start">
           {plans.map((plan) => (
             <div
@@ -150,7 +152,7 @@ export function Pricing() {
                       : `${plan.monthlyPrice} €`}
                   </span>
                   <span className="text-gray-400 text-sm mb-1">
-                    / mois HT
+                    /mois HT
                   </span>
                 </div>
                 {annual && (
@@ -179,9 +181,12 @@ export function Pricing() {
                   </li>
                 ))}
                 {plan.missing.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 opacity-35">
+                  <li
+                    key={f}
+                    className="flex items-start gap-2.5 opacity-35"
+                  >
                     <span className="w-4 h-4 mt-0.5 shrink-0 text-gray-300 text-center leading-none">
-                      —
+                      ✕
                     </span>
                     <span className="text-sm text-gray-400">{f}</span>
                   </li>
@@ -194,7 +199,7 @@ export function Pricing() {
         {/* Enterprise */}
         <div className="mt-8 text-center p-8 bg-brand-950 rounded-2xl text-white">
           <h3 className="text-xl font-bold mb-2">
-            Réseau d&apos;agences ou Promoteur immobilier ?
+            Réseau d'agences ou Promoteur immobilier ?
           </h3>
           <p className="text-white/70 mb-6">
             Accès API, analyse foncière, multi-agences, SLA dédié. Tarification
@@ -202,7 +207,7 @@ export function Pricing() {
           </p>
           <Link
             href="/contact-entreprise"
-            className="inline-flex items-center gap-2 bg-white text-brand-900 font-semibold px-6 py-3 rounded-xl hover:bg-white/90 transition-colors"
+            className="inline-flex items-center-center gap-2 bg-white text-brand-900 font-semibold px-6 py-3 rounded-xl hover:bg-white/90 transition-colors"
           >
             Demander un devis personnalisé
           </Link>
