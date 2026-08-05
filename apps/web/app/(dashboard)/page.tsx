@@ -96,7 +96,7 @@ export default async function DashboardPage() {
             Bonjour 👋
           </h1>
           <p className="text-gray-500 mt-1">
-            Voici votre tableau de bord ImmoExpert — dimanche 14 juin 2026
+            Voici votre tableau de bord Cap Entreprendre France — dimanche 14 juin 2026
           </p>
         </div>
         <Link

@@ -41,7 +41,7 @@ const MODULES: Module[] = [
     lessons: [
       { id: "l4", title: "Comprendre la base DVF", duration: 22, completed: true, locked: false, type: "video" },
       { id: "l5", title: "La base PERVAL des notaires", duration: 15, completed: true, locked: false, type: "video" },
-      { id: "l6", title: "Utiliser ImmoExpert pour accéder aux données", duration: 20, completed: true, locked: false, type: "video" },
+      { id: "l6", title: "Utiliser Cap Entreprendre France pour accéder aux données", duration: 20, completed: true, locked: false, type: "video" },
       { id: "l7", title: "Quiz données de marché", duration: 8, completed: true, locked: false, type: "quiz" },
     ],
   },

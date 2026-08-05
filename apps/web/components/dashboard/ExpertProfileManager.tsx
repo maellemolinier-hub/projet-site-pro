@@ -7,13 +7,13 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const BADGE_EMBED = `<script src="https://immoexpert.fr/badge.js" data-id="sophie-martin"></script>`;
+const BADGE_EMBED = `<script src="https://cap-entreprendre-france.fr/badge.js" data-id="sophie-martin"></script>`;
 
 export function ExpertProfileManager() {
   const [tab, setTab] = useState<"profil" | "badge" | "avis">("profil");
   const [editing, setEditing] = useState(false);
   const [bio, setBio] = useState(
-    "Expert en valeur vénale certifiée ImmoExpert depuis 2023, spécialisée dans le résidentiel haut de gamme à Lyon et sa métropole."
+    "Expert en valeur vénale certifiée Cap Entreprendre France depuis 2023, spécialisée dans le résidentiel haut de gamme à Lyon et sa métropole."
   );
   const [copied, setCopied] = useState(false);
 
@@ -28,7 +28,7 @@ export function ExpertProfileManager() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Mon profil Expert</h1>
         <p className="text-gray-500 mt-1">
-          Gérez votre présence dans l'annuaire national ImmoExpert
+          Gérez votre présence dans l'annuaire national Cap Entreprendre France
         </p>
       </div>
 
@@ -39,7 +39,7 @@ export function ExpertProfileManager() {
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <span className="font-bold text-lg">Expert certifié ImmoExpert</span>
+            <span className="font-bold text-lg">Expert certifié Cap Entreprendre France</span>
             <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full border border-green-500/30">
               ACTIF
             </span>
@@ -179,7 +179,7 @@ export function ExpertProfileManager() {
               <BadgeCheck className="w-8 h-8 text-brand-600" />
               <div>
                 <p className="font-bold text-gray-900 text-sm">Expert certifié</p>
-                <p className="text-xs text-gray-500">ImmoExpert · Valeur Vénale</p>
+                <p className="text-xs text-gray-500">Cap Entreprendre France · Valeur Vénale</p>
               </div>
             </div>
             <p className="text-xs text-gray-400 mt-3">
@@ -216,7 +216,7 @@ export function ExpertProfileManager() {
             </div>
             <div className="bg-gray-900 rounded-xl p-4">
               <code className="text-green-400 text-xs font-mono">
-                {`<iframe src="https://immoexpert.fr/widget/carte?token=abc123" width="100%" height="500px" frameborder="0"></iframe>`}
+                {`<iframe src="https://cap-entreprendre-france.fr/widget/carte?token=abc123" width="100%" height="500px" frameborder="0"></iframe>`}
               </code>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-gray-400">

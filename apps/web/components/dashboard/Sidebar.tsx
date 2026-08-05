@@ -35,7 +35,7 @@ export function DashboardSidebar({ user }: Props) {
             <MapPin className="w-3.5 h-3.5 text-white" />
           </div>
           <span className="font-bold text-gray-900">
-            Immo<span className="text-brand-600">Expert</span>
+            Cap Entreprendre France
           </span>
         </Link>
       </div>

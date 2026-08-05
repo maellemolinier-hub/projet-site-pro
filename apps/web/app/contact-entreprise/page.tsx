@@ -5,7 +5,7 @@ import { Navbar } from "@/components/marketing/Navbar";
 import { Footer } from "@/components/marketing/Footer";
 
 export const metadata: Metadata = {
-  title: "Contact entreprise — Réseaux et Promoteurs | ImmoExpert",
+  title: "Contact entreprise — Réseaux et Promoteurs | Cap Entreprendre France",
 };
 
 export default function ContactEntreprisePage() {

@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="ImmoExpert API",
+    title="Cap Entreprendre France API",
     version="0.1.0",
     description="API de données immobilières, prospection prédictive et formations",
     lifespan=lifespan,
@@ -24,7 +24,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://immoexpert.fr"],
+    allow_origins=["http://localhost:3000", "https://cap-entreprendre-france.fr"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
