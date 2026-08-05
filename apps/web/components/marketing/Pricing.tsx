@@ -6,67 +6,65 @@ import { Check, Zap } from "lucide-react";
 
 const plans = [
   {
-    name: "Starter",
-    tagline: "Pour débuter",
-    monthlyPrice: 59,
-    annualPrice: 490,
-    annualMonthly: 41,
+    name: "Essentiel",
+    tagline: "Pour démarrer",
+    monthlyPrice: 290,
+    annualPrice: 2900,
+    annualMonthly: 242,
     color: "border-gray-200",
     buttonClass: "bg-gray-900 hover:bg-gray-800 text-white",
     popular: false,
     features: [
-      "Carte des prix nationale",
-      "Historique DVF 5 ans",
-      "10 rapports de marché / mois",
-      "Accès web uniquement",
+      "Logo + charte graphique",
+      "Cartes de visite",
+      "1 page web vitrine",
+      "Réseaux sociaux : setup de base",
       "Support email",
     ],
     missing: [
-      "App terrain prospection",
-      "Vue 3D bâtiments",
-      "Widget intégration site",
-      "Formation certifiante",
-      "Badge Expert + référencement",
+      "Site web complet",
+      "Stratégie de marque",
+      "Campagnes publicitaires",
+      "Formation en communication",
+      "Accompagnement continu",
     ],
   },
   {
-    name: "Expert",
+    name: "Business",
     tagline: "Le plus populaire",
-    monthlyPrice: 129,
-    annualPrice: 990,
-    annualMonthly: 83,
+    monthlyPrice: 590,
+    annualPrice: 5900,
+    annualMonthly: 492,
     color: "border-brand-600 ring-2 ring-brand-600",
     buttonClass: "bg-brand-600 hover:bg-brand-700 text-white",
     popular: true,
     features: [
-      "Tout du Starter",
-      "App terrain prospection prédictive IA",
-      "Vue 3D bâtiments CesiumJS",
-      "Rapports illimités",
-      "Widget intégration sur votre site",
-      "Formation Expert Valeur Vénale",
-      "Badge certifié + référencement annuaire",
+      "Tout du pack Essentiel",
+      "Site web complet (5 pages) optimisé SEO",
+      "Stratégie de marque complète",
+      "Gestion des réseaux sociaux (4 posts/mois)",
+      "Flyers & brochures",
+      "Refonte de marque incluse",
       "Support prioritaire",
     ],
     missing: [],
   },
   {
-    name: "Agence Pro",
-    tagline: "Pour les équipes",
-    monthlyPrice: 249,
-    annualPrice: 1990,
-    annualMonthly: 166,
+    name: "Premium",
+    tagline: "Pour les entreprises ambitieuses",
+    monthlyPrice: 1290,
+    annualPrice: 12900,
+    annualMonthly: 1075,
     color: "border-gray-200",
     buttonClass: "bg-gray-900 hover:bg-gray-800 text-white",
     popular: false,
     features: [
-      "Tout du plan Expert",
-      "Jusqu'à 10 utilisateurs",
-      "Dashboard agence centralisé",
-      "Statistiques équipe",
-      "Landing page agence branded",
-      "Intégration CRM (Apimo, Hektor…)",
-      "Onboarding dédié",
+      "Tout du pack Business",
+      "Site e-commerce ou application web",
+      "Campagnes publicitaires (Meta, Google)",
+      "Stratégie de contenu complète",
+      "Ateliers de formation en communication",
+      "Accompagnement dédié mensuel",
       "SLA 99,9%",
     ],
     missing: [],
@@ -85,10 +83,10 @@ export function Pricing() {
             Tarifs
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Transparent, sans surprise
+            Des forfaits clairs, adaptés à votre projet
           </h2>
           <p className="text-gray-500 text-lg">
-            Commencez gratuitement 14 jours. Aucune carte bancaire requise.
+            Devis gratuit, sans engagement. Choisissez le niveau d'accompagnement qui vous correspond.
           </p>
 
           {/* Toggle */}
@@ -168,7 +166,7 @@ export function Pricing() {
                 href="/inscription"
                 className={`block text-center py-3 px-6 rounded-xl font-semibold text-sm transition-all mb-8 ${plan.buttonClass}`}
               >
-                Commencer gratuitement
+                Démarrer mon projet
               </Link>
 
               <ul className="space-y-3">
@@ -180,10 +178,8 @@ export function Pricing() {
                 ))}
                 {plan.missing.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 opacity-35">
-                    <span className="w-4 h-4 mt-0.5 shrink-0 text-gray-300 text-center leading-none">
-                      —
-                    </span>
-                    <span className="text-sm text-gray-400">{f}</span>
+                    <Check className="w-4 h-4 text-gray-300 mt-0.5 shrink-0" />
+                    <span className="text-sm text-gray-400 line-through">{f}</span>
                   </li>
                 ))}
               </ul>
@@ -191,14 +187,14 @@ export function Pricing() {
           ))}
         </div>
 
-        {/* Enterprise */}
+        {/* Enterprise CTA */}
         <div className="mt-8 text-center p-8 bg-brand-950 rounded-2xl text-white">
           <h3 className="text-xl font-bold mb-2">
-            Réseau d&apos;agences ou Promoteur immobilier ?
+            Besoin d&apos;un accompagnement sur mesure ?
           </h3>
           <p className="text-white/70 mb-6">
-            Accès API, analyse foncière, multi-agences, SLA dédié. Tarification
-            sur mesure à partir de 3 500 €/an.
+            Projets spécifiques, multi-sites, e-commerce complexe, stratégie
+            digitale complète. Tarification sur mesure à partir de 3 500 €/an.
           </p>
           <Link
             href="/contact-entreprise"
