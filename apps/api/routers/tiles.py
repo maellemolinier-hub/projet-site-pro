@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Path, Response, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, Depends, Path, Response
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from core.database import get_db
 
 router = APIRouter()

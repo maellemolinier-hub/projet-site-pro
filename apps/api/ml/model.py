@@ -2,10 +2,11 @@
 Modèle de prédiction de probabilité de mise en vente.
 Entraîné sur l'historique DVF : bien vendu ou pas dans les 6 mois suivant la fenêtre d'observation.
 """
-import numpy as np
-from pathlib import Path
-import pickle
 import logging
+import pickle
+from pathlib import Path
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 

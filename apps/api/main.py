@@ -1,11 +1,11 @@
 import os
-from fastapi import FastAPI, HTTPException, Header
-from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from pydantic import BaseModel
-from typing import List, Optional
 
-from routers import prices, prospects, tiles, formations
+from fastapi import FastAPI, Header, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+from routers import formations, prices, prospects, tiles
 
 
 @asynccontextmanager
@@ -42,8 +42,8 @@ async def health():
 
 
 class DVFRefreshRequest(BaseModel):
-    departments: Optional[List[str]] = None  # None = France entière (101 depts)
-    year: Optional[int] = None               # None = année N-1
+    departments: list[str] | None = None  # None = France entière (101 depts)
+    year: int | None = None               # None = année N-1
 
 
 def _get_celery():
