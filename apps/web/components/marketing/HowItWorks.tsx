@@ -24,7 +24,7 @@ const steps = [
     num: "04",
     title: "Devenez Expert certifié",
     description:
-      "Suivez la formation valable, passez la certification, obtenez votre badge et soyez référencé dans notre annuaire national.",
+      "Suivez la formation certifiante, passez la certification, obtenez votre badge et soyez référencé dans notre annuaire national.",
     color: "from-green-400 to-green-600",
   },
 ];
@@ -42,7 +42,7 @@ export function HowItWorks() {
             <span className="gradient-text">moins de 10 minutes</span>
           </h2>
           <p className="text-gray-500 text-lg">
-            Autant d'installation, autant de configuration complexe. Vous êtes
+            Aucune installation, aucune configuration complexe. Vous êtes
             directement dans la création.
           </p>
         </div>
@@ -52,7 +52,7 @@ export function HowItWorks() {
             <div key={step.num} className="relative">
               {/* Connector line */}
               {i < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-6 left-[calc(100%_-_16px)] w-8 h-px bg-gray-200 z-10" />
+                <div className="hidden lg:block absolute top-6 left-[calc(100%-16px)] w-8 h-px bg-gray-200 z-10" />
               )}
 
               <div className="space-y-4">
