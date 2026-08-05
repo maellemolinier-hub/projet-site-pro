@@ -16,10 +16,31 @@ logger = logging.getLogger(__name__)
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 MODEL_PATH = Path(os.environ.get("MODEL_PATH", "/app/ml/model.pkl"))
 
+# Seuil de régression : si le nouveau MAE est > 1.5x l'ancien, on garde l'ancien modèle
+REGRESSION_THRESHOLD = 1.5
+# MAE minimum acceptable en absolu (€/m²)
+MIN_ACCEPTABLE_MAE = 500
+
+# Métadonnées du modèle actuel (chargées depuis le fichier .meta)
+META_PATH = MODEL_PATH.with_suffix(".meta.pkl")
+
+
+def _load_model_meta() -> dict:
+    """Charge les métadonnées du modèle actuel (MAE, date, samples)."""
+    if META_PATH.exists():
+        with open(META_PATH, "rb") as f:
+            return pickle.load(f)
+    return {}
+
+
+def _save_model_meta(meta: dict) -> None:
+    with open(META_PATH, "wb") as f:
+        pickle.dump(meta, f)
+
 
 @shared_task(bind=True, name="data.pipelines.tasks.ml_retrain.retrain_model", max_retries=2)
 def retrain_model(self):
-    """Retrain the XGBoost prospect model with the latest DVF data."""
+    """Retrain the XGBoost prospect scoring model with the latest DVF data."""
     if not DATABASE_URL:
         logger.warning("DATABASE_URL not set, skipping ML retraining")
         return {"status": "skipped"}
@@ -86,9 +107,53 @@ def retrain_model(self):
     mae = mean_absolute_error(y_test, model.predict(X_test))
     logger.info(f"Model MAE: {mae:.0f} €/m²")
 
+    # === Garde anti-régression ===
+    old_meta = _load_model_meta()
+    old_mae = old_meta.get("mae_eur_sqm")
+
+    if old_mae is not None:
+        ratio = mae / old_mae if old_mae > 0 else float("inf")
+        if ratio > REGRESSION_THRESHOLD:
+            logger.error(
+                f"RÉGRESSION DÉTECTÉE : nouveau MAE {mae:.0f} vs ancien {old_mae:.0f} "
+                f"(ratio {ratio:.2f} > seuil {REGRESSION_THRESHOLD}). "
+                f"Le modèle actuel est conservé."
+            )
+            return {
+                "status": "regression_blocked",
+                "new_mae_eur_sqm": round(mae, 1),
+                "old_mae_eur_sqm": old_mae,
+                "ratio": round(ratio, 2),
+                "threshold": REGRESSION_THRESHOLD,
+                "action": "kept_existing_model",
+            }
+
+    if mae > MIN_ACCEPTABLE_MAE:
+        logger.error(
+            f"MAE absolu inacceptable ({mae:.0f} > {MIN_ACCEPTABLE_MAE}). "
+            f"Modèle non déployé."
+        )
+        return {
+            "status": "regression_blocked",
+            "new_mae_eur_sqm": round(mae, 1),
+            "reason": f"MAE > {MIN_ACCEPTABLE_MAE}",
+            "action": "kept_existing_model",
+        }
+
+    # Sauvegarder le nouveau modèle
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(MODEL_PATH, "wb") as f:
         pickle.dump(model, f)
+
+    # Sauvegarder les métadonnées
+    meta = {
+        "mae_eur_sqm": round(mae, 1),
+        "training_samples": len(X_train),
+        "test_samples": len(X_test),
+        "features": features,
+        "model_type": "XGBRegressor",
+    }
+    _save_model_meta(meta)
 
     logger.info(f"Model saved to {MODEL_PATH}")
 
@@ -98,4 +163,5 @@ def retrain_model(self):
         "test_samples": len(X_test),
         "mae_eur_sqm": round(mae, 1),
         "model_path": str(MODEL_PATH),
+        "previous_mae": old_mae,
     }
