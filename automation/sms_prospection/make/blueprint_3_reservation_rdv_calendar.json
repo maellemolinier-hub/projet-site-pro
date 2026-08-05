@@ -1,0 +1,66 @@
+{
+  "name": "Prospection SMS - 3. Notification de RDV pris (surveillance)",
+  "flow": [
+    {
+      "id": 1,
+      "module": "builtin:BasicScheduler",
+      "version": 1,
+      "parameters": {
+        "type": "interval",
+        "interval": 15,
+        "unit": "minutes"
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 0, "y": 0 },
+        "note": "La création réelle de l'événement 'Audit de [Nom]' est faite par la page de réservation Python (webhook_server.py + google_calendar.py) au moment de la confirmation du créneau. Ce scénario ne fait que surveiller/notifier les nouveaux RDV — voir make/scenario_logique.md, section 'Option 100% Make' pour une variante sans le micro-service Python."
+      }
+    },
+    {
+      "id": 2,
+      "module": "datastore:ActionSearchRecords",
+      "version": 1,
+      "parameters": { "datastore": "REMPLACER_PAR_ID_DATASTORE_prospects" },
+      "mapper": {
+        "filter": { "statut": "rdv_pris", "notifie": false },
+        "maxRecords": 50
+      },
+      "metadata": { "designer": { "x": 300, "y": 0 } }
+    },
+    {
+      "id": 3,
+      "module": "util:ComposeString",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "value": "Nouveau RDV pris : Audit de {{2.nom}} ({{2.secteur}}) le {{2.date_rdv}} — tel: {{2.phone}}"
+      },
+      "metadata": { "designer": { "x": 600, "y": 0 } }
+    },
+    {
+      "id": 4,
+      "module": "datastore:ActionUpdateRecord",
+      "version": 1,
+      "parameters": { "datastore": "REMPLACER_PAR_ID_DATASTORE_prospects" },
+      "mapper": { "key": "{{2.id}}", "notifie": true },
+      "metadata": {
+        "designer": { "x": 900, "y": 0 },
+        "note": "Brancher ici un module de notification (Slack, Gmail, etc.) avec le texte du module 3 avant cette mise à jour."
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "sequential": true,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false
+    },
+    "designer": { "orphans": [] },
+    "zone": "eu1.make.com"
+  }
+}
