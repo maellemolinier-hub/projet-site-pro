@@ -47,14 +47,14 @@ export default function ConnexionPage() {
           <MapPin className="w-4 h-4 text-white" />
         </div>
         <span className="font-bold text-xl text-white">
-          Immo<span className="text-accent-400">Expert</span>
+          Cap Entreprendre France
         </span>
       </Link>
 
       <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 space-y-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">Connexion</h1>
-          <p className="text-gray-500 text-sm mt-1">Bienvenue sur ImmoExpert</p>
+          <p className="text-gray-500 text-sm mt-1">Bienvenue sur Cap Entreprendre France</p>
         </div>
 
         {/* Google */}
