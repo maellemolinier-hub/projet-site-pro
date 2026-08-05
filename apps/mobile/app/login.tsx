@@ -50,7 +50,7 @@ export default function LoginScreen() {
           <View style={styles.logo}>
             <Text style={styles.logoText}>IE</Text>
           </View>
-          <Text style={styles.appName}>ImmoExpert</Text>
+          <Text style={styles.appName}>Cap Entreprendre France</Text>
           <Text style={styles.tagline}>La plateforme des experts immobiliers</Text>
         </View>
 
