@@ -17,13 +17,13 @@ const plans = [
     features: [
       "Identité visuelle de base",
       "Bibliothèque de modèles",
-      "10 rapports de marché / mois",
+      "10 maquettes de création / mois",
       "Accès web uniquement",
       "Support email",
     ],
     missing: [
-      "App terrain prospection",
-      "Vue 3D bâtiments",
+      "Accompagnement personnalisé",
+      "Studio de création visuelle",
       "Widget intégration site",
       "Formation certifiante",
       "Badge Expert + référencement",
@@ -40,11 +40,11 @@ const plans = [
     popular: true,
     features: [
       "Tout du Starter",
-      "App terrain prospection prédicative IA",
-      "Vue 3D bâtiments CesiumJS",
+      "Accompagnement personnalisé prédictif IA",
+      "Studio de création visuelle",
       "Rapports illimités",
       "Widget intégration sur votre site",
-      "Formation Expert Valable Vénale",
+      "Formation Expert certifiante",
       "Badge certifié + référencement annuaire",
       "Support prioritaire",
     ],
@@ -62,10 +62,10 @@ const plans = [
     features: [
       "Tout du plan Expert",
       "Jusqu'à 10 utilisateurs",
-      "Dashboard agence centralisé",
+      "Dashboard équipe centralisé",
       "Statistiques d'équipe",
-      "Landing page agence brandée",
-      "Intégration CRM (Apimo, Hector…)",
+      "Landing page personnalisée",
+      "Intégration CRM (Apimo, Hektor…)",
       "Onboarding dédié",
       "SLA 99,9%",
     ],
@@ -134,7 +134,7 @@ export function Pricing() {
               {plan.popular && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
                   <span className="bg-brand-600 text-white text-xs font-semibold px-4 py-1 rounded-full shadow">
-                    ⭐ Le plus populaire
+                    ★ Le plus populaire
                   </span>
                 </div>
               )}
@@ -199,15 +199,15 @@ export function Pricing() {
         {/* Enterprise */}
         <div className="mt-8 text-center p-8 bg-brand-950 rounded-2xl text-white">
           <h3 className="text-xl font-bold mb-2">
-            Réseau d'agences ou Promoteur immobilier ?
+            Réseau d&apos;agences ou grande entreprise ?
           </h3>
           <p className="text-white/70 mb-6">
-            Accès API, analyse foncière, multi-agences, SLA dédié. Tarification
+            Accès API, multi-équipes, SLA dédié. Tarification
             sur mesure à partir de 3 500 €/an.
           </p>
           <Link
             href="/contact-entreprise"
-            className="inline-flex items-center-center gap-2 bg-white text-brand-900 font-semibold px-6 py-3 rounded-xl hover:bg-white/90 transition-colors"
+            className="inline-flex items-center gap-2 bg-white text-brand-900 font-semibold px-6 py-3 rounded-xl hover:bg-white/90 transition-colors"
           >
             Demander un devis personnalisé
           </Link>
