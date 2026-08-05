@@ -7,7 +7,7 @@ const expertsSample = [
     city: "Lyon 6e",
     rating: 4.9,
     reviews: 47,
-    specialty: "Résidentiel ancien",
+    specialty: "Identité visuelle & branding",
     since: "2024",
     initials: "SM",
     color: "bg-brand-100 text-brand-700",
@@ -17,7 +17,7 @@ const expertsSample = [
     city: "Bordeaux",
     rating: 5.0,
     reviews: 32,
-    specialty: "Investissement locatif",
+    specialty: "Création de sites web",
     since: "2023",
     initials: "TG",
     color: "bg-orange-100 text-orange-700",
@@ -27,7 +27,7 @@ const expertsSample = [
     city: "Paris 15e",
     rating: 4.8,
     reviews: 61,
-    specialty: "Transactions de prestige",
+    specialty: "Stratégie social media",
     since: "2023",
     initials: "MD",
     color: "bg-purple-100 text-purple-700",
@@ -51,7 +51,7 @@ export function Experts() {
             <p className="text-gray-500 text-lg leading-relaxed">
               Après votre certification, vous êtes référencé dans notre annuaire
               national. Les vendeurs vous cherchent, vous trouvent, et vous font
-              confiance avant même de vous avoir parlé.
+              confiance avant même de vous avoir rencontré.
             </p>
 
             <ul className="space-y-4">
@@ -71,7 +71,7 @@ export function Experts() {
 
             <Link
               href="/experts"
-              className="inline-flex items-center gap-2 text-brand-600 font-semibold text-sm hover:text-brand-700 transition-colors"
+              className="inline-flex items-center-center gap-2 text-brand-600 font-semibold text-sm hover:text-brand-700 transition-colors"
             >
               Voir tous les experts certifiés →
             </Link>
@@ -119,7 +119,7 @@ export function Experts() {
             ))}
 
             <p className="text-center text-sm text-gray-400 pt-2">
-              +3 700 experts certifiés dans toute la France
+              + 3 700 experts certifiés dans toute la France
             </p>
           </div>
         </div>
