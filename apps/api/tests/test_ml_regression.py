@@ -13,8 +13,9 @@ import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-# Ensure the app is importable
+# Ensure the app and the monorepo root (for `data.*` imports) are importable
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
 
 # We need to mock the imports inside retrain_model
 # so we patch at the module level

@@ -127,7 +127,7 @@ jobs:
       - name: Run pytest
         run: |
           pip install pytest pytest-asyncio httpx
-          cd apps/api && python -m pytest tests/ -v
+          cd apps/api && PYTHONPATH=../:. python -m pytest tests/ -v
 
   # ─────────────────────────────────────────────
   # 5. Deploy Python API → Railway

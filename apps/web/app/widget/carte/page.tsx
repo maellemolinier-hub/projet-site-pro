@@ -1,4 +1,4 @@
-import dynamic from "next/dynamic";
+import MapWidgetClientWrapper from "@/components/widget/MapWidgetClient";
 
 interface Props {
   searchParams: Promise<{ token?: string; theme?: string; lat?: string; lng?: string; zoom?: string }>;
@@ -19,7 +19,7 @@ export default async function CarteWidgetPage({ searchParams }: Props) {
         `}</style>
       </head>
       <body>
-        <MapWidgetClient
+        <MapWidgetClientWrapper
           token={token}
           theme={theme as "light" | "dark"}
           initialLat={parseFloat(lat)}
@@ -35,16 +35,3 @@ export const metadata = {
   title: "Cap Entreprendre France — Widget",
   robots: "noindex",
 };
-
-/**
- * Client component wrapper: `next/dynamic` with `ssr: false` is not allowed
- * in Server Components (Next.js 15 App Router). We isolate it here.
- */
-const MapWidgetClient = dynamic(() => import("@/components/widget/MapWidget"), {
-  ssr: false,
-  loading: () => (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "sans-serif", color: "#6B7280" }}>
-      Chargement de la carte…
-    </div>
-  ),
-});
