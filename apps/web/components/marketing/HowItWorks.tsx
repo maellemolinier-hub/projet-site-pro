@@ -1,30 +1,30 @@
 const steps = [
   {
     num: "01",
-    title: "Choisissez votre formule",
+    title: "Définissons votre projet ensemble",
     description:
-      "Starter, Expert ou Agence Pro. Essai 14 jours sans CB, résiliation en 1 clic. Accès immédiat à toute la plateforme.",
+      "Échange gratuit pour comprendre vos besoins : identité visuelle, site web, stratégie de marque. Devis transparent sous 24h.",
     color: "from-brand-400 to-brand-600",
   },
   {
     num: "02",
-    title: "Explorez les prix de votre secteur",
+    title: "Création de votre identité",
     description:
-      "Ouvrez la carte, tapez une adresse, et visualisez instantanément les prix rue par rue avec l'historique des ventes et les tendances.",
+      "Logo, charte graphique, palette de couleurs et typographies. Une identité forte qui vous distingue de vos concurrents.",
     color: "from-purple-400 to-purple-600",
   },
   {
     num: "03",
-    title: "Prospectez avec l'IA terrain",
+    title: "Déploiement digital",
     description:
-      "L'app mobile vous indique les propriétaires les plus susceptibles de vendre dans votre zone. Fini la prospection à l'aveugle.",
+      "Site web moderne et optimisé SEO, supports de communication, réseaux sociaux. Votre marque visible partout, tout de suite.",
     color: "from-orange-400 to-orange-600",
   },
   {
     num: "04",
-    title: "Devenez Expert certifié",
+    title: "Suivi & accompagnement",
     description:
-      "Suivez la formation valeur vénale, passez la certification, obtenez votre badge et soyez référencé dans notre annuaire national.",
+      "Conseils continus, formations en communication et ajustements. On reste à vos côtés pour faire grandir votre image.",
     color: "from-green-400 to-green-600",
   },
 ];
@@ -38,12 +38,12 @@ export function HowItWorks() {
             Comment ça marche
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Opérationnel en{" "}
-            <span className="gradient-text">moins de 10 minutes</span>
+            De l'idée à la{" "}
+            <span className="gradient-text">réalisation en 4 étapes</span>
           </h2>
           <p className="text-gray-500 text-lg">
-            Aucune installation, aucune configuration complexe. Vous êtes
-            directement dans la carte.
+            Un accompagnement clair et structuré, de la première rencontre au
+            suivi de votre image de marque.
           </p>
         </div>
 
