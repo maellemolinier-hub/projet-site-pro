@@ -9,24 +9,12 @@ export async function GET(
     where: { widgetToken: params.token },
     include: {
       user: { select: { firstName: true, lastName: true, email: true } },
-      certification: {
-        select: {
-          status: true,
-          issuedAt: true,
-          expiresAt: true,
-          certificateId: true,
-        },
-      },
     },
   });
 
   if (!expert) {
     return NextResponse.json({ error: "Token invalide" }, { status: 404 });
   }
-
-  const cert = expert.user.certification
-    ?? (expert as any).certification
-    ?? null;
 
   // Requête séparée pour la certification via userId
   const certification = await db.certification.findUnique({

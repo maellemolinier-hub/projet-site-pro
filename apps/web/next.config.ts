@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@immoexpert/ui", "@immoexpert/types"],
+  transpilePackages: ["@immoexpert/ui", "@immoexpert/types", "@immoexpert/db"],
   images: {
     remotePatterns: [
       { hostname: "images.unsplash.com" },

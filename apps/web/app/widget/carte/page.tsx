@@ -1,14 +1,20 @@
-import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
-const MapWidget = dynamic(() => import("@/components/widget/MapWidget"), { ssr: false });
+const MapWidget = dynamic(() => import("@/components/widget/MapWidget"), {
+  ssr: false,
+  loading: () => (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "sans-serif", color: "#6B7280" }}>
+      Chargement de la carte…
+    </div>
+  ),
+});
 
 interface Props {
-  searchParams: { token?: string; theme?: string; lat?: string; lng?: string; zoom?: string };
+  searchParams: Promise<{ token?: string; theme?: string; lat?: string; lng?: string; zoom?: string }>;
 }
 
-export default function CarteWidgetPage({ searchParams }: Props) {
-  const { token, theme = "light", lat = "48.8566", lng = "2.3522", zoom = "13" } = searchParams;
+export default async function CarteWidgetPage({ searchParams }: Props) {
+  const { token, theme = "light", lat = "48.8566", lng = "2.3522", zoom = "13" } = await searchParams;
 
   return (
     <html lang="fr">
@@ -22,15 +28,13 @@ export default function CarteWidgetPage({ searchParams }: Props) {
         `}</style>
       </head>
       <body>
-        <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "sans-serif", color: "#6B7280" }}>Chargement de la carte…</div>}>
-          <MapWidget
-            token={token}
-            theme={theme as "light" | "dark"}
-            initialLat={parseFloat(lat)}
-            initialLng={parseFloat(lng)}
-            initialZoom={parseFloat(zoom)}
-          />
-        </Suspense>
+        <MapWidget
+          token={token}
+          theme={theme as "light" | "dark"}
+          initialLat={parseFloat(lat)}
+          initialLng={parseFloat(lng)}
+          initialZoom={parseFloat(zoom)}
+        />
       </body>
     </html>
   );

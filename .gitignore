@@ -36,3 +36,4 @@ packages/db/node_modules/
 # Expo
 apps/mobile/.expo/
 apps/mobile/dist/
+apps/web/tsconfig.tsbuildinfo
