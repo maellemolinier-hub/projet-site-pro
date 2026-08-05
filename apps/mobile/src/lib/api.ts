@@ -1,8 +1,8 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "https://api.immoexpert.fr";
-const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? "https://immoexpert.fr";
+const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "https://api.cap-entreprendre-france.fr";
+const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? "https://cap-entreprendre-france.fr";
 
 export const apiClient = axios.create({
   baseURL: API_URL,
