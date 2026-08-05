@@ -1,13 +1,4 @@
-import dynamic from "next/dynamic";
-
-const MapWidget = dynamic(() => import("@/components/widget/MapWidget"), {
-  ssr: false,
-  loading: () => (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "sans-serif", color: "#6B7280" }}>
-      Chargement de la carte…
-    </div>
-  ),
-});
+import MapWidgetClientWrapper from "@/components/widget/MapWidgetClient";
 
 interface Props {
   searchParams: Promise<{ token?: string; theme?: string; lat?: string; lng?: string; zoom?: string }>;
@@ -28,7 +19,7 @@ export default async function CarteWidgetPage({ searchParams }: Props) {
         `}</style>
       </head>
       <body>
-        <MapWidget
+        <MapWidgetClientWrapper
           token={token}
           theme={theme as "light" | "dark"}
           initialLat={parseFloat(lat)}

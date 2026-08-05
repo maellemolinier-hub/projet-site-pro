@@ -8,17 +8,14 @@ Verifies that:
 4. Missing model metadata (first run) does not block deployment.
 """
 
-import os
-import sys
 import pickle
-import tempfile
+import sys
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
-import pytest
-
-# Ensure the app is importable
+# Ensure the app and the monorepo root (for `data.*` imports) are importable
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
 
 # We need to mock the imports inside retrain_model
 # so we patch at the module level

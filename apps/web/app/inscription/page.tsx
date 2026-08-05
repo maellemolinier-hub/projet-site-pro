@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Eye, EyeOff, Loader2, Check } from "lucide-react";
 import { toast } from "sonner";
@@ -25,10 +25,11 @@ const PLAN_META: Record<string, { label: string; highlights: string[]; price: st
   },
 };
 
-export default function InscriptionPage() {
+function InscriptionForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const plan = searchParams.get("plan") ?? "expert";
+  const plan = typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("plan") ?? "expert"
+    : "expert";
   const meta = PLAN_META[plan] ?? PLAN_META.expert;
 
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", password: "" });
@@ -226,4 +227,8 @@ export default function InscriptionPage() {
       </div>
     </div>
   );
+}
+
+export default function InscriptionPage() {
+  return <InscriptionForm />;
 }
