@@ -50,7 +50,7 @@ export function Experts() {
             </h2>
             <p className="text-gray-500 text-lg leading-relaxed">
               Après votre certification, vous êtes référencé dans notre annuaire
-              national. Les vendeurs vous cherchent, vous trouvent, et vous font
+              national. Les clients vous cherchent, vous trouvent, et vous font
               confiance avant même de vous avoir rencontré.
             </p>
 
@@ -58,7 +58,7 @@ export function Experts() {
               {[
                 "Profil public avec zone de compétence sur carte",
                 "Badge certifié visible sur votre propre site",
-                "Formulaire de contact direct (leads entrants gratuits)",
+                "Formation de contact direct (leads entrants gratuits)",
                 "Pages SEO optimisées par ville et quartier",
                 "Mise en avant sur les requêtes locales Google",
               ].map((item) => (
@@ -71,7 +71,7 @@ export function Experts() {
 
             <Link
               href="/experts"
-              className="inline-flex items-center-center gap-2 text-brand-600 font-semibold text-sm hover:text-brand-700 transition-colors"
+              className="inline-flex items-center gap-2 text-brand-600 font-semibold text-sm hover:text-brand-700 transition-colors"
             >
               Voir tous les experts certifiés →
             </Link>
@@ -100,8 +100,7 @@ export function Experts() {
                     <BadgeCheck className="w-4 h-4 text-brand-600 shrink-0" />
                   </div>
                   <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
-                    <MapPin className="w-3 h-3" />
-                    {expert.city} · {expert.specialty}
+                    <MapPin className="w-3 h-3" /> {expert.city} · {expert.specialty}
                   </div>
                 </div>
 
