@@ -2,12 +2,18 @@
 
 import Link from "next/link";
 import { ArrowRight, TrendingUp, Users, Award } from "lucide-react";
-import { MapPreview } from "@/components/map/MapPreview";
 
 const stats = [
   { icon: TrendingUp, value: "100%", label: "de satisfaction client" },
   { icon: Users, value: "50+", label: "entrepreneurs accompagnés" },
   { icon: Award, value: "5 ans", label: "d'expérience en communication" },
+];
+
+const portfolio = [
+  { title: "Identité visuelle", subtitle: "Logo & charte graphique", color: "from-brand-500 to-brand-700" },
+  { title: "Site web", subtitle: "Vitrine & e-commerce", color: "from-orange-400 to-orange-600" },
+  { title: "Stratégie digitale", subtitle: "Réseaux & contenu", color: "from-purple-400 to-purple-600" },
+  { title: "Design print", subtitle: "Flyers & brochures", color: "from-green-400 to-green-600" },
 ];
 
 export function Hero() {
@@ -95,43 +101,32 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right — map preview */}
-          <div className="relative lg:h-[560px] h-[360px] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10">
-            <MapPreview />
-
-            {/* Floating price card */}
-            <div className="absolute top-4 left-4 glass rounded-xl p-3 shadow-lg border border-white/50">
-              <p className="text-xs text-gray-500 font-medium">
-                Rue de Rivoli, Paris 1er
-              </p>
-              <p className="text-xl font-bold text-gray-900">
-                14 800{" "}
-                <span className="text-sm font-normal text-gray-500">
-                  €/m²
-                </span>
-              </p>
-              <div className="flex items-center gap-1 mt-0.5">
-                <span className="text-xs text-green-600 font-medium">
-                  ▲ +3,2%
-                </span>
-                <span className="text-xs text-gray-400">sur 12 mois</span>
-              </div>
+          {/* Right — portfolio grid */}
+          <div className="relative lg:h-[560px] h-[360px] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 bg-gradient-to-br from-gray-900 to-gray-800 p-6">
+            <div className="grid grid-cols-2 gap-4 h-full">
+              {portfolio.map((item) => (
+                <div
+                  key={item.title}
+                  className={`rounded-xl bg-gradient-to-br ${item.color} p-5 flex flex-col justify-end shadow-lg`}
+                >
+                  <h3 className="text-white font-bold text-lg">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/70 text-sm">
+                    {item.subtitle}
+                  </p>
+                </div>
+              ))}
             </div>
 
-            {/* Floating prospect card */}
-            <div className="absolute bottom-4 right-4 glass rounded-xl p-3 shadow-lg border border-white/50">
+            {/* Floating badge */}
+            <div className="absolute top-4 right-4 glass rounded-xl p-3 shadow-lg border border-white/50">
               <p className="text-xs text-gray-500 font-medium">
-                Prospect IA détecté
+                Basé à Grasse
               </p>
               <p className="text-sm font-bold text-gray-900">
-                12, Bd Haussmann
+                Studio de communication
               </p>
-              <div className="flex items-center gap-1 mt-0.5">
-                <span className="w-2 h-2 bg-orange-400 rounded-full" />
-                <span className="text-xs text-orange-600 font-medium">
-                  Score 87% — Mise en vente probable
-                </span>
-              </div>
             </div>
           </div>
         </div>
