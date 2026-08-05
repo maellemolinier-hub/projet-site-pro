@@ -5,7 +5,7 @@ import { BadgeCheck, MapPin, Star, Search } from "lucide-react";
 export const metadata: Metadata = {
   title: "Experts certifiés en Valeur Vénale — Annuaire national",
   description:
-    "Trouvez un expert immobilier certifié ImmoExpert près de chez vous. Tous ont suivi la formation Expert en Valeur Vénale.",
+    "Trouvez un expert immobilier certifié Cap Entreprendre France près de chez vous. Tous ont suivi la formation Expert en Valeur Vénale.",
 };
 
 const SAMPLE_EXPERTS = Array.from({ length: 12 }, (_, i) => ({
@@ -67,7 +67,7 @@ export default function ExpertsPage() {
             <span className="text-accent-400">certifié</span>
           </h1>
           <p className="text-white/60 max-w-xl mx-auto">
-            Tous les experts référencés ont obtenu la certification ImmoExpert
+            Tous les experts référencés ont obtenu la certification Cap Entreprendre France
             en Valeur Vénale. Ils utilisent les mêmes données temps réel que
             vous voyez sur cette carte.
           </p>

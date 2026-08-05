@@ -14,7 +14,7 @@ interface Props {
 
 const STYLE_LIGHT = "https://demotiles.maplibre.org/style.json";
 const STYLE_DARK = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "https://api.immoexpert.fr";
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "https://api.cap-entreprendre-france.fr";
 
 export default function MapWidget({
   theme = "light",
@@ -80,9 +80,9 @@ export default function MapWidget({
         },
       });
 
-      // ImmoExpert watermark
+      // Cap Entreprendre France watermark
       const wm = document.createElement("div");
-      wm.innerHTML = '<a href="https://immoexpert.fr" target="_blank" rel="noopener" style="font-family:sans-serif;font-size:11px;color:#6B7280;text-decoration:none;background:rgba(255,255,255,0.9);padding:4px 8px;border-radius:6px;display:block;">Données · <strong style=\'color:#1D4ED8\'>ImmoExpert</strong></a>';
+      wm.innerHTML = '<a href="https://cap-entreprendre-france.fr" target="_blank" rel="noopener" style="font-family:sans-serif;font-size:11px;color:#6B7280;text-decoration:none;background:rgba(255,255,255,0.9);padding:4px 8px;border-radius:6px;display:block;">Données · <strong style=\'color:#1D4ED8\'>Cap Entreprendre France</strong></a>';
       wm.style.cssText = "position:absolute;bottom:36px;right:8px;z-index:10;";
       containerRef.current?.appendChild(wm);
     });

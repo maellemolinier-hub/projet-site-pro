@@ -191,7 +191,7 @@ export function ParametresPage() {
           {section === "Intégrations" && (
             <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm space-y-4">
               <h2 className="font-semibold text-gray-900">Intégrations CRM</h2>
-              <p className="text-sm text-gray-500">Connectez ImmoExpert à votre logiciel immobilier existant</p>
+              <p className="text-sm text-gray-500">Connectez Cap Entreprendre France à votre logiciel immobilier existant</p>
               <div className="space-y-3">
                 {[
                   { name: "Apimo", desc: "Synchronisation des mandats et contacts", status: "Connecté" },

@@ -24,7 +24,7 @@ function getExpert(slug: string) {
       city: "Lyon 6e",
       postalCode: "69006",
       specialty: "Résidentiel ancien",
-      bio: "Expert en valeur vénale certifiée ImmoExpert depuis 2023, spécialisée dans le résidentiel haut de gamme à Lyon et sa métropole. Ancienne directrice d'agence, j'accompagne mes clients vendeurs avec des estimations précises basées sur les données DVF et une connaissance fine du marché lyonnais.",
+      bio: "Expert en valeur vénale certifiée Cap Entreprendre France depuis 2023, spécialisée dans le résidentiel haut de gamme à Lyon et sa métropole. Ancienne directrice d'agence, j'accompagne mes clients vendeurs avec des estimations précises basées sur les données DVF et une connaissance fine du marché lyonnais.",
       rating: 4.9,
       reviews: 47,
       initials: "SM",
@@ -123,12 +123,12 @@ export default async function ExpertPage({ params }: Props) {
               <div className="flex items-center gap-3 mb-3">
                 <BadgeCheck className="w-8 h-8 text-brand-300" />
                 <div>
-                  <h3 className="font-semibold">Expert certifié ImmoExpert</h3>
+                  <h3 className="font-semibold">Expert certifié Cap Entreprendre France</h3>
                   <p className="text-white/60 text-sm">Formation Expert en Valeur Vénale · Certifié {expert.certifiedSince}</p>
                 </div>
               </div>
               <p className="text-white/60 text-sm">
-                Cet expert a validé la formation certifiante ImmoExpert en Valeur Vénale,
+                Cet expert a validé la formation certifiante Cap Entreprendre France en Valeur Vénale,
                 incluant les méthodes par comparaison directe, capitalisation des revenus
                 et coût de remplacement. Il utilise les données DVF temps réel.
               </p>
@@ -163,7 +163,7 @@ export default async function ExpertPage({ params }: Props) {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                   <Globe className="w-4 h-4 text-gray-400 shrink-0" />
-                  immoexpert.fr/experts/{slug}
+                  cap-entreprendre-france.fr/experts/{slug}
                 </div>
               </div>
             </div>
