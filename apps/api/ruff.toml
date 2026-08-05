@@ -1,0 +1,13 @@
+# Ruff configuration for the Python API
+# Mirrors the CI command: ruff check apps/api --ignore E501
+# Additional ignores are FastAPI idioms or intentional patterns.
+
+target-version = "py311"
+
+[lint]
+ignore = [
+  "E501",   # line length — not enforced
+  "B008",   # Depends() in argument defaults — standard FastAPI pattern
+  "BLE001", # blind except — intentional catch-all in API error handlers
+  "PLW0602",# global without assignment — false positive (assigned in __main__ block)
+]

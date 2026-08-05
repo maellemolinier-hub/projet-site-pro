@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Query, Depends
+
+from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
-from typing import Optional
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from core.database import get_db
 
 router = APIRouter()
@@ -17,8 +18,8 @@ class PricePointOut(BaseModel):
     lng: float
     price_sqm: float
     property_type: str
-    sale_date: Optional[str] = None
-    street_name: Optional[str] = None
+    sale_date: str | None = None
+    street_name: str | None = None
 
 
 class ZoneStats(BaseModel):
@@ -28,7 +29,7 @@ class ZoneStats(BaseModel):
     min_price_sqm: float
     max_price_sqm: float
     count: int
-    trend_12m: Optional[float] = None
+    trend_12m: float | None = None
 
 
 @router.get("/zone", response_model=ZoneStats)
@@ -36,7 +37,7 @@ async def get_zone_stats(
     lat: float = Query(..., description="Latitude centre"),
     lng: float = Query(..., description="Longitude centre"),
     radius_m: int = Query(500, ge=100, le=5000, description="Rayon en mètres"),
-    property_type: Optional[str] = Query(None),
+    property_type: str | None = Query(None),
     db: AsyncSession = Depends(get_db),
 ):
     """Statistiques de prix pour une zone géographique."""

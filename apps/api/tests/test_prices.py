@@ -16,16 +16,16 @@ These tests verify:
 
 import ast
 import pathlib
+import sys
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from httpx import ASGITransport, AsyncClient
-from unittest.mock import AsyncMock, MagicMock
 
-import sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
-from main import app  # noqa: E402
-from core.database import get_db  # noqa: E402
+from core.database import get_db
+from main import app
 
 PRICES_FILE = pathlib.Path(__file__).resolve().parent.parent / "routers" / "prices.py"
 
@@ -40,9 +40,13 @@ def _extract_sql_from_source() -> str:
     for node in ast.walk(tree):
         if isinstance(node, ast.AsyncFunctionDef) and node.name == "get_price_trend":
             for child in ast.walk(node):
-                if isinstance(child, ast.Constant) and isinstance(child.value, str):
-                    if "saleDate" in child.value and "postalCode" in child.value:
-                        return child.value
+                if (
+                    isinstance(child, ast.Constant)
+                    and isinstance(child.value, str)
+                    and "saleDate" in child.value
+                    and "postalCode" in child.value
+                ):
+                    return child.value
     raise RuntimeError("Could not find SQL query in get_price_trend source")
 
 

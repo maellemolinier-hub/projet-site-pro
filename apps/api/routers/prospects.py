@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Query, Depends
+
+from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
-from typing import Optional
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from core.database import get_db
 from ml.model import predict_sale_probability
 
@@ -18,8 +19,8 @@ class ProspectResult(BaseModel):
     sale_score: float
     score_label: str
     reasons: list[str]
-    years_owned: Optional[int] = None
-    last_mutation: Optional[str] = None
+    years_owned: int | None = None
+    last_mutation: str | None = None
 
 
 @router.get("/scan", response_model=list[ProspectResult])
