@@ -1,6 +1,6 @@
 """
 Modèle de prédiction de probabilité de mise en vente.
-Entraîné sur l'historique DVF : bien vendu ou pas dans les 6 mois suivant la fenêtre d'observation.
+Entrée sur l'historique DVF : bien vendu ou pas dans les 6 mois suivant la date d'observation.
 """
 import logging
 import pickle
@@ -12,6 +12,13 @@ logger = logging.getLogger(__name__)
 
 _model = None
 MODEL_PATH = Path(__file__).parent / "sale_probability_model.pkl"
+
+# Features attendues par le modèle (doit correspondre à l'entraînement)
+REQUIRED_FEATURES = ("years_owned", "avg_price_sqm", "trend_6m", "lat", "lng")
+
+# Seuil de fallback : si le modèle ML échoue, on utilise le score heuristique
+# mais on log un warning pour que l'opérateur sache que l'inférence est dégradée.
+HEURISTIC_BASE_SCORE = 0.3
 
 
 def _load_model():
@@ -27,33 +34,46 @@ def _load_model():
 
 def predict_sale_probability(features: dict) -> float:
     """
-    Retourne une probabilité de mise en vente dans les 6 mois (0.0 → 1.0).
+    Retourne une probabilité de mise en vente dans les 6 mois (0.0 ≤ 1.0).
     """
     global _model
+
+    # Valider les features d'entrée
+    missing = [k for k in REQUIRED_FEATURES if k not in features]
+    if missing:
+        logger.warning("Features manquantes pour l'inférence ML: %s — fallback heuristique", missing)
+        return _heuristic_score(features)
 
     if _model is None:
         _load_model()
 
     if _model is not None:
-        X = _build_feature_vector(features)
-        return float(_model.predict_proba(X)[0][1])
+        try:
+            X = _build_feature_vector(features)
+            proba = float(_model.predict_proba(X)[0][1])
+            # Clamp de sécurité
+            return max(0.0, min(1.0, proba))
+        except Exception as exc:
+            logger.error("Erreur d'inférence ML (%s) — fallback heuristique", exc)
 
+    logger.warning("Fallback heuristique activé pour predict_sale_probability")
     return _heuristic_score(features)
 
 
 def _build_feature_vector(features: dict) -> np.ndarray:
+    """Construit le vecteur de features pour l'inférence ML."""
     return np.array([[
         features.get("years_owned", 0),
         features.get("avg_price_sqm", 0),
         features.get("trend_6m", 0),
-        features.get("lat", 48.8),
-        features.get("lng", 2.35),
+        features.get("lat", features.get("latitude", 48.8)),
+        features.get("lng", features.get("longitude", 2.35)),
     ]])
 
 
 def _heuristic_score(features: dict) -> float:
-    """Score heuristique quand le modèle ML n'est pas encore entraîné."""
-    score = 0.3
+    """Score heuristique quand le modèle ML n'est pas encadré."""
+    score = HEURISTIC_BASE_SCORE
 
     years_owned = features.get("years_owned", 0)
     if years_owned > 20:
@@ -76,6 +96,11 @@ def _heuristic_score(features: dict) -> float:
 
 def train_model(X: np.ndarray, y: np.ndarray) -> None:
     """Entraîne et sauvegarde le modèle XGBoost."""
+    if X.shape[1] != len(REQUIRED_FEATURES):
+        raise ValueError(
+            f"Dimension de X ({X.shape[1]}) != nombre de features attendues "
+            f"({len(REQUIRED_FEATURES)}). Features attendues: {REQUIRED_FEATURES}"
+        )
     try:
         from xgboost import XGBClassifier
     except ImportError:
