@@ -71,14 +71,12 @@ export const metadata: Metadata = {
     title: "Cap Entreprendre France — Studio de communication & graphisme à Grasse",
     description:
       "Cap Entreprendre France vous accompagne dans la création, la gestion et le développement de votre entreprise. Identité visuelle, création de sites web et stratégie de marque à Grasse.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Cap Entreprendre France" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Cap Entreprendre France — Studio de communication & graphisme à Grasse",
     description:
       "Cap Entreprendre France vous accompagne dans la création, la gestion et le développement de votre entreprise. Identité visuelle, création de sites web et stratégie de marque à Grasse.",
-    images: ["/og-image.png"],
   },
   robots: { index: true, follow: true },
   alternates: {
