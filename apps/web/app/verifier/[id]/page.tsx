@@ -5,7 +5,7 @@ import { db } from "@immoexpert/db";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Vérification de certification — ImmoExpert",
+  title: "Vérification de certification — Cap Entreprendre France",
 };
 
 interface Props {
@@ -46,7 +46,7 @@ export default async function VerifierPage({ params }: Props) {
     certification.user.lastName,
   ]
     .filter(Boolean)
-    .join(" ") || "Expert ImmoExpert";
+    .join(" ") || "Expert Cap Entreprendre France";
 
   const slug = certification.user.expertProfile?.slug;
 
@@ -64,7 +64,7 @@ export default async function VerifierPage({ params }: Props) {
                 Certification valide ✓
               </h1>
               <p className="text-gray-500 text-sm">
-                Ce professionnel est bien certifié ImmoExpert
+                Ce professionnel est bien certifié Cap Entreprendre France
               </p>
             </div>
 

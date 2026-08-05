@@ -39,7 +39,7 @@ export default function HomeScreen() {
           <View>
             <Text style={styles.greeting}>Bonjour 👋</Text>
             <Text style={styles.subGreeting}>
-              {user?.firstName ? `${user.firstName} ${user.lastName ?? ""}`.trim() : "Conseiller ImmoExpert"}
+              {user?.firstName ? `${user.firstName} ${user.lastName ?? ""}`.trim() : "Conseiller Cap Entreprendre France"}
             </Text>
           </View>
           <View style={styles.avatar}>

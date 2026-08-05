@@ -5,7 +5,7 @@ import { Navbar } from "@/components/marketing/Navbar";
 import { Footer } from "@/components/marketing/Footer";
 
 export const metadata: Metadata = {
-  title: "Contact entreprise — Réseaux et Promoteurs | ImmoExpert",
+  title: "Contact entreprise — Projets sur mesure | Cap Entreprendre France",
 };
 
 export default function ContactEntreprisePage() {
@@ -26,21 +26,21 @@ export default function ContactEntreprisePage() {
                   Offre Enterprise
                 </span>
                 <h1 className="text-3xl font-bold text-gray-900 mt-2">
-                  Réseaux d'agences et Promoteurs
+                  Projets sur mesure et accompagnement dédié
                 </h1>
                 <p className="text-gray-500 mt-3 leading-relaxed">
-                  Vous pilotez plusieurs agences, un réseau de mandataires ou une activité de promotion immobilière ?
-                  Notre offre sur-mesure s'adapte à votre volume et vos intégrations.
+                  Vous avez un projet spécifique, plusieurs sites ou une stratégie digitale complète à déployer ?
+                  Notre offre sur-mesure s'adapte à vos besoins et votre budget.
                 </p>
               </div>
 
               <div className="space-y-3">
                 {[
-                  "API données immobilières (prix, transactions, tendances)",
-                  "Analyse foncière et potentiel constructible",
-                  "Multi-agences et multi-utilisateurs illimités",
-                  "Dashboard administrateur centralisé",
-                  "Intégration CRM (Salesforce, HubSpot, sur-mesure)",
+                  "Site e-commerce ou application web sur mesure",
+                  "Stratégie de contenu et campagnes publicitaires",
+                  "Multi-sites et gestion centralisée",
+                  "Dashboard administrateur et statistiques",
+                  "Intégration outils tiers (CRM, ERP, sur-mesure)",
                   "SLA garanti 99,9% avec support dédié",
                   "Marque blanche complète (domaine, logo, couleurs)",
                   "Formation équipe en présentiel ou distanciel",
@@ -55,7 +55,7 @@ export default function ContactEntreprisePage() {
               <div className="bg-brand-50 rounded-2xl p-5 border border-brand-100">
                 <p className="font-semibold text-brand-900 mb-1">Tarification</p>
                 <p className="text-brand-700 text-sm">
-                  À partir de <strong>3 500 € HT/an</strong> pour les réseaux.
+                  À partir de <strong>3 500 € HT/an</strong> pour les projets sur mesure.
                   Devis personnalisé sous 48h selon le volume et les fonctionnalités.
                 </p>
               </div>
@@ -85,8 +85,8 @@ export default function ContactEntreprisePage() {
               </div>
 
               {[
-                { label: "Email professionnel", placeholder: "jean.dupont@agence.fr", type: "email" },
-                { label: "Nom de la société / réseau", placeholder: "Réseau Immo France", type: "text" },
+                { label: "Email professionnel", placeholder: "jean.dupont@entreprise.fr", type: "email" },
+                { label: "Nom de la société", placeholder: "Mon Entreprise", type: "text" },
                 { label: "Téléphone", placeholder: "06 12 34 56 78", type: "tel" },
               ].map((f) => (
                 <div key={f.label}>
@@ -100,30 +100,30 @@ export default function ContactEntreprisePage() {
               ))}
 
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Type de structure</label>
+                <label className="block text-xs text-gray-500 mb-1">Type de projet</label>
                 <select className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                  <option>Réseau de mandataires</option>
-                  <option>Réseau d'agences franchisées</option>
-                  <option>Promoteur immobilier</option>
-                  <option>Agence indépendante multi-sites</option>
-                  <option>Investisseur / Asset manager</option>
+                  <option>Site web / e-commerce</option>
+                  <option>Identité visuelle</option>
+                  <option>Stratégie de marque</option>
+                  <option>Campagnes publicitaires</option>
+                  <option>Projet sur mesure</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Nombre d'utilisateurs estimé</label>
+                <label className="block text-xs text-gray-500 mb-1">Budget estimé</label>
                 <select className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                  <option>11 à 30 utilisateurs</option>
-                  <option>31 à 100 utilisateurs</option>
-                  <option>101 à 500 utilisateurs</option>
-                  <option>500+ utilisateurs</option>
+                  <option>Moins de 1 000 €</option>
+                  <option>1 000 € à 5 000 €</option>
+                  <option>5 000 € à 15 000 €</option>
+                  <option>15 000 €+</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-xs text-gray-500 mb-1">Votre besoin (optionnel)</label>
                 <textarea
-                  placeholder="Décrivez votre projet, vos intégrations en place, vos enjeux…"
+                  placeholder="Décrivez votre projet, vos objectifs, vos contraintes…"
                   rows={3}
                   className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
                 />
@@ -134,12 +134,12 @@ export default function ContactEntreprisePage() {
               </button>
 
               <p className="text-xs text-gray-400 text-center">
-                Réponse garantie sous 48h · Démonstration incluse
+                Réponse garantie sous 48h · Devis gratuit inclus
               </p>
 
               <div className="pt-2 border-t border-gray-100 space-y-1.5">
-                <a href="mailto:entreprise@immoexpert.fr" className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-600">
-                  <Mail className="w-3.5 h-3.5" /> entreprise@immoexpert.fr
+                <a href="mailto:contact@cap-entreprendre-france.fr" className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-600">
+                  <Mail className="w-3.5 h-3.5" /> contact@cap-entreprendre-france.fr
                 </a>
                 <a href="tel:+33123456789" className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-600">
                   <Phone className="w-3.5 h-3.5" /> 01 23 45 67 89

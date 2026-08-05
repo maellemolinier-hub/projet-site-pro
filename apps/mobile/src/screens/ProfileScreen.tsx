@@ -95,7 +95,7 @@ export default function ProfileScreen() {
           <Text style={styles.logoutText}>Se déconnecter</Text>
         </TouchableOpacity>
 
-        <Text style={styles.version}>ImmoExpert v1.0.0</Text>
+        <Text style={styles.version}>Cap Entreprendre France v1.0.0</Text>
       </ScrollView>
     </SafeAreaView>
   );
