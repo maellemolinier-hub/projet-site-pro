@@ -72,7 +72,7 @@ export default function InscriptionPage() {
       return;
     }
 
-    toast.success("Bienvenue sur ImmoExpert !");
+    toast.success("Bienvenue sur Cap Entreprendre France !");
     router.push("/dashboard");
   };
 
@@ -90,7 +90,7 @@ export default function InscriptionPage() {
             <MapPin className="w-4 h-4 text-white" />
           </div>
           <span className="font-bold text-xl text-white">
-            Immo<span className="text-accent-400">Expert</span>
+            Cap Entreprendre France
           </span>
         </Link>
 
@@ -122,7 +122,7 @@ export default function InscriptionPage() {
               <div className="w-6 h-6 rounded-lg bg-brand-600 flex items-center justify-center">
                 <MapPin className="w-3 h-3 text-white" />
               </div>
-              <span className="font-bold text-gray-900">Immo<span className="text-brand-600">Expert</span></span>
+              <span className="font-bold text-gray-900">Cap Entreprendre France</span>
             </Link>
           </div>
 
