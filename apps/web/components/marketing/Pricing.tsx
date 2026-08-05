@@ -22,7 +22,7 @@ const plans = [
       "Support email",
     ],
     missing: [
-      "Accompagnement personnalisé",
+      "Accompagnement personnel",
       "Studio de création visuelle",
       "Widget intégration site",
       "Formation certifiante",
@@ -40,7 +40,7 @@ const plans = [
     popular: true,
     features: [
       "Tout du Starter",
-      "Accompagnement personnalisé prédictif IA",
+      "Accompagnement personnel prédictif IA",
       "Studio de création visuelle",
       "Rapports illimités",
       "Widget intégration sur votre site",
@@ -115,7 +115,7 @@ export function Pricing() {
           <span
             className={`text-sm font-medium ${annual ? "text-gray-900" : "text-gray-400"}`}
           >
-            Annuel
+            Annuel{" "}
             <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold ml-1">
               <Zap className="w-3 h-3" />2 mois offerts
             </span>
@@ -209,7 +209,7 @@ export function Pricing() {
             href="/contact-entreprise"
             className="inline-flex items-center gap-2 bg-white text-brand-900 font-semibold px-6 py-3 rounded-xl hover:bg-white/90 transition-colors"
           >
-            Demander un devis personnalisé
+             Demander un devis personnalisé
           </Link>
         </div>
       </div>
