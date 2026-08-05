@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ImmoExpert",
-    "slug": "immoexpert",
+    "name": "Cap Entreprendre France",
+    "slug": "cap-entreprendre-france",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,11 +14,11 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "fr.immoexpert.app",
+      "bundleIdentifier": "fr.cap-entreprendre-france.app",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "ImmoExpert utilise votre position pour afficher les prix immobiliers autour de vous.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "ImmoExpert utilise votre position pour la prospection terrain en arrière-plan.",
-        "NSCameraUsageDescription": "ImmoExpert utilise votre caméra pour scanner des QR codes."
+        "NSLocationWhenInUseUsageDescription": "Cap Entreprendre France utilise votre position pour afficher les prix immobiliers autour de vous.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Cap Entreprendre France utilise votre position pour la prospection terrain en arrière-plan.",
+        "NSCameraUsageDescription": "Cap Entreprendre France utilise votre caméra pour scanner des QR codes."
       }
     },
     "android": {
@@ -26,7 +26,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a3a6b"
       },
-      "package": "fr.immoexpert.app",
+      "package": "fr.cap-entreprendre-france.app",
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
@@ -42,16 +42,16 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Autoriser ImmoExpert à accéder à votre caméra."
+          "cameraPermission": "Autoriser Cap Entreprendre France à accéder à votre caméra."
         }
       ]
     ],
-    "scheme": "immoexpert",
+    "scheme": "cap-entreprendre-france",
     "extra": {
       "apiUrl": "http://localhost:8000",
       "webUrl": "http://localhost:3000",
       "eas": {
-        "projectId": "immoexpert-app"
+        "projectId": "cap-entreprendre-france-app"
       }
     }
   }
