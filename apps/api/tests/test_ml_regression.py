@@ -8,14 +8,10 @@ Verifies that:
 4. Missing model metadata (first run) does not block deployment.
 """
 
-import os
-import sys
 import pickle
-import tempfile
+import sys
 from pathlib import Path
-from unittest.mock import patch, MagicMock
-
-import pytest
+from unittest.mock import MagicMock, patch
 
 # Ensure the app is importable
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
