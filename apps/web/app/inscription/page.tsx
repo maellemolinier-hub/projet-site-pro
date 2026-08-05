@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Eye, EyeOff, Loader2, Check } from "lucide-react";
 import { toast } from "sonner";
+
+export const dynamic = "force-dynamic";
 
 const PLAN_META: Record<string, { label: string; highlights: string[]; price: string }> = {
   starter: {
@@ -229,9 +231,5 @@ function InscriptionForm() {
 }
 
 export default function InscriptionPage() {
-  return (
-    <Suspense fallback={null}>
-      <InscriptionForm />
-    </Suspense>
-  );
+  return <InscriptionForm />;
 }
