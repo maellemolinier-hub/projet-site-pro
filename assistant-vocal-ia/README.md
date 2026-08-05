@@ -248,22 +248,35 @@ pour des taches qu'il ne sait pas faire lui-meme :
   Anthropic (analyse de donnees, generation de fichiers...). Aucune config
   supplementaire.
 - **`ask_gemini`** - envoie une question a Gemini (Google), avec en option
-  un fichier local (video, image, audio, document). C'est la reponse
-  concrete a "faire une commande de video" : demande par exemple *"resume
-  cette video : /Users/moi/Videos/reunion.mp4"* et Serv'IA uploade le
-  fichier vers Gemini, attend qu'il soit traite, et renvoie le resume.
-  Necessite `GEMINI_API_KEY` (gratuit a obtenir sur
-  [Google AI Studio](https://aistudio.google.com/apikey)).
+  un fichier local (video, image, audio, document). Reponse concrete a
+  "comprendre une video" : demande par exemple *"resume cette video :
+  /Users/moi/Videos/reunion.mp4"* et Serv'IA uploade le fichier vers Gemini,
+  attend qu'il soit traite, et renvoie le resume. Necessite `GEMINI_API_KEY`
+  (gratuit a obtenir sur [Google AI Studio](https://aistudio.google.com/apikey)).
+- **`generate_video`** - genere une video a partir d'un texte (Veo, via la
+  meme cle Gemini) et la telecharge dans `~/Serv'IA-videos/`. Reponse
+  concrete a "faire une commande de video" au sens creation. Soumis au meme
+  garde-fou que les commandes shell destructrices : refuse sans `CONFIRME
+  <code secret>` dans la demande d'origine - voir "Cout" ci-dessous pour
+  pourquoi.
 
-**Ce qui n'est PAS fait : generer une video (texte -> video).** Techniquement
-possible (Google Veo via l'API Gemini, ou d'autres fournisseurs comme
-Runway), mais c'est un vrai choix a faire avant de coder quoi que ce soit -
-les fournisseurs different fortement en cout, qualite et disponibilite, et
-je ne voulais pas deviner a ta place ni improviser une integration sur une
-API que je n'ai pas pu verifier en detail. Dis-moi si c'est ca que tu veux
-(et avec quel fournisseur) et je prepare le connecteur en consequence -
-l'architecture `connectors/` est faite pour recevoir un `veo.ts` a cote de
-`gemini.ts` sans rien casser.
+### Cout
+
+`generate_video` **n'est pas gratuit**. Google facture Veo a la seconde de
+video generee cote API (de l'ordre de quelques centimes a plus d'un dollar
+par seconde selon la qualite/resolution choisie - les tarifs exacts changent
+regulierement, verifie la [page de tarification Gemini](https://ai.google.dev/gemini-api/docs/pricing)
+avant d'utiliser cette fonction). C'est pour ca que `generate_video` exige
+le code de confirmation comme une commande shell destructrice : une
+generation lancee par erreur (mauvaise transcription vocale, mail mal
+interprete...) coute de l'argent reel, pas juste un risque technique.
+`ask_gemini` et `web_search`/`code_execution` restent gratuits ou couverts
+par les cles API existantes.
+
+Le modele utilise par defaut (`veo-3.1-generate-preview`) est en preview
+payante chez Google au moment ou ce code a ete ecrit - le nom exact peut
+changer avec le temps, remplacable via `GEMINI_VIDEO_MODEL` sans toucher au
+code.
 
 ## Tests
 
@@ -293,9 +306,13 @@ le mot CONFIRME seul, l'absence de `CONFIRMATION_CODE`, et la casse.
 `connectors/gemini.ts` compile contre les vrais types du SDK
 `@google/genai` installe (verifie a la main dans le code source du package :
 signatures de `files.upload`, `files.get`, `createPartFromUri`,
-`models.generateContent`) mais **n'a pas pu etre execute contre l'API
-Gemini reelle** ici (pas de cle, pas de reseau externe autorise vers
-Google) - a tester en priorite avant de t'y fier.
+`models.generateContent`, `models.generateVideos`, `operations.getVideosOperation`,
+`files.download`) mais **n'a pas pu etre execute contre l'API Gemini
+reelle** ici (pas de cle, pas de reseau externe autorise vers Google) - a
+tester en priorite avant de t'y fier, en particulier `generate_video` qui
+coute de l'argent reel des le premier appel reussi. Le garde-fou CONFIRME de
+`generate_video` (refus inconditionnel sans code, pas juste heuristique
+comme pour le shell) est teste ici sans reseau.
 
 **Ce qui ne peut pas etre teste dans cet environnement sandbox** (pas de
 microphone, pas de cle API Anthropic, pas de session Bitwarden active, pas
@@ -309,8 +326,10 @@ ton poste avant usage reel :
 - `fetch_credential` / `login_to_site` (necessitent Bitwarden deverrouille)
 - `list_recent_emails` / `search_emails` / `read_email` et le pont mail de
   bout en bout (necessitent l'autorisation OAuth Gmail et un vrai mail)
-- `web_search`, `code_execution` et `ask_gemini` de bout en bout (necessitent
-  respectivement une cle Anthropic active, la meme, et une cle Gemini)
+- `web_search`, `code_execution`, `ask_gemini` et `generate_video` de bout
+  en bout (necessitent respectivement une cle Anthropic active, la meme, et
+  une cle Gemini - `generate_video` en plus facture de l'argent reel a
+  chaque test)
 - l'app mobile en conditions reelles (Wi-Fi et mail, Expo Go)
 
 ## Limites actuelles (prototype)
@@ -335,32 +354,35 @@ ton poste avant usage reel :
   d'authenticite du canal utilise.
 - Pas de reconnaissance vocale biometrique (verifier que c'est *ta* voix) -
   seulement le code secret, dit ou tape indifferemment.
-- Pas de generation de video (texte -> video) - decision de fournisseur en
-  attente, voir "Connecteurs IA".
-- `connectors/gemini.ts` n'a jamais ete execute contre l'API Gemini reelle
-  (voir "Tests").
+- `generate_video` depend d'un modele Veo en preview payante chez Google
+  (`veo-3.1-generate-preview` par defaut) - nom de modele et tarifs peuvent
+  changer, timeout de generation fixe a 5 minutes.
+- `connectors/gemini.ts` (y compris `generate_video`) n'a jamais ete execute
+  contre l'API Gemini reelle (voir "Tests").
 
 ## Prochaines etapes
 
 1. Valider tous les modes en conditions reelles (micro PC dont `--wake`,
    app mobile en Wi-Fi, pont mail de bout en bout, `run_shell_command`,
-   `ask_gemini`) - c'est la priorite avant d'ajouter de nouvelles briques.
-2. Decider du fournisseur de generation video (Google Veo, Runway, autre) et
-   brancher le connecteur correspondant.
-3. Remplacer la detection "Hey Serv'IA" par un vrai moteur de mot-cle
+   `ask_gemini`, `generate_video`) - c'est la priorite avant d'ajouter de
+   nouvelles briques.
+2. Remplacer la detection "Hey Serv'IA" par un vrai moteur de mot-cle
    local (ex: openWakeWord) si l'usage reel montre que le CPU/la latence de
    la version actuelle sont genants.
-4. Ajouter la voix a l'app mobile (dictee native iOS/Android ou meme
+3. Ajouter la voix a l'app mobile (dictee native iOS/Android ou meme
    pipeline Whisper que le PC).
-5. Notification push mobile quand une reponse arrive par mail, plutot que
+4. Notification push mobile quand une reponse arrive par mail, plutot que
    de devoir aller consulter la boite de reception.
-6. Elargir le connecteur mail (Outlook) une fois Gmail valide en usage reel.
-7. Renforcer le garde-fou du shell (ex: demander confirmation orale/textuelle
+5. Elargir le connecteur mail (Outlook) une fois Gmail valide en usage reel.
+6. Renforcer le garde-fou du shell (ex: demander confirmation orale/textuelle
    explicite juste avant execution plutot qu'un mot-cle dans la demande
    d'origine, journal des commandes executees consultable).
-8. Si le code secret ne suffit pas : reconnaissance vocale biometrique
+7. Si le code secret ne suffit pas : reconnaissance vocale biometrique
    (necessite enrolement d'une empreinte vocale + modele de verification du
    locuteur - hors scope actuel, a chiffrer separement si voulu).
+8. Eventuellement plafonner `generate_video` (nombre d'appels par jour,
+   duree/resolution max) pour limiter le risque financier meme apres
+   confirmation.
 
 ## Scalabilite / monetisation
 

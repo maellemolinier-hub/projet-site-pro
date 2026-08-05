@@ -9,7 +9,7 @@ import { listRecentEmails, searchEmails, readEmailById } from "../tools/mail/gma
 import { runShellCommand } from "../tools/shell.js";
 import { isDestructiveCommand } from "../tools/destructiveCommand.js";
 import { isPreConfirmed } from "../tools/confirmation.js";
-import { askGemini } from "../connectors/gemini.js";
+import { askGemini, generateVideo } from "../connectors/gemini.js";
 
 const client = new Anthropic();
 
@@ -133,6 +133,35 @@ const askGeminiTool = betaZodTool({
 });
 
 /**
+ * Genere une video (Veo/Gemini) - PAYANT, facture a la seconde de video
+ * generee cote Google. Toujours soumis au meme garde-fou CONFIRME que les
+ * commandes shell destructrices : depenser de l'argent reel sans
+ * confirmation explicite est le meme genre de risque, pas seulement les
+ * commandes destructrices.
+ */
+function buildGenerateVideoTool(preConfirmed: boolean) {
+  return betaZodTool({
+    name: "generate_video",
+    description:
+      "Genere une video a partir d'un texte (Veo/Gemini) et la telecharge en local. PAYANT (facture a la seconde de video). La demande d'origine doit contenir 'CONFIRME <code secret>', sinon l'outil refuse et il faut le dire a l'utilisateur - meme regle que pour les commandes shell destructrices, car c'est une depense d'argent reelle.",
+    inputSchema: z.object({
+      prompt: z.string().describe("Description de la video a generer"),
+      outputPath: z
+        .string()
+        .optional()
+        .describe("Chemin de sortie du fichier video (par defaut : ~/Serv'IA-videos/)"),
+    }),
+    run: async ({ prompt, outputPath }) => {
+      if (!preConfirmed) {
+        return "REFUSE : generer une video est payant. Redemande a l'utilisateur de reformuler en incluant 'CONFIRME <son code secret>' s'il est sur de lui.";
+      }
+      const destination = await generateVideo(prompt, outputPath);
+      return `Video generee et enregistree dans ${destination}`;
+    },
+  });
+}
+
+/**
  * L'outil shell est construit par requete plutot que declare une seule fois,
  * pour pouvoir fermer sur `preConfirmed` (calcule a partir du texte brut de
  * la demande de l'utilisateur - CLI, transcription vocale ou mail) sans
@@ -156,8 +185,8 @@ function buildRunShellCommandTool(preConfirmed: boolean) {
   });
 }
 
-const SYSTEM_PROMPT = `Tu es Serv'IA, un assistant personnel qui execute des actions sur l'ordinateur de l'utilisateur : ranger des fichiers/photos, lancer des logiciels, chercher et lire n'importe quel email (lecture seule), se connecter a des comptes en ligne deja enregistres, executer des commandes shell pour toute autre tache demandee (run_shell_command), chercher sur le web, executer du code dans un bac a sable pour analyser des donnees ou generer des fichiers, et deleguer a Gemini (ask_gemini) l'analyse de fichiers qu'il comprend nativement (video, image, audio).
-Si run_shell_command refuse une commande car elle a l'air destructrice, explique a l'utilisateur qu'il doit reformuler sa demande en incluant "CONFIRME" suivi de son code secret personnel - n'insiste pas et n'essaie pas de contourner, et ne devine jamais ce code.
+const SYSTEM_PROMPT = `Tu es Serv'IA, un assistant personnel qui execute des actions sur l'ordinateur de l'utilisateur : ranger des fichiers/photos, lancer des logiciels, chercher et lire n'importe quel email (lecture seule), se connecter a des comptes en ligne deja enregistres, executer des commandes shell pour toute autre tache demandee (run_shell_command), chercher sur le web, executer du code dans un bac a sable pour analyser des donnees ou generer des fichiers, deleguer a Gemini (ask_gemini) l'analyse de fichiers qu'il comprend nativement (video, image, audio), et generer des videos (generate_video, payant).
+Si run_shell_command ou generate_video refuse une action car elle est destructrice ou payante, explique a l'utilisateur qu'il doit reformuler sa demande en incluant "CONFIRME" suivi de son code secret personnel - n'insiste pas et n'essaie pas de contourner, et ne devine jamais ce code.
 Confirme toujours en une phrase ce que tu as fait apres avoir execute une action. Si une commande est ambigue, demande une precision plutot que de deviner.`;
 
 export async function runCommand(command: string): Promise<string> {
@@ -183,6 +212,7 @@ export async function runCommand(command: string): Promise<string> {
       { type: "web_search_20250305", name: "web_search" },
       { type: "code_execution_20250522", name: "code_execution" },
       buildRunShellCommandTool(preConfirmed),
+      buildGenerateVideoTool(preConfirmed),
     ],
     messages: [{ role: "user", content: command }],
   });

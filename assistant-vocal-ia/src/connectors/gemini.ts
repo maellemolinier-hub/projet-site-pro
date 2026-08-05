@@ -1,7 +1,17 @@
 import { GoogleGenAI, createPartFromUri } from "@google/genai";
+import path from "node:path";
+import { mkdir } from "node:fs/promises";
+import os from "node:os";
 
 const DEFAULT_MODEL = "gemini-2.5-flash";
+// Veo 3.1 en preview payante au moment de l'ecriture (voir README > Cout).
+// Le nom exact du modele evolue avec le temps chez Google - remplacable via
+// GEMINI_VIDEO_MODEL sans toucher au code.
+const DEFAULT_VIDEO_MODEL = "veo-3.1-generate-preview";
 const FILE_READY_TIMEOUT_MS = 60_000;
+const VIDEO_TIMEOUT_MS = 5 * 60_000;
+const VIDEO_POLL_INTERVAL_MS = 10_000;
+const DEFAULT_VIDEO_DIR = path.join(os.homedir(), "Serv'IA-videos");
 
 function getClient(): GoogleGenAI {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -69,4 +79,47 @@ export async function askGemini(
   });
 
   return response.text ?? "(pas de reponse de Gemini)";
+}
+
+/**
+ * Genere une video a partir d'un texte via Veo (Google) et la telecharge
+ * localement. PAYANT (facture a la seconde de video generee cote Google) -
+ * voir README > Connecteurs IA > Cout avant utilisation. L'appelant est
+ * responsable de verifier une confirmation explicite avant d'appeler cette
+ * fonction (voir router.ts).
+ */
+export async function generateVideo(
+  prompt: string,
+  outputPath?: string,
+): Promise<string> {
+  const ai = getClient();
+  const model = process.env.GEMINI_VIDEO_MODEL || DEFAULT_VIDEO_MODEL;
+
+  let operation = await ai.models.generateVideos({ model, prompt });
+
+  const start = Date.now();
+  while (!operation.done) {
+    if (Date.now() - start > VIDEO_TIMEOUT_MS) {
+      throw new Error("Delai depasse en attendant la generation de la video.");
+    }
+    await new Promise((resolve) => setTimeout(resolve, VIDEO_POLL_INTERVAL_MS));
+    operation = await ai.operations.getVideosOperation({ operation });
+  }
+
+  if (operation.error) {
+    throw new Error(`Generation video echouee : ${JSON.stringify(operation.error)}`);
+  }
+
+  const generatedVideo = operation.response?.generatedVideos?.[0];
+  if (!generatedVideo) {
+    throw new Error(
+      "Aucune video generee - possiblement filtree par les regles de contenu de Google.",
+    );
+  }
+
+  const destination = outputPath ?? path.join(DEFAULT_VIDEO_DIR, `${Date.now()}.mp4`);
+  await mkdir(path.dirname(destination), { recursive: true });
+  await ai.files.download({ file: generatedVideo, downloadPath: destination });
+
+  return destination;
 }
