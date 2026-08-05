@@ -3,38 +3,38 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     quote:
-      "J'ai rentré 3 mandats supplémentaires le premier mois grâce aux prospects détectés par l'IA. L'outil s'est remboursé en une seule transaction.",
-    name: "Alexandre P.",
-    role: "Mandataire IAD, Nantes",
+      "Cap Entreprendre France a transformé notre image. Le nouveau logo et le site web ont donné un coup de jeune à notre studio. Les clients nous trouvent plus professionnels.",
+    name: "Julie R.",
+    role: "Gérante, Studio Lumière, Grasse",
     rating: 5,
-    initials: "AP",
+    initials: "JR",
     color: "bg-brand-100 text-brand-700",
   },
   {
     quote:
-      "La carte 3D rue par rue, c'est ce que mes clients attendaient depuis des années. Je l'intègre sur mon site et ça fait vraiment la différence en rendez-vous.",
-    name: "Claire M.",
-    role: "Directrice d'agence, Paris 11e",
+      "Accompagnement au top, du logo à la stratégie de réseaux sociaux. On a doublé notre visibilité en 3 mois. Je recommande vivement.",
+    name: "Marc D.",
+    role: "Commerçant, Café du Centre, Valbonne",
     rating: 5,
-    initials: "CM",
+    initials: "MD",
     color: "bg-orange-100 text-orange-700",
   },
   {
     quote:
-      "En tant que promoteur, l'analyse foncière m'a permis d'identifier 2 opportunités sous-valorisées que mes concurrents avaient ratées. ROI immédiat.",
-    name: "Frédéric L.",
-    role: "Promoteur immobilier, Lyon",
+      "La refonte de notre marque a été un vrai succès. Le suivi personnalisé et les conseils en communication font toute la différence.",
+    name: "Sophie L.",
+    role: "Fondatrice, Atelier Botanique, Cannes",
     rating: 5,
-    initials: "FL",
+    initials: "SL",
     color: "bg-purple-100 text-purple-700",
   },
   {
     quote:
-      "La formation valeur vénale est vraiment sérieuse. Le certificat m'a ouvert des portes avec les notaires et les investisseurs institutionnels.",
-    name: "Sarah B.",
-    role: "Conseillère SAFTI, Bordeaux",
+      "Site web rapide, beau, et bien référencé. On reçoit des demandes de devis via le site chaque semaine. Un investissement vite rentabilisé.",
+    name: "Thomas P.",
+    role: "Artisan menuisier, Mouans-Sartoux",
     rating: 5,
-    initials: "SB",
+    initials: "TP",
     color: "bg-green-100 text-green-700",
   },
 ];
