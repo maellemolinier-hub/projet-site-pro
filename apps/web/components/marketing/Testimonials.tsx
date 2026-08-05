@@ -3,7 +3,7 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     quote:
-      "J'ai rentré 3 contrats de communication en un mois grâce aux prospects détectés par l'IA. L'outil s'est remboursé en une seule transaction.",
+      "J'ai renté 3 contrats de communication en un mois grâce aux prospects détectés par l'IA. L'outil s'est remonté en une seule transaction.",
     name: "Alexandre P.",
     role: "Freelance communication, Nantes",
     rating: 5,
@@ -14,7 +14,7 @@ const testimonials = [
     quote:
       "Le rendu visuel de mes projets, c'est ce que mes clients attendaient depuis des années. Je l'intègre sur mon site et ça fait vraiment la différence en rendez-vous.",
     name: "Claire M.",
-    role: "Directrice d'agence, Paris 11e",
+    role: "Direction d'agence, Paris 11e",
     rating: 5,
     initials: "CM",
     color: "bg-orange-100 text-orange-700",
@@ -30,7 +30,7 @@ const testimonials = [
   },
   {
     quote:
-      "La formation certifiante est très sérieuse. Le certificat m'a ouvert des portes avec les grandes entreprises et les investisseurs institutionnels.",
+      "La formation certifiante est vraiment sérieuse. Le certificat m'a ouvert des portes avec les grandes entreprises et les investisseurs institutionnels.",
     name: "Sarah B.",
     role: "Consultante communication, Bordeaux",
     rating: 5,
