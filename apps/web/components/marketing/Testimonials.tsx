@@ -3,7 +3,7 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     quote:
-      "J'ai rentré 3 mandats supplémentaires le premier mois grâce aux prospects détectés par l'IA. L'outil s'est remboursé en une seule transaction.",
+      "J'ai renté 3 mandats de communication en un mois grâce aux prospects détectés par l'IA. L'outil s'est remonté en une seule transaction.",
     name: "Alexandre P.",
     role: "Mandataire IAD, Nantes",
     rating: 5,
@@ -12,16 +12,16 @@ const testimonials = [
   },
   {
     quote:
-      "La carte 3D rue par rue, c'est ce que mes clients attendaient depuis des années. Je l'intègre sur mon site et ça fait vraiment la différence en rendez-vous.",
+      "La carte 3D rend par mes clients attendent des annexes. Je l'intègre sur mon site et ça fait vriller la différence en rendez-vous.",
     name: "Claire M.",
-    role: "Directrice d'agence, Paris 11e",
+    role: "Direction d'agence, Paris 11e",
     rating: 5,
     initials: "CM",
     color: "bg-orange-100 text-orange-700",
   },
   {
     quote:
-      "En tant que promoteur, l'analyse foncière m'a permis d'identifier 2 opportunités sous-valorisées que mes concurrents avaient ratées. ROI immédiat.",
+      "En tant que promoteur, l'analyse foncière m'a permis d'identifier 2 opportunités sous-valorisées que mes concurrents n'avaient pas vues. ROI immédiat.",
     name: "Frédéric L.",
     role: "Promoteur immobilier, Lyon",
     rating: 5,
@@ -30,7 +30,7 @@ const testimonials = [
   },
   {
     quote:
-      "La formation valeur vénale est vraiment sérieuse. Le certificat m'a ouvert des portes avec les notaires et les investisseurs institutionnels.",
+      "La formation valable vénale est très sérieuse. Le certificat m'a ouvert des portes avec les notaires et les investisseurs institutionnels.",
     name: "Sarah B.",
     role: "Conseillère SAFTI, Bordeaux",
     rating: 5,
@@ -48,7 +48,7 @@ export function Testimonials() {
             Témoignages
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Ils ont déjà une longueur d&apos;avance
+            Ils ont développé leur activité
           </h2>
         </div>
 
