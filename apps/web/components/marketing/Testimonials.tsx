@@ -3,36 +3,36 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     quote:
-      "J'ai renté 3 mandats de communication en un mois grâce aux prospects détectés par l'IA. L'outil s'est remonté en une seule transaction.",
+      "J'ai rentré 3 contrats de communication en un mois grâce aux prospects détectés par l'IA. L'outil s'est remboursé en une seule transaction.",
     name: "Alexandre P.",
-    role: "Mandataire IAD, Nantes",
+    role: "Freelance communication, Nantes",
     rating: 5,
     initials: "AP",
     color: "bg-brand-100 text-brand-700",
   },
   {
     quote:
-      "La carte 3D rend par mes clients attendent des annexes. Je l'intègre sur mon site et ça fait vriller la différence en rendez-vous.",
+      "Le rendu visuel de mes projets, c'est ce que mes clients attendaient depuis des années. Je l'intègre sur mon site et ça fait vraiment la différence en rendez-vous.",
     name: "Claire M.",
-    role: "Direction d'agence, Paris 11e",
+    role: "Directrice d'agence, Paris 11e",
     rating: 5,
     initials: "CM",
     color: "bg-orange-100 text-orange-700",
   },
   {
     quote:
-      "En tant que promoteur, l'analyse foncière m'a permis d'identifier 2 opportunités sous-valorisées que mes concurrents n'avaient pas vues. ROI immédiat.",
+      "En tant qu'agence de communication, l'analyse de marché m'a permis d'identifier 2 opportunités que mes concurrents n'avaient pas vues. ROI immédiat.",
     name: "Frédéric L.",
-    role: "Promoteur immobilier, Lyon",
+    role: "Agence de communication, Lyon",
     rating: 5,
     initials: "FL",
     color: "bg-purple-100 text-purple-700",
   },
   {
     quote:
-      "La formation valable vénale est très sérieuse. Le certificat m'a ouvert des portes avec les notaires et les investisseurs institutionnels.",
+      "La formation certifiante est très sérieuse. Le certificat m'a ouvert des portes avec les grandes entreprises et les investisseurs institutionnels.",
     name: "Sarah B.",
-    role: "Conseillère SAFTI, Bordeaux",
+    role: "Consultante communication, Bordeaux",
     rating: 5,
     initials: "SB",
     color: "bg-green-100 text-green-700",
