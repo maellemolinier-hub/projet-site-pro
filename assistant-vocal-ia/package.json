@@ -1,0 +1,32 @@
+{
+  "name": "assistant-vocal-ia",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Serv'IA - prototype d'assistant IA personnel (PC, mobile, ou les deux relies par mail)",
+  "scripts": {
+    "start": "tsx src/cli.ts",
+    "build": "tsc -p tsconfig.json",
+    "test": "node --import tsx --test",
+    "auth:gmail": "tsx src/scripts/authorizeGmail.ts",
+    "server": "tsx src/server.ts",
+    "mail-bridge": "tsx src/scripts/mailBridge.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.68.0",
+    "@google/genai": "^2.15.0",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "googleapis": "^174.0.0",
+    "node-record-lpcm16": "^1.0.1",
+    "nodejs-whisper": "^0.3.1",
+    "playwright": "^1.48.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^20.14.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

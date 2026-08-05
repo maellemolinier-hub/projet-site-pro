@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+*.log
+.gmail-token.json
+.voice-tmp/
+.browser-profile/
