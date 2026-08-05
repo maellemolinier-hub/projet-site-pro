@@ -8,23 +8,23 @@ const steps = [
   },
   {
     num: "02",
-    title: "Explorez les prix de votre secteur",
+    title: "Définissez vos besoins en communication",
     description:
-      "Ouvrez la carte, tapez une adresse, et visualisez instantanément les prix rue par rue avec l'historique des ventes et les tendances.",
+      "Identité visuelle, création de site web, stratégie social media, campagnes publicitaires. Notre équipe vous guide pour structurer votre projet.",
     color: "from-purple-400 to-purple-600",
   },
   {
     num: "03",
-    title: "Prospectez avec l'IA terrain",
+    title: "Lancez votre projet avec notre équipe",
     description:
-      "L'app mobile vous indique les propriétaires les plus susceptibles de vendre dans votre zone. Fini la prospection à l'aveugle.",
+      "Nos experts à Grasse prennent en charge la création, le déploiement et le suivi de vos supports de communication. Vous validez à chaque étape.",
     color: "from-orange-400 to-orange-600",
   },
   {
     num: "04",
     title: "Devenez Expert certifié",
     description:
-      "Suivez la formation valeur vénale, passez la certification, obtenez votre badge et soyez référencé dans notre annuaire national.",
+      "Suivez la formation valable, passez la certification, obtenez votre badge et soyez référencé dans notre annuaire national.",
     color: "from-green-400 to-green-600",
   },
 ];
@@ -42,8 +42,8 @@ export function HowItWorks() {
             <span className="gradient-text">moins de 10 minutes</span>
           </h2>
           <p className="text-gray-500 text-lg">
-            Aucune installation, aucune configuration complexe. Vous êtes
-            directement dans la carte.
+            Autant d'installation, autant de configuration complexe. Vous êtes
+            directement dans la création.
           </p>
         </div>
 
