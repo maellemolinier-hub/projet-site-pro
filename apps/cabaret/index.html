@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le Caveau — Cabaret intimiste dans une cave voûtée</title>
+<meta name="description" content="Le Caveau — un cabaret confidentiel niché sous des voûtes de pierre. Dîner-spectacle, soirées privées, nuits d'exception.">
+
+<meta property="og:title" content="Le Caveau — Cabaret intimiste">
+<meta property="og:description" content="Sous les voûtes de pierre, une nuit hors du temps. Dîner-spectacle, cabaret, soirées privées.">
+<meta property="og:type" content="website">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%230b0908' stroke='%23d4af37' stroke-width='4'/%3E%3Ctext x='50' y='64' font-size='55' text-anchor='middle' fill='%23d4af37' font-family='serif'%3EC%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Tangerine:wght@700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- RIDEAU D'OUVERTURE -->
+<div class="curtain" id="curtain">
+  <div class="curtain__panel curtain__panel--l"></div>
+  <div class="curtain__mark">LE&nbsp;CAVEAU</div>
+  <div class="curtain__panel curtain__panel--r"></div>
+</div>
+
+<!-- NAVIGATION -->
+<header class="nav" id="nav">
+  <div class="nav__logo gold">LE CAVEAU</div>
+  <nav>
+    <ul class="nav__links">
+      <li><a href="#univers">L'Univers</a></li>
+      <li><a href="#experience">L'Expérience</a></li>
+      <li><a href="#programme">Programme</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#avis">Avis</a></li>
+      <li><a href="#reservation">Réservation</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="nav__actions">
+    <a class="nav__wa" href="https://wa.me/33600000000?text=Bonsoir%2C%20je%20souhaite%20r%C3%A9server%20une%20table%20au%20Caveau." target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.9.53 3.66 1.44 5.17L2 22l5.09-1.53a9.86 9.86 0 0 0 4.95 1.33h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.06a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.1.93.94-3.02-.2-.31a8.13 8.13 0 0 1-1.27-4.42c0-4.5 3.66-8.16 8.16-8.16 2.18 0 4.23.85 5.77 2.4a8.1 8.1 0 0 1 2.39 5.76c0 4.5-3.67 8.15-8.16 8.15zm4.47-6.1c-.24-.12-1.45-.71-1.67-.8-.22-.08-.39-.12-.55.12-.16.24-.63.8-.78.96-.14.16-.28.18-.53.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.44-1.35-1.68-.14-.24-.02-.37.11-.5.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.31-.02-.43-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42-.14-.01-.31-.01-.47-.01-.16 0-.43.06-.65.31-.22.24-.86.84-.86 2.05s.88 2.38 1 2.55c.12.16 1.73 2.64 4.19 3.7.59.25 1.05.4 1.4.51.59.19 1.13.16 1.55.1.47-.07 1.45-.59 1.65-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+    </a>
+    <div class="nav__burger" id="burger">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e8c874" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="vaults" aria-hidden="true">
+    <div class="vault vault--1"></div>
+    <div class="vault vault--2"></div>
+    <div class="vault vault--3"></div>
+    <div class="vault vault--4"></div>
+  </div>
+
+  <!-- flammes de bougie -->
+  <div class="flame" style="left:14%; top:38%; animation-delay:.2s;"></div>
+  <div class="flame" style="right:14%; top:38%; animation-delay:.9s;"></div>
+  <div class="flame" style="left:26%; top:52%; animation-delay:.5s;"></div>
+  <div class="flame" style="right:26%; top:52%; animation-delay:1.3s;"></div>
+
+  <div class="sparkles" id="sparkles"></div>
+  <div class="hero__vignette"></div>
+
+  <!-- LA DANSEUSE -->
+  <div class="dancer" aria-hidden="true">
+    <div class="dancer__glow"></div>
+    <svg class="dancer__figure" viewBox="0 0 120 260" fill="none">
+      <ellipse cx="60" cy="26" rx="17" ry="20" fill="#0b0908"/>
+      <path d="M60 20 C40 8 20 18 22 34 C24 20 44 14 60 22 C76 14 96 20 98 34 C100 18 80 8 60 20Z" fill="#0b0908"/>
+      <path d="M46 40 Q60 50 74 40 L78 90 Q60 100 42 90 Z" fill="#0b0908"/>
+      <path d="M46 46 C24 40 10 60 16 86 C20 66 38 56 50 60Z" fill="#0b0908"/>
+      <path d="M74 46 C96 40 110 60 104 86 C100 66 82 56 70 60Z" fill="#0b0908"/>
+    </svg>
+    <div class="skirt" id="skirt"></div>
+    <div class="hero__caption">une nuit sous les pierres…</div>
+  </div>
+
+  <div class="hero__content">
+    <div class="hero__kicker">Bienvenue au</div>
+    <h1 class="hero__title gold"><span>LE CAVEAU</span></h1>
+    <p class="hero__sub">Sous des voûtes de pierre séculaires, un cabaret confidentiel où le dîner devient spectacle et la nuit, une échappée. Une expérience sensorielle, feutrée et dorée.</p>
+    <div class="hero__cta">
+      <a href="#reservation" class="btn btn--solid">Réserver une table</a>
+      <a href="#univers" class="btn">Découvrir le lieu</a>
+    </div>
+  </div>
+
+  <div class="hero__scroll"><span>Descendre</span><i></i></div>
+</section>
+
+<!-- UNIVERS -->
+<section class="section--stone" id="univers">
+  <div class="container univers">
+    <div class="univers__art reveal">
+      <span>« Les vieilles pierres<br>ont des mémoires<br>et des secrets. »</span>
+    </div>
+    <div class="univers__text reveal">
+      <div class="eyebrow">L'Univers</div>
+      <h2>Une cave, une légende,<br><span class="gold">un cabaret.</span></h2>
+      <p>Niché sous des voûtes du XVIIe siècle, Le Caveau réveille l'âme des cabarets d'autrefois. Pierre brute, velours grenat, laiton patiné et lumière de bougie composent un décor où chaque soirée devient un souvenir.</p>
+      <p>Ici, le temps ralentit. On y dîne aux chandelles, on y écoute des voix qui montent, on y regarde des silhouettes tourbillonner — avant que la nuit ne prenne, doucement, le dessus.</p>
+      <div class="stat-row">
+        <div class="stat"><b>1687</b><span>Cave d'origine</span></div>
+        <div class="stat"><b>60</b><span>Couverts</span></div>
+        <div class="stat"><b>4</b><span>Soirées / semaine</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE / OFFRES -->
+<section id="experience">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">L'Expérience</div>
+      <h2>Quatre façons de vivre<br><span class="gold">la nuit au Caveau.</span></h2>
+    </div>
+  </div>
+  <div class="offers reveal">
+    <div class="offer">
+      <div class="offer__num">01</div>
+      <h3>Dîner-spectacle</h3>
+      <p>Un menu signature aux chandelles, rythmé par un cabaret vivant — chant, danse et numéros sous les voûtes.</p>
+    </div>
+    <div class="offer">
+      <div class="offer__num">02</div>
+      <h3>Soirée privée</h3>
+      <p>Le Caveau se privatise pour vos événements — anniversaires, lancements, célébrations hors du commun.</p>
+    </div>
+    <div class="offer">
+      <div class="offer__num">03</div>
+      <h3>Salon feutré</h3>
+      <p>Un espace lounge en retrait, banquettes de velours, cocktails signature et lumière tamisée.</p>
+    </div>
+    <div class="offer">
+      <div class="offer__num">04</div>
+      <h3>Sur-mesure</h3>
+      <p>Scénographie, artistes, mise en table — une nuit conçue avec vous, pour une occasion qui compte.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMME -->
+<section class="section--stone" id="programme">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Programme</div>
+      <h2>Les prochaines <span class="gold">nuits.</span></h2>
+    </div>
+    <div class="programme-list reveal">
+      <div class="programme-item">
+        <div class="programme-item__date">VEN. 14 AOÛT</div>
+        <div class="programme-item__body">
+          <h4>Nuit Dorée — Cabaret &amp; Jazz</h4>
+          <p>Dîner-spectacle avec quintet jazz et numéros de cabaret.</p>
+        </div>
+        <div class="tag">Soirée à thème</div>
+      </div>
+      <div class="programme-item">
+        <div class="programme-item__date">SAM. 15 AOÛT</div>
+        <div class="programme-item__body">
+          <h4>Le Bal des Voûtes</h4>
+          <p>Piste ouverte, DJ résident et performances burlesques.</p>
+        </div>
+        <div class="tag">Événement</div>
+      </div>
+      <div class="programme-item">
+        <div class="programme-item__date">JEU. 20 AOÛT</div>
+        <div class="programme-item__body">
+          <h4>Table d'Hôtes Intimiste</h4>
+          <p>Menu dégustation en petit comité, service aux chandelles.</p>
+        </div>
+        <div class="tag">Places limitées</div>
+      </div>
+      <div class="programme-item">
+        <div class="programme-item__date">SAM. 29 AOÛT</div>
+        <div class="programme-item__body">
+          <h4>Nuit de Clôture d'Été</h4>
+          <p>Grand cabaret, artistes invités, ambiance dorée jusqu'au bout de la nuit.</p>
+        </div>
+        <div class="tag">Événement</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section id="galerie">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Galerie</div>
+      <h2>Un aperçu <span class="gold">des voûtes.</span></h2>
+    </div>
+  </div>
+  <div class="gallery reveal">
+    <div class="gallery__item tall" style="--g:radial-gradient(circle at 30% 30%, #5c1420, #120e0c)"><span>La salle voûtée</span></div>
+    <div class="gallery__item" style="--g:radial-gradient(circle at 60% 40%, #a9812a, #1c1512)"><span>Chandelles</span></div>
+    <div class="gallery__item wide" style="--g:radial-gradient(circle at 50% 60%, #3b0d14, #0b0908)"><span>La scène</span></div>
+    <div class="gallery__item" style="--g:radial-gradient(circle at 40% 50%, #d4af37, #17110f)"><span>Le bar</span></div>
+    <div class="gallery__item" style="--g:radial-gradient(circle at 70% 30%, #7a1620, #120e0c)"><span>Cabaret vivant</span></div>
+    <div class="gallery__item wide" style="--g:radial-gradient(circle at 40% 70%, #a9812a, #0b0908)"><span>Le salon</span></div>
+    <div class="gallery__item" style="--g:radial-gradient(circle at 50% 50%, #5c1420, #17110f)"><span>Détail pierre</span></div>
+  </div>
+</section>
+
+<!-- AVIS -->
+<section class="section--stone" id="avis">
+  <div class="container reviews reveal">
+    <div class="eyebrow" style="justify-content:center;">Ils y étaient</div>
+    <div class="review is-active">
+      <div class="review__stars">★★★★★</div>
+      <blockquote>« On entre dans une carte postale du temps passé. Le spectacle, la pierre, la lumière — tout est pensé pour vous transporter. »</blockquote>
+      <cite>— Camille R.</cite>
+    </div>
+    <div class="review">
+      <div class="review__stars">★★★★★</div>
+      <blockquote>« Une soirée d'anniversaire inoubliable. L'équipe a orchestré chaque détail avec une élégance folle. »</blockquote>
+      <cite>— Julien &amp; Sarah</cite>
+    </div>
+    <div class="review">
+      <div class="review__stars">★★★★★</div>
+      <blockquote>« L'ambiance des voûtes, les flammes, la danseuse en ouverture… on ne voit plus le dîner-spectacle de la même façon. »</blockquote>
+      <cite>— Nadia B.</cite>
+    </div>
+    <div class="reviews__dots" id="reviewDots"></div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section class="book" id="reservation">
+  <div class="container book__inner">
+    <div class="reveal">
+      <div class="eyebrow">Réservation</div>
+      <h2>Réservez votre <span class="gold">nuit au Caveau.</span></h2>
+      <p style="margin-top:20px;">Complétez le formulaire ou écrivez-nous directement sur WhatsApp — nous répondons en général en quelques minutes.</p>
+      <a href="https://wa.me/33600000000?text=Bonsoir%2C%20je%20souhaite%20r%C3%A9server%20une%20table%20au%20Caveau." target="_blank" rel="noopener" class="btn" style="margin-top:26px;">Réserver sur WhatsApp</a>
+    </div>
+    <form class="book__form reveal" id="bookForm">
+      <div class="row">
+        <div class="field"><label>Nom</label><input type="text" name="nom" required></div>
+        <div class="field"><label>Téléphone</label><input type="tel" name="tel" required></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Date souhaitée</label><input type="date" name="date" required></div>
+        <div class="field"><label>Nombre de personnes</label>
+          <select name="nb">
+            <option>2 personnes</option>
+            <option>3-4 personnes</option>
+            <option>5-8 personnes</option>
+            <option>Groupe / privatisation</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Message</label><textarea name="message" placeholder="Occasion particulière, allergies, souhaits…"></textarea></div>
+      <button type="submit" class="btn btn--solid" style="justify-content:center; margin-top:6px;">Envoyer la demande</button>
+    </form>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container contact">
+    <div class="contact__info reveal">
+      <div class="eyebrow">Contact</div>
+      <h2>Nous <span class="gold">trouver.</span></h2>
+      <dl>
+        <dt>Adresse</dt>
+        <dd>12 rue des Voûtes Dorées — [Ville]</dd>
+        <dt>Horaires</dt>
+        <dd>Jeu – Dim · 19h30 – 2h</dd>
+        <dt>Réservation</dt>
+        <dd>+33 6 00 00 00 00</dd>
+      </dl>
+      <div class="social-row">
+        <a href="#" aria-label="Instagram" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" aria-label="Facebook" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5H16l.5-3H13.5V8.4c0-.87.24-1.46 1.5-1.46H16.6V4.34C16.3 4.3 15.3 4.2 14.1 4.2c-2.4 0-4 1.46-4 4.15V10.5H7.6v3H10.1V21Z"/></svg></a>
+        <a href="#" aria-label="TikTok" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3c.3 1.9 1.6 3.4 3.6 3.7v2.3c-1.3 0-2.5-.4-3.6-1.1v6.4a5.3 5.3 0 1 1-5.3-5.3c.3 0 .6 0 .9.1v2.4a2.9 2.9 0 1 0 2 2.8V3Z"/></svg></a>
+        <a href="https://wa.me/33600000000" aria-label="WhatsApp" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.9.53 3.66 1.44 5.17L2 22l5.09-1.53a9.86 9.86 0 0 0 4.95 1.33h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2z"/></svg></a>
+      </div>
+    </div>
+    <div class="contact__map reveal">
+      <p>📍 Carte à intégrer (Google Maps)<br>— adresse exacte à confirmer —</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <h3 class="gold">LE CAVEAU</h3>
+        <p>Cabaret intimiste sous voûtes de pierre. Dîner-spectacle, soirées privées, nuits dorées.</p>
+      </div>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="#univers">L'Univers</a></li>
+            <li><a href="#experience">L'Expérience</a></li>
+            <li><a href="#programme">Programme</a></li>
+            <li><a href="#reservation">Réservation</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h5>Infos</h5>
+          <ul>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#">Mentions légales</a></li>
+            <li><a href="#">Privatisation</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="year"></span> Le Caveau — Tous droits réservés</span>
+      <span>Maquette de design — contenus &amp; visuels à personnaliser</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/33600000000?text=Bonsoir%2C%20je%20souhaite%20r%C3%A9server%20une%20table%20au%20Caveau." target="_blank" rel="noopener" aria-label="Réserver sur WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.9.53 3.66 1.44 5.17L2 22l5.09-1.53a9.86 9.86 0 0 0 4.95 1.33h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.06a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.1.93.94-3.02-.2-.31a8.13 8.13 0 0 1-1.27-4.42c0-4.5 3.66-8.16 8.16-8.16 2.18 0 4.23.85 5.77 2.4a8.1 8.1 0 0 1 2.39 5.76c0 4.5-3.67 8.15-8.16 8.15z"/></svg>
+</a>
+
+<script src="assets/script.js"></script>
+</body>
+</html>
