@@ -1,5 +1,5 @@
 /* =========================================================
-   LE CAVEAU — interactions & animations
+   VESPER — interactions & animations
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -23,23 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
   links.querySelectorAll('a').forEach(a =>
     a.addEventListener('click', () => links.classList.remove('is-open'))
   );
-
-  /* ---------- La jupe de la danseuse (skirt) ---------- */
-  const skirt = document.getElementById('skirt');
-  const PANELS = 10;
-  for (let i = 0; i < PANELS; i++) {
-    const t = i / (PANELS - 1);           // 0 -> 1
-    const angle = -46 + t * 92;           // éventail -46deg .. 46deg
-    const panel = document.createElement('div');
-    panel.className = 'skirt-panel ' + (i % 2 === 0 ? 'gold' : 'wine');
-    panel.style.setProperty('--base-angle', angle.toFixed(1) + 'deg');
-    panel.style.setProperty('--sway-amt', (5 + Math.random() * 8).toFixed(1) + 'deg');
-    panel.style.transform = `rotate(${angle}deg)`;
-    panel.style.animationDuration = (2.6 + Math.random() * 1.6).toFixed(2) + 's';
-    panel.style.animationDelay = (-Math.random() * 3).toFixed(2) + 's';
-    panel.style.zIndex = String(20 - Math.abs(i - PANELS / 2));
-    skirt.appendChild(panel);
-  }
 
   /* ---------- Particules dorées ---------- */
   const sparkContainer = document.getElementById('sparkles');
@@ -87,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Formulaire de réservation -> WhatsApp ---------- */
   const form = document.getElementById('bookForm');
-  const WHATSAPP_NUMBER = '33600000000'; // TODO: remplacer par le vrai numéro
+  const WHATSAPP_NUMBER = '33763632801';
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const data = new FormData(form);
@@ -97,27 +80,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const nb = data.get('nb');
     const message = data.get('message') || '—';
     const text =
-      `Bonsoir, je souhaite réserver au Caveau.\n` +
+      `Bonsoir, je souhaite réserver chez Vesper.\n` +
       `Nom : ${nom}\nTéléphone : ${tel}\nDate : ${date}\nPersonnes : ${nb}\nMessage : ${message}`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
   });
-
-  /* ---------- Parallaxe légère des voûtes ---------- */
-  const vaults = document.querySelectorAll('.vault');
-  let ticking = false;
-  document.addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const y = window.scrollY;
-      vaults.forEach((v, i) => {
-        v.style.transform += ''; // no-op fallback
-        v.style.setProperty('--py', (y * (0.03 * (i + 1))).toFixed(1) + 'px');
-        v.style.marginTop = (y * 0.02 * (i + 1) * -1).toFixed(1) + 'px';
-      });
-      ticking = false;
-    });
-  }, { passive: true });
 
   document.getElementById('year').textContent = new Date().getFullYear();
 });

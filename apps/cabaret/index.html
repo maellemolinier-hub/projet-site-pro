@@ -54,11 +54,8 @@
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="vaults" aria-hidden="true">
-    <div class="vault vault--1"></div>
-    <div class="vault vault--2"></div>
-    <div class="vault vault--3"></div>
-    <div class="vault vault--4"></div>
+  <div class="hero__bg" aria-hidden="true">
+    <img src="assets/img/vault.jpg" alt="" loading="eager">
   </div>
 
   <!-- flammes de bougie -->
@@ -70,19 +67,11 @@
   <div class="sparkles" id="sparkles"></div>
   <div class="hero__vignette"></div>
 
-  <!-- LA DANSEUSE -->
-  <div class="dancer" aria-hidden="true">
-    <div class="dancer__glow"></div>
-    <svg class="dancer__figure" viewBox="0 0 120 260" fill="none">
-      <ellipse cx="60" cy="26" rx="17" ry="20" fill="#0b0908"/>
-      <path d="M60 20 C40 8 20 18 22 34 C24 20 44 14 60 22 C76 14 96 20 98 34 C100 18 80 8 60 20Z" fill="#0b0908"/>
-      <path d="M46 40 Q60 50 74 40 L78 90 Q60 100 42 90 Z" fill="#0b0908"/>
-      <path d="M46 46 C24 40 10 60 16 86 C20 66 38 56 50 60Z" fill="#0b0908"/>
-      <path d="M74 46 C96 40 110 60 104 86 C100 66 82 56 70 60Z" fill="#0b0908"/>
-    </svg>
-    <div class="skirt" id="skirt"></div>
-    <div class="hero__caption">plaisirs en liberté…</div>
-  </div>
+  <!-- LA DANSEUSE (photo réelle, libre de droits) -->
+  <figure class="dancer" aria-hidden="true">
+    <img src="assets/img/flamenco.jpg" alt="Danseuse, ambiance Vesper">
+    <figcaption class="hero__caption">plaisirs en liberté…</figcaption>
+  </figure>
 
   <div class="hero__content">
     <div class="hero__badge">Club Libertin — Cannes</div>
@@ -102,6 +91,7 @@
 <section class="section--stone" id="univers">
   <div class="container univers">
     <div class="univers__art reveal">
+      <img src="assets/img/vault.jpg" alt="Cave voûtée en pierre, ambiance Vesper" loading="lazy">
       <span>« Sous la pierre,<br>la liberté trouve<br>son refuge. »</span>
     </div>
     <div class="univers__text reveal">
@@ -236,13 +226,12 @@
     </div>
   </div>
   <div class="gallery reveal">
-    <div class="gallery__item tall" style="--g:radial-gradient(circle at 30% 30%, #5c1420, #120e0c)"><span>La salle voûtée</span></div>
-    <div class="gallery__item" style="--g:radial-gradient(circle at 60% 40%, #a9812a, #1c1512)"><span>Chandelles</span></div>
-    <div class="gallery__item wide" style="--g:radial-gradient(circle at 50% 60%, #3b0d14, #0b0908)"><span>Le dancefloor</span></div>
-    <div class="gallery__item" style="--g:radial-gradient(circle at 40% 50%, #d4af37, #17110f)"><span>Le bar</span></div>
-    <div class="gallery__item" style="--g:radial-gradient(circle at 70% 30%, #7a1620, #120e0c)"><span>Ambiance burlesque</span></div>
-    <div class="gallery__item wide" style="--g:radial-gradient(circle at 40% 70%, #a9812a, #0b0908)"><span>Le salon</span></div>
-    <div class="gallery__item" style="--g:radial-gradient(circle at 50% 50%, #5c1420, #17110f)"><span>Détail pierre</span></div>
+    <div class="gallery__item tall"><img src="assets/img/vault.jpg" alt="La salle voûtée" loading="lazy"><span>La salle voûtée</span></div>
+    <div class="gallery__item"><img src="assets/img/candles.jpg" alt="Chandelles" loading="lazy"><span>Chandelles</span></div>
+    <div class="gallery__item wide"><img src="assets/img/dancefloor.jpg" alt="Le dancefloor" loading="lazy"><span>Le dancefloor</span></div>
+    <div class="gallery__item"><img src="assets/img/curtain.jpg" alt="Ambiance burlesque" loading="lazy"><span>Ambiance burlesque</span></div>
+    <div class="gallery__item wide"><img src="assets/img/seduction.jpg" alt="Rencontres" loading="lazy"><span>Rencontres</span></div>
+    <div class="gallery__item"><img src="assets/img/flamenco.jpg" alt="Danse" loading="lazy"><span>Danse</span></div>
   </div>
 </section>
 
