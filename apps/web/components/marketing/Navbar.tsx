@@ -5,8 +5,9 @@ import Link from "next/link";
 import { Menu, X, MapPin } from "lucide-react";
 
 const navLinks = [
-  { href: "#fonctionnalites", label: "Services" },
-  { href: "#comment-ca-marche", label: "Comment ça marche" },
+  { href: "/services", label: "Services" },
+  { href: "/capia", label: "Capia IA" },
+  { href: "/articles", label: "Actualités" },
   { href: "#tarifs", label: "Tarifs" },
   { href: "/contact-entreprise", label: "Contact" },
 ];

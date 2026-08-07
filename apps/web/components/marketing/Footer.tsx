@@ -3,12 +3,13 @@ import { MapPin } from "lucide-react";
 
 const links = {
   Services: [
-    { href: "#fonctionnalites", label: "Nos services" },
+    { href: "/services", label: "Nos services" },
+    { href: "/capia", label: "Capia, notre IA" },
     { href: "#tarifs", label: "Tarifs" },
     { href: "/contact-entreprise", label: "Contact" },
   ],
   Ressources: [
-    { href: "/articles", label: "Blog" },
+    { href: "/articles", label: "Actualités" },
     { href: "/contact-entreprise", label: "Demander un devis" },
   ],
   Entreprise: [

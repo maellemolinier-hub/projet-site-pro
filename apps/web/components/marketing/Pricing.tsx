@@ -3,73 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Check, Zap } from "lucide-react";
-
-const plans = [
-  {
-    name: "Essentiel",
-    tagline: "Pour démarrer",
-    monthlyPrice: 290,
-    annualPrice: 2900,
-    annualMonthly: 242,
-    color: "border-gray-200",
-    buttonClass: "bg-gray-900 hover:bg-gray-800 text-white",
-    popular: false,
-    features: [
-      "Logo + charte graphique",
-      "Cartes de visite",
-      "1 page web vitrine",
-      "Réseaux sociaux : setup de base",
-      "Support email",
-    ],
-    missing: [
-      "Site web complet",
-      "Stratégie de marque",
-      "Campagnes publicitaires",
-      "Formation en communication",
-      "Accompagnement continu",
-    ],
-  },
-  {
-    name: "Business",
-    tagline: "Le plus populaire",
-    monthlyPrice: 590,
-    annualPrice: 5900,
-    annualMonthly: 492,
-    color: "border-brand-600 ring-2 ring-brand-600",
-    buttonClass: "bg-brand-600 hover:bg-brand-700 text-white",
-    popular: true,
-    features: [
-      "Tout du pack Essentiel",
-      "Site web complet (5 pages) optimisé SEO",
-      "Stratégie de marque complète",
-      "Gestion des réseaux sociaux (4 posts/mois)",
-      "Flyers & brochures",
-      "Refonte de marque incluse",
-      "Support prioritaire",
-    ],
-    missing: [],
-  },
-  {
-    name: "Premium",
-    tagline: "Pour les entreprises ambitieuses",
-    monthlyPrice: 1290,
-    annualPrice: 12900,
-    annualMonthly: 1075,
-    color: "border-gray-200",
-    buttonClass: "bg-gray-900 hover:bg-gray-800 text-white",
-    popular: false,
-    features: [
-      "Tout du pack Business",
-      "Site e-commerce ou application web",
-      "Campagnes publicitaires (Meta, Google)",
-      "Stratégie de contenu complète",
-      "Ateliers de formation en communication",
-      "Accompagnement dédié mensuel",
-      "SLA 99,9%",
-    ],
-    missing: [],
-  },
-];
+import { pricingPlans as plans } from "@/lib/offers";
 
 export function Pricing() {
   const [annual, setAnnual] = useState(true);
