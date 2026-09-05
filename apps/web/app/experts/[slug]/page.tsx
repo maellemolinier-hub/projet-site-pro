@@ -17,14 +17,14 @@ function getExpert(slug: string) {
       name: "Sophie Martin",
       city: "Lyon 6e",
       postalCode: "69006",
-      specialty: "Résidentiel ancien",
-      bio: "Expert en valeur vénale certifiée Cap Entreprendre France depuis 2023, spécialisée dans le résidentiel haut de gamme à Lyon et sa métropole. Ancienne directrice d'agence, j'accompagne mes clients vendeurs avec des estimations précises basées sur les données DVF et une connaissance fine du marché lyonnais.",
+      specialty: "Identité visuelle",
+      bio: "Designer graphique accompagnée par Cap Entreprendre France depuis 2023, spécialisée dans la création d'identité visuelle pour les entrepreneurs et PME. Ancienne directrice de studio, j'accompagne mes clients avec des créations sur mesure et une connaissance fine du marché local.",
       rating: 4.9,
       reviews: 47,
       initials: "SM",
       color: "bg-brand-100 text-brand-700",
       certifiedSince: "2023",
-      specialties: ["Résidentiel ancien", "Appartements de prestige", "Investissement locatif", "Viager"],
+      specialties: ["Identité visuelle", "Logo & charte", "Print", "Stratégie de marque"],
       transactions: 143,
     },
   };
@@ -34,9 +34,9 @@ function getExpert(slug: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const expert = getExpert(slug);
-  if (!expert) return { title: "Expert non trouvé" };
+  if (!expert) return { title: "Client non trouvé" };
   return {
-    title: `${expert.name} — Expert Immobilier Certifié ${expert.city}`,
+    title: `${expert.name} — Client Cap Entreprendre France · ${expert.city}`,
     description: expert.bio.slice(0, 155),
   };
 }
@@ -55,7 +55,7 @@ export default async function ExpertPage({ params }: Props) {
             href="/experts"
             className="inline-flex items-center gap-2 text-white/60 hover:text-white text-sm mb-6 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Tous les experts
+            <ArrowLeft className="w-4 h-4" /> Tous les clients
           </Link>
 
           <div className="flex items-start gap-6">
@@ -68,8 +68,7 @@ export default async function ExpertPage({ params }: Props) {
                 <BadgeCheck className="w-6 h-6 text-brand-300" />
               </div>
               <div className="flex items-center gap-1 text-white/60 text-sm mb-2">
-                <MapPin className="w-4 h-4" />
-                {expert.city} · {expert.specialty}
+                <MapPin className="w-4 h-4" /> {expert.city} · {expert.specialty}
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
@@ -78,10 +77,10 @@ export default async function ExpertPage({ params }: Props) {
                   <span className="text-white/50 text-sm">({expert.reviews} avis)</span>
                 </div>
                 <span className="text-white/40">·</span>
-                <span className="text-white/60 text-sm">{expert.transactions} transactions</span>
+                <span className="text-white/60 text-sm">{expert.transactions} projets réalisés</span>
                 <span className="text-white/40">·</span>
                 <span className="text-xs bg-brand-700 text-brand-200 px-2 py-0.5 rounded-full">
-                  Certifié {expert.certifiedSince}
+                  Client depuis {expert.certifiedSince}
                 </span>
               </div>
             </div>
@@ -117,20 +116,20 @@ export default async function ExpertPage({ params }: Props) {
               <div className="flex items-center gap-3 mb-3">
                 <BadgeCheck className="w-8 h-8 text-brand-300" />
                 <div>
-                  <h3 className="font-semibold">Expert certifié Cap Entreprendre France</h3>
-                  <p className="text-white/60 text-sm">Formation Expert en Valeur Vénale · Certifié {expert.certifiedSince}</p>
+                  <h3 className="font-semibold">Client accompagné par Cap Entreprendre France</h3>
+                  <p className="text-white/60 text-sm">Accompagnement en communication · Depuis {expert.certifiedSince}</p>
                 </div>
               </div>
               <p className="text-white/60 text-sm">
-                Cet expert a validé la formation certifiante Cap Entreprendre France en Communication,
-                incluant les méthodes par comparaison directe, capitalisation des revenus
-                et coût de remplacement. Il utilise les données DVF temps réel.
+                Cet entrepreneur a bénéficié d'un accompagnement complet en communication
+                et identité de marque, incluant la création visuelle, la stratégie digitale
+                et le déploiement multicanal.
               </p>
               <Link
-                href="/formation"
+                href="/contact-entreprise"
                 className="inline-block mt-4 text-xs text-brand-300 hover:text-brand-200 underline"
               >
-                En savoir plus sur la certification →
+                En savoir plus sur nos accompagnements →
               </Link>
             </div>
           </div>
@@ -165,10 +164,10 @@ export default async function ExpertPage({ params }: Props) {
             {/* Stats */}
             <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm grid grid-cols-2 gap-4">
               {[
-                { label: "Transactions", value: expert.transactions.toString() },
+                { label: "Projets réalisés", value: expert.transactions.toString() },
                 { label: "Note moyenne", value: `${expert.rating}/5` },
                 { label: "Avis clients", value: expert.reviews.toString() },
-                { label: "Certifié depuis", value: expert.certifiedSince },
+                { label: "Client depuis", value: expert.certifiedSince },
               ].map((s) => (
                 <div key={s.label}>
                   <p className="text-xs text-gray-400">{s.label}</p>
