@@ -6,6 +6,8 @@ import { Footer } from "@/components/marketing/Footer";
 
 export const metadata: Metadata = {
   title: "Contact entreprise — Projets sur mesure | Cap Entreprendre France",
+  description:
+    "Vous avez un projet spécifique, plusieurs sites ou une stratégie digitale complète ? Contactez Cap Entreprendre France pour un devis personnalisé sous 48h.",
 };
 
 export default function ContactEntreprisePage() {
