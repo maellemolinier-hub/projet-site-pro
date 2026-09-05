@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { BadgeCheck, Calendar, ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { db } from "@immoexpert/db";
+import { db } from "@/immoexpert/db";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Vérification de certification — Cap Entreprendre France",
+  title: "Vérification d'accompagnement — Cap Entreprendre France",
+  robots: { index: false, follow: false },
 };
 
 interface Props {
@@ -20,7 +21,7 @@ export default async function VerifierPage({ params }: Props) {
   }
 
   const certification = await db.certification.findUnique({
-    where: { certificateId: id },
+    where: { certificationId: id },
     include: {
       user: {
         select: {
@@ -46,7 +47,7 @@ export default async function VerifierPage({ params }: Props) {
     certification.user.lastName,
   ]
     .filter(Boolean)
-    .join(" ") || "Expert Cap Entreprendre France";
+    .join(" ") || "Client Cap Entreprendre France";
 
   const slug = certification.user.expertProfile?.slug;
 
@@ -61,26 +62,26 @@ export default async function VerifierPage({ params }: Props) {
 
             <div>
               <h1 className="text-xl font-bold text-gray-900 mb-1">
-                Certification valide ✓
+                Accompagnement certifié ✅
               </h1>
               <p className="text-gray-500 text-sm">
-                Ce professionnel est bien certifié Cap Entreprendre France
+                Ce client est bien accompagné par Cap Entreprendre France
               </p>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-5 text-left space-y-3">
               {[
-                { label: "Titulaire", value: name },
-                { label: "Formation", value: "Expert en Valeur Vénale" },
-                { label: "Score à l'examen", value: certification.score ? `${certification.score}/100` : "—" },
+                { label: "Bénéficiaire", value: name },
+                { label: "Type d'accompagnement", value: "Communication & Stratégie de marque" },
+                { label: "Score de satisfaction", value: certification.score ? `${certification.score}/100` : "—" },
                 {
-                  label: "Certifié le",
+                  label: "Depuis le",
                   value: certification.issuedAt
                     ? certification.issuedAt.toLocaleDateString("fr-FR")
                     : "—",
                 },
                 {
-                  label: "Expire le",
+                  label: "Valide jusqu'au",
                   value: certification.expiresAt
                     ? certification.expiresAt.toLocaleDateString("fr-FR")
                     : "Illimité",
@@ -100,7 +101,7 @@ export default async function VerifierPage({ params }: Props) {
                 className="inline-flex items-center gap-2 text-brand-600 hover:text-brand-700 text-sm font-medium"
               >
                 <ExternalLink className="w-4 h-4" />
-                Voir le profil public de {name}
+                Voir le profil de {name}
               </Link>
             )}
 
@@ -129,7 +130,7 @@ function InvalidPage({ reason }: { reason: string }) {
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 text-center space-y-4">
           <div className="w-20 h-20 bg-red-50 rounded-2xl flex items-center justify-center mx-auto">
-            <span className="text-4xl">❌</span>
+            <span className="text-4xl">✗</span>
           </div>
           <h1 className="text-xl font-bold text-gray-900">Certification invalide</h1>
           <p className="text-gray-500 text-sm">{reason}</p>
