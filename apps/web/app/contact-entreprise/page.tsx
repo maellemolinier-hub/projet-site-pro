@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Building2, Phone, Mail, CheckCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle } from "lucide-react";
 import { Navbar } from "@/components/marketing/Navbar";
 import { Footer } from "@/components/marketing/Footer";
+import ContactForm from "./ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact entreprise — Réseaux et Promoteurs | Cap Entreprendre France",
@@ -23,7 +24,7 @@ export default function ContactEntreprisePage() {
             <div className="space-y-6">
               <div>
                 <span className="text-xs font-semibold tracking-widest text-brand-600 uppercase">
-                  Offre Enterprise
+                  Offre Entreprise
                 </span>
                 <h1 className="text-3xl font-bold text-gray-900 mt-2">
                   Réseaux d'agences et Promoteurs
@@ -43,7 +44,7 @@ export default function ContactEntreprisePage() {
                   "Intégration CRM (Salesforce, HubSpot, sur-mesure)",
                   "SLA garanti 99,9% avec support dédié",
                   "Marque blanche complète (domaine, logo, couleurs)",
-                  "Formation équipe en présentiel ou distanciel",
+                  "Formation équipes en présentiel ou distant",
                 ].map((f) => (
                   <div key={f} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-brand-600 mt-0.5 shrink-0" />
@@ -61,91 +62,8 @@ export default function ContactEntreprisePage() {
               </div>
             </div>
 
-            {/* Right — form */}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Building2 className="w-5 h-5 text-brand-600" />
-                <h2 className="font-semibold text-gray-900">Demander un devis</h2>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { label: "Prénom", placeholder: "Jean" },
-                  { label: "Nom", placeholder: "Dupont" },
-                ].map((f) => (
-                  <div key={f.label}>
-                    <label className="block text-xs text-gray-500 mb-1">{f.label}</label>
-                    <input
-                      type="text"
-                      placeholder={f.placeholder}
-                      className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    />
-                  </div>
-                ))}
-              </div>
-
-              {[
-                { label: "Email professionnel", placeholder: "jean.dupont@agence.fr", type: "email" },
-                { label: "Nom de la société / réseau", placeholder: "Réseau Immo France", type: "text" },
-                { label: "Téléphone", placeholder: "06 12 34 56 78", type: "tel" },
-              ].map((f) => (
-                <div key={f.label}>
-                  <label className="block text-xs text-gray-500 mb-1">{f.label}</label>
-                  <input
-                    type={f.type}
-                    placeholder={f.placeholder}
-                    className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  />
-                </div>
-              ))}
-
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">Type de structure</label>
-                <select className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                  <option>Réseau de mandataires</option>
-                  <option>Réseau d'agences franchisées</option>
-                  <option>Promoteur immobilier</option>
-                  <option>Agence indépendante multi-sites</option>
-                  <option>Investisseur / Asset manager</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">Nombre d'utilisateurs estimé</label>
-                <select className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                  <option>11 à 30 utilisateurs</option>
-                  <option>31 à 100 utilisateurs</option>
-                  <option>101 à 500 utilisateurs</option>
-                  <option>500+ utilisateurs</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">Votre besoin (optionnel)</label>
-                <textarea
-                  placeholder="Décrivez votre projet, vos intégrations en place, vos enjeux…"
-                  rows={3}
-                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
-                />
-              </div>
-
-              <button className="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 rounded-xl transition-colors">
-                Envoyer la demande
-              </button>
-
-              <p className="text-xs text-gray-400 text-center">
-                Réponse garantie sous 48h · Démonstration incluse
-              </p>
-
-              <div className="pt-2 border-t border-gray-100 space-y-1.5">
-                <a href="mailto:entreprise@immoexpert.fr" className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-600">
-                  <Mail className="w-3.5 h-3.5" /> entreprise@immoexpert.fr
-                </a>
-                <a href="tel:+33123456789" className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-600">
-                  <Phone className="w-3.5 h-3.5" /> 01 23 45 67 89
-                </a>
-              </div>
-            </div>
+            {/* Right — interactive form */}
+            <ContactForm />
           </div>
         </div>
       </div>
