@@ -48,10 +48,10 @@ export default function LoginScreen() {
         {/* Logo */}
         <View style={styles.logoContainer}>
           <View style={styles.logo}>
-            <Text style={styles.logoText}>IE</Text>
+            <Text style={styles.logoText}>CF</Text>
           </View>
           <Text style={styles.appName}>Cap Entreprendre France</Text>
-          <Text style={styles.tagline}>La plateforme des experts immobiliers</Text>
+          <Text style={styles.tagline}>Votre partenaire communication & digital</Text>
         </View>
 
         {/* Form */}
