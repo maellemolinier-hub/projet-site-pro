@@ -3,9 +3,9 @@ import Link from "next/link";
 import { BadgeCheck, MapPin, Star, Search } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Experts certifiés en Valeur Vénale — Annuaire national",
+  title: "Nos clients et réalisations — Cap Entreprendre France",
   description:
-    "Trouvez un expert immobilier nos clients et nos réalisations. Cap Entreprendre France accompagne les entrepreneurs dans leur communication et leur identité de marque.",
+    "Découvrez les entrepreneurs accompagnés par Cap Entreprendre France. Communication, identité visuelle, sites web et stratégie de marque sur toute la France.",
 };
 
 const SAMPLE_EXPERTS = Array.from({ length: 12 }, (_, i) => ({
@@ -22,9 +22,9 @@ const SAMPLE_EXPERTS = Array.from({ length: 12 }, (_, i) => ({
     "Montpellier", "Strasbourg", "Lille", "Grenoble",
   ][i],
   specialty: [
-    "Résidentiel prestige", "Investissement locatif", "Neuf & VEFA", "Côte d'Azur",
-    "Maisons & pavillons", "Résidentiel ancien", "Appartements", "Bureaux & commerces",
-    "Résidentiel", "Alsace & frontalier", "Résidentiel", "Montagne & ski",
+    "Identité visuelle", "Site web", "Stratégie de marque", "Réseaux sociaux",
+    "Logo & charte", "E-commerce", "Print & flyers", "Campagnes publicitaires",
+    "Refonte de marque", "Stratégie digitale", "SEO & contenu", "Vidéo & motion",
   ][i],
   rating: 4.7 + Math.random() * 0.3,
   reviews: 20 + Math.floor(Math.random() * 60),
@@ -60,16 +60,15 @@ export default function ExpertsPage() {
         <div className="max-w-7xl mx-auto text-center space-y-4">
           <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1 text-sm">
             <BadgeCheck className="w-4 h-4 text-brand-300" />
-            Annuaire national des Experts certifiés
+            Nos clients et réalisations
           </span>
           <h1 className="text-3xl sm:text-5xl font-bold">
-            Trouvez votre expert{" "}
-            <span className="text-accent-400">certifié</span>
+            Des entrepreneurs qui{" "}
+            <span className="text-accent-400">nous font confiance</span>
           </h1>
           <p className="text-white/60 max-w-xl mx-auto">
-            Tous les experts référencés ont obtenu la certification Cap Entreprendre France
-            en Valeur Vénale. Ils utilisent les mêmes données temps réel que
-            vous voyez sur cette carte.
+            Découvrez les entrepreneurs et entreprises accompagnés par Cap Entreprendre France.
+            Communication, identité visuelle, sites web et stratégie de marque.
           </p>
 
           {/* Search */}
@@ -77,7 +76,7 @@ export default function ExpertsPage() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Ville, département..."
+              placeholder="Ville, secteur d'activité..."
               className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 shadow-lg"
             />
           </div>
@@ -87,7 +86,7 @@ export default function ExpertsPage() {
       {/* Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <p className="text-sm text-gray-500 mb-6">
-          {SAMPLE_EXPERTS.length} experts certifiés trouvés
+          {SAMPLE_EXPERTS.length} clients accompagnés
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {SAMPLE_EXPERTS.map((expert) => (
@@ -127,7 +126,7 @@ export default function ExpertsPage() {
                   </span>
                 </div>
                 <span className="text-xs text-brand-600 font-medium">
-                  Certifié {expert.certifiedSince}
+                  Client depuis {expert.certifiedSince}
                 </span>
               </div>
             </Link>
