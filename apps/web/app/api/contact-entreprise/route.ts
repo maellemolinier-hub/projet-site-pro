@@ -10,6 +10,12 @@ const schema = z.object({
   typeStructure: z.string().optional().default(""),
   nbUtilisateurs: z.string().optional().default(""),
   message: z.string().optional().default(""),
+  // UTM params (optional, captured client-side)
+  utm_source: z.string().optional().default(""),
+  utm_medium: z.string().optional().default(""),
+  utm_campaign: z.string().optional().default(""),
+  utm_term: z.string().optional().default(""),
+  utm_content: z.string().optional().default(""),
 });
 
 export async function POST(req: Request) {
@@ -32,6 +38,11 @@ export async function POST(req: Request) {
     typeStructure,
     nbUtilisateurs,
     message: messageLibre,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_term,
+    utm_content,
   } = parsed.data;
 
   const spreadsheetId = process.env.GOOGLE_SHEETS_ID;
@@ -68,6 +79,11 @@ export async function POST(req: Request) {
       nbUtilisateurs,
       messageLibre,
       "à traiter", // Statut par défaut
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_term,
+      utm_content,
     ];
 
     const res = await fetch(url, {
