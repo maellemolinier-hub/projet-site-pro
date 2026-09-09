@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ConnexionPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
+  const callbackUrl = typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("callbackUrl") ?? "/dashboard"
+    : "/dashboard";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

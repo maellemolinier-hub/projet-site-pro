@@ -3,10 +3,11 @@ import { db } from "@immoexpert/db";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { token: string } }
+  { params }: { params: Promise<{ token: string }> }
 ) {
+  const { token } = await params;
   const expert = await db.expertProfile.findFirst({
-    where: { widgetToken: params.token },
+    where: { widgetToken: token },
     include: { user: { select: { firstName: true, lastName: true } } },
   });
 
