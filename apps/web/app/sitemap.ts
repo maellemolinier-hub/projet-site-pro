@@ -1,10 +1,9 @@
 import { MetadataRoute } from "next";
-
-const BASE_URL = "https://cap-entreprendre-france.fr";
+import { campaignDays, campaignSlug, baseUrl } from "./campagnes/digitalisation-en-7-jours/data";
 
 // Static services — replace with DB fetch when services data source is available
 const SERVICES = [
-  { slug: "identite-visuelle", updatedAt: new Date() },
+  { slug: "identity-visuelle", updatedAt: new Date() },
   { slug: "creation-site-web", updatedAt: new Date() },
   { slug: "strategie-de-marque", updatedAt: new Date() },
   { slug: "communication-digitale", updatedAt: new Date() },
@@ -17,9 +16,9 @@ const ARTICLES = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: BASE_URL, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
+    { url: baseUrl, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
     {
-      url: `${BASE_URL}/contact-entreprise`,
+      url: `${baseUrl}/contact-entreprise`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,
@@ -27,18 +26,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const serviceRoutes = SERVICES.map((s) => ({
-    url: `${BASE_URL}/services/${s.slug}`,
+    url: `${baseUrl}/services/${s.slug}`,
     lastModified: s.updatedAt,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
   const articleRoutes = ARTICLES.map((a) => ({
-    url: `${BASE_URL}/articles/${a.slug}`,
+    url: `${baseUrl}/articles/${a.slug}`,
     lastModified: a.updatedAt,
     changeFrequency: "weekly" as const,
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...articleRoutes];
+  const campaignRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/campagnes/${campaignSlug}`,
+      priority: 0.7,
+      changeFrequency: "weekly",
+    },
+    ...campaignDays.map((day) => ({
+      url: `${baseUrl}/campagnes/${campaignSlug}/${day.slug}`,
+      priority: 0.6,
+      changeFrequency: "weekly" as const,
+    })),
+  ];
+
+  return [...staticRoutes, ...serviceRoutes, ...articleRoutes, ...campaignRoutes];
 }
