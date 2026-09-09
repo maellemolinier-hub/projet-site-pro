@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { campaignDays, campaignSlug, campaignTitle, baseUrl } from "./data";
+import {
+  campaignDays,
+  campaignSlug,
+  campaignIndexTitle,
+  campaignIndexDescription,
+  baseUrl,
+} from "./data";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: `${campaignTitle} | Cap Entreprendre France`,
-  description:
-    "Site web + fiche Google Business livrés en 7 jours. On s'occupe de tout, tu te concentres sur ton métier. Cap Entreprendre France, agence de communication à Grasse.",
+  title: campaignIndexTitle,
+  description: campaignIndexDescription,
   alternates: {
     canonical: `${baseUrl}/campagnes/${campaignSlug}`,
   },
@@ -14,16 +19,14 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: `${baseUrl}/campagnes/${campaignSlug}`,
     siteName: "Cap Entreprendre France",
-    title: `${campaignTitle} | Cap Entreprendre France`,
-    description:
-      "Site web + fiche Google Business livrés en 7 jours. On s'occupe de tout, tu te concentres sur ton métier.",
+    title: campaignIndexTitle,
+    description: campaignIndexDescription,
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Cap Entreprendre France" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${campaignTitle} | Cap Entreprendre France`,
-    description:
-      "Site web + fiche Google Business livrés en 7 jours. On s'occupe de tout, tu te concentres sur ton métier.",
+    title: campaignIndexTitle,
+    description: campaignIndexDescription,
     images: ["/og-image.png"],
   },
   robots: { index: true, follow: true },
@@ -62,13 +65,13 @@ export default function CampaignIndexPage() {
           {" > "}
           <span>Campagnes</span>
           {" > "}
-          <span className="text-gray-900">{campaignTitle}</span>
+          <span className="text-gray-900">Digitalisation en 7 jours</span>
         </nav>
 
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">{campaignTitle}</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Digitalisation en 7 jours</h1>
         <p className="text-lg text-gray-600 mb-12">
-          Site web + fiche Google Business livrés en 7 jours. On s'occupe de tout,
-          tu te concentres sur ton métier.
+          Site web sur-mesure + fiche Google Business optimisée. Pour artisans et TPE
+          à Grasse et en PACA. Coût unique, délai garanti.
         </p>
 
         <div className="space-y-6">
@@ -78,7 +81,7 @@ export default function CampaignIndexPage() {
               className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
             >
               <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                Jour {day.dayNumber} : {day.title}
+                {day.title}
               </h2>
               <p className="text-gray-600 mb-4">{day.summary}</p>
               <Link
