@@ -2,16 +2,22 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+function getStripe(): Stripe {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    throw new Error("STRIPE_SECRET_KEY is not set");
+  }
+  return new Stripe(key);
+}
 
 export async function POST(req: Request) {
   const body = await req.text();
   const signature = (await headers()).get("stripe-signature")!;
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    event = getStripe().webhooks.constructEvent(body, signature, webhookSecret);
   } catch {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
@@ -53,7 +59,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       stripeSubscriptionId: session.subscription as string,
       stripeCustomerId: session.customer as string,
       stripePriceId: session.metadata?.priceId ?? "",
-      plan: (session.metadata?.plan ?? "STARTER") as "STARTER" | "EXPERT" | "AGENCE_PRO",
+      plan: (session.metadata?.plan ?? "STARTER") as "STARTER" | "EXPERT" | "AGENCY_PRO",
       status: "TRIALING",
       currentPeriodStart: new Date(),
       currentPeriodEnd: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
