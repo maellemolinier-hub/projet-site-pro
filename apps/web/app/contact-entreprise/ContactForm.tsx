@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { ArrowLeft, Building2, Phone, Mail, CheckCircle, Loader2 } from "lucide-react";
+import { getUtmParams, trackEvent } from "@/lib/analytics";
 
 type FormState = {
   prenom: string;
@@ -40,10 +41,13 @@ export default function ContactEntrepriseForm() {
     setErrorMsg("");
 
     try {
+      // Attach UTM params from sessionStorage
+      const utm = getUtmParams();
+
       const res = await fetch("/api/contact-entreprise", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, ...utm }),
       });
 
       const data = await res.json();
@@ -53,6 +57,14 @@ export default function ContactEntrepriseForm() {
         setErrorMsg(data.error || "Une erreur est survenue. Réessayez plus tard.");
         return;
       }
+
+      // Fire GA4 conversion event
+      trackEvent("generate_lead", {
+        form_id: "contact_entreprise",
+        utm_source: utm.utm_source,
+        utm_medium: utm.utm_medium,
+        utm_campaign: utm.utm_campaign,
+      });
 
       setStatus("success");
       setForm(initialState);
