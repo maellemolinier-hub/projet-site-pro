@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { JsonLd } from "@/components/seo/JsonLd";
+import AnalyticsInit from "@/components/analytics/AnalyticsInit";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,7 +33,7 @@ const organizationSchema = {
 
 const websiteSchema = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
+  "@type": "Website",
   url: SITE_URL,
   name: "Cap Entreprendre France",
   inLanguage: "fr-FR",
@@ -91,11 +92,34 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const gaId = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID;
+
   return (
     <html lang="fr" className={inter.variable}>
+      <head>
+        {gaId && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${gaId}');
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
       <body>
         <JsonLd id="organization" data={organizationSchema} />
         <JsonLd id="website" data={websiteSchema} />
+        <AnalyticsInit />
         {children}
         <Toaster richColors position="top-right" />
       </body>
