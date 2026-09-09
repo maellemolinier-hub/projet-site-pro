@@ -1,9 +1,20 @@
 import Stripe from "stripe";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-02-24.acacia",
-  typescript: true,
-});
+let _stripe: Stripe | null = null;
+
+function getStripe(): Stripe {
+  if (!_stripe) {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key) {
+      throw new Error("STRIPE_SECRET_KEY is not set");
+    }
+    _stripe = new Stripe(key, {
+      apiVersion: "2025-02-24.acacia",
+      typescript: true,
+    });
+  }
+  return _stripe;
+}
 
 export const PLANS = {
   STARTER: {
@@ -22,12 +33,12 @@ export const PLANS = {
     stripePriceIdAnnual: process.env.STRIPE_PRICE_EXPERT_ANNUAL,
     features: ["Tout Starter", "Prospection IA", "Formation", "Badge certifié"],
   },
-  AGENCE_PRO: {
-    name: "Agence Pro",
+  AGENCY_PRO: {
+    name: "Agency Pro",
     priceMonthly: 24900,
     priceAnnual: 199000,
-    stripePriceIdMonthly: process.env.STRIPE_PRICE_AGENCE_MONTHLY,
-    stripePriceIdAnnual: process.env.STRIPE_PRICE_AGENCE_ANNUAL,
+    stripePriceIdMonthly: process.env.STRIPE_PRICE_AGENCY_MONTHLY,
+    stripePriceIdAnnual: process.env.STRIPE_PRICE_AGENCY_ANNUAL,
     features: ["Tout Expert", "10 users", "Widget marque blanche"],
   },
 } as const;
@@ -52,6 +63,7 @@ export async function createCheckoutSession({
     ? planConfig.stripePriceIdAnnual
     : planConfig.stripePriceIdMonthly;
 
+  const stripe = getStripe();
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     payment_method_types: ["card"],
@@ -71,6 +83,7 @@ export async function createCheckoutSession({
 }
 
 export async function createBillingPortalSession(customerId: string, returnUrl: string) {
+  const stripe = getStripe();
   return stripe.billingPortal.sessions.create({
     customer: customerId,
     return_url: returnUrl,
