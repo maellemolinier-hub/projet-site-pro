@@ -8,10 +8,8 @@ Verifies that:
 4. Missing model metadata (first run) does not block deployment.
 """
 
-import os
 import sys
 import pickle
-import tempfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
