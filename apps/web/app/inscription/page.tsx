@@ -4,24 +4,24 @@ import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { MapPin, Eye, EyeOff, Loader2, Check } from "lucide-react";
+import { Eye, EyeOff, Loader2, Check } from "lucide-react";
 import { toast } from "sonner";
 
 const PLAN_META: Record<string, { label: string; highlights: string[]; price: string }> = {
   starter: {
-    label: "Starter",
-    price: "490 €/an",
-    highlights: ["Carte des prix nationale", "10 rapports/mois", "Essai 14 jours gratuit"],
+    label: "Décollage",
+    price: "1 490 €",
+    highlights: ["Site web sur-mesure", "Capia, votre assistante IA", "Bases SEO + fiche Google"],
   },
   expert: {
-    label: "Expert",
-    price: "990 €/an",
-    highlights: ["Prospection IA terrain", "Vue 3D", "Formation certifiante", "Badge + référencement"],
+    label: "Croissance",
+    price: "990 €/mois",
+    highlights: ["SEO + réseaux sociaux", "Visuels & vidéos", "Assistant vocal 24/7", "Pilotage complet"],
   },
   agence: {
-    label: "Agence Pro",
-    price: "1 990 €/an",
-    highlights: ["Jusqu'à 10 utilisateurs", "Widget marque blanche", "Dashboard agence"],
+    label: "Domination",
+    price: "sur devis",
+    highlights: ["Téléprospecteur IA", "Prospection B2B + HubSpot", "Automatisations sur-mesure"],
   },
 };
 
@@ -72,25 +72,25 @@ function InscriptionForm() {
       return;
     }
 
-    toast.success("Bienvenue sur ImmoExpert !");
-    router.push("/dashboard");
+    toast.success("Bienvenue chez CAP Entreprendre France !");
+    router.push("/pilotage");
   };
 
   const handleGoogle = async () => {
     setGoogleLoading(true);
-    await signIn("google", { callbackUrl: "/dashboard" });
+    await signIn("google", { callbackUrl: "/pilotage" });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 flex">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a1626] via-[#0d1b2a] to-[#12234a] flex">
       {/* Left — value prop */}
       <div className="hidden lg:flex flex-col justify-center p-16 flex-1 max-w-lg">
         <Link href="/" className="flex items-center gap-2 mb-12">
-          <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
-            <MapPin className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-emerald-400 flex items-center justify-center font-black text-sm text-white">
+            C
           </div>
           <span className="font-bold text-xl text-white">
-            Immo<span className="text-accent-400">Expert</span>
+            CAP <span className="text-white/50 font-medium">Entreprendre France</span>
           </span>
         </Link>
 
@@ -98,9 +98,9 @@ function InscriptionForm() {
           Plan {meta.label} — {meta.price}
         </span>
         <h1 className="text-3xl font-bold text-white mb-2">
-          14 jours gratuits, sans engagement
+          Rejoignez CAP Entreprendre France
         </h1>
-        <p className="text-white/60 mb-8">Aucune carte bancaire requise. Résiliation en 1 clic.</p>
+        <p className="text-white/60 mb-8">Créez votre compte et pilotez vos agents IA en quelques minutes.</p>
 
         <div className="space-y-3">
           {meta.highlights.map((h) => (
@@ -119,10 +119,10 @@ function InscriptionForm() {
         <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 space-y-5">
           <div className="lg:hidden text-center mb-2">
             <Link href="/" className="inline-flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-brand-600 flex items-center justify-center">
-                <MapPin className="w-3 h-3 text-white" />
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500 to-emerald-400 flex items-center justify-center font-black text-[10px] text-white">
+                C
               </div>
-              <span className="font-bold text-gray-900">Immo<span className="text-brand-600">Expert</span></span>
+              <span className="font-bold text-gray-900">CAP Entreprendre France</span>
             </Link>
           </div>
 
@@ -206,9 +206,9 @@ function InscriptionForm() {
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 bg-accent-500 hover:bg-accent-600 disabled:opacity-60 text-white font-semibold py-3 rounded-xl transition-colors"
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-              Créer mon compte — 14 jours gratuits
-            </button>
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+            Créer mon compte
+          </button>
           </form>
 
           <p className="text-xs text-gray-400 text-center">

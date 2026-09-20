@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
+import { AssistantWidget } from "@/components/assistant/AssistantWidget";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,31 +12,36 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "ImmoExpert — Prix de l'immobilier rue par rue, en temps réel",
-    template: "%s | ImmoExpert",
+    default: "CAP Entreprendre France — L'IA qui résout les problèmes de votre entreprise",
+    template: "%s | CAP Entreprendre France",
   },
   description:
-    "La plateforme de référence pour les professionnels de l'immobilier. Visualisez les prix rue par rue, prospectez avec l'IA, et devenez Expert Certifié en Valeur Vénale.",
+    "CAP Entreprendre France déploie une équipe d'agents IA autonomes qui créent votre site, vos assistants (dont vocal), votre visibilité et votre prospection. Diagnostic gratuit avec Capia.",
   keywords: [
-    "immobilier", "prix immobilier", "estimation immobilière",
-    "valeur vénale", "agent immobilier", "conseiller immobilier",
-    "carte prix immobilier", "prospection immobilière",
+    "agents IA", "assistant IA", "création site web", "assistant vocal",
+    "prospection IA", "SEO", "automatisation", "IA entreprise", "CAP Entreprendre France",
   ],
-  authors: [{ name: "ImmoExpert" }],
+  authors: [{ name: "CAP Entreprendre France" }],
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    url: "https://immoexpert.fr",
-    siteName: "ImmoExpert",
-    title: "ImmoExpert — Prix de l'immobilier rue par rue, en temps réel",
-    description: "La plateforme de référence pour les professionnels de l'immobilier.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ImmoExpert" }],
+    siteName: "CAP Entreprendre France",
+    title: "CAP Entreprendre France — L'IA qui résout les problèmes de votre entreprise",
+    description:
+      "Une équipe d'agents IA autonomes au service de votre croissance. Diagnostic gratuit avec Capia.",
+    images: [{ url: "/og-cap.png", width: 1200, height: 675, alt: "CAP Entreprendre France" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CAP Entreprendre France — L'IA qui résout les problèmes de votre entreprise",
+    description: "Une équipe d'agents IA autonomes au service de votre croissance.",
+    images: ["/og-cap.png"],
   },
   robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#4449e7",
+  themeColor: "#0a1626",
   width: "device-width",
   initialScale: 1,
 };
@@ -45,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className={inter.variable}>
       <body>
         {children}
+        <AssistantWidget />
         <Toaster richColors position="top-right" />
       </body>
     </html>

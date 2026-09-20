@@ -18,7 +18,8 @@
       "@/*": ["./*"],
       "@immoexpert/db": ["../../packages/db/index.ts"],
       "@immoexpert/ui": ["../../packages/ui/src"],
-      "@immoexpert/types": ["../../packages/types/src"]
+      "@immoexpert/types": ["../../packages/types/src"],
+      "@immoexpert/agents": ["../../packages/agents/src"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -1,0 +1,75 @@
+import type { AgentsConfig, ProviderName } from "../config";
+import type { AgentRole } from "../types";
+import { AnthropicProvider } from "./anthropic";
+import { DryRunProvider } from "./dryrun";
+import { GeminiProvider } from "./gemini";
+import { OpenAICompatibleProvider } from "./openaiCompatible";
+import type { LLMProvider } from "./provider";
+
+/**
+ * Fabrique et met en cache les fournisseurs LLM, et choisit le bon
+ * fournisseur pour chaque agent (surcharge par rôle, puis défaut, puis
+ * repli automatique vers ce qui est réellement disponible).
+ */
+export class ProviderRouter {
+  private cache = new Map<ProviderName, LLMProvider>();
+
+  constructor(private readonly config: AgentsConfig) {}
+
+  /** Fournisseurs réellement utilisables (clé présente). */
+  available(): ProviderName[] {
+    const list: ProviderName[] = [];
+    if (this.config.gemini.apiKey) list.push("gemini");
+    if (this.config.openai.baseUrl) list.push("openai");
+    if (this.config.anthropic.apiKey) list.push("anthropic");
+    list.push("dryrun");
+    return list;
+  }
+
+  forRole(role: AgentRole): LLMProvider {
+    const preferred = this.config.providerByRole[role] ?? this.config.defaultProvider;
+    return this.resolve(preferred);
+  }
+
+  /** Fournisseur par défaut (hors rôle d'agent), ex: assistant conversationnel du site. */
+  default(): LLMProvider {
+    return this.resolve(this.config.defaultProvider);
+  }
+
+  /** Vrai si au moins un vrai LLM (Claude/Gemini) est configuré. */
+  hasLLM(): boolean {
+    return this.available().some((p) => p !== "dryrun");
+  }
+
+  private resolve(name: ProviderName): LLMProvider {
+    const usable = this.available();
+    const chosen = usable.includes(name) ? name : usable[0];
+    return this.build(chosen);
+  }
+
+  private build(name: ProviderName): LLMProvider {
+    const cached = this.cache.get(name);
+    if (cached) return cached;
+
+    let provider: LLMProvider;
+    switch (name) {
+      case "anthropic":
+        provider = new AnthropicProvider(this.config.anthropic.apiKey!, this.config.anthropic.model);
+        break;
+      case "gemini":
+        provider = new GeminiProvider(this.config.gemini.apiKey!, this.config.gemini.model);
+        break;
+      case "openai":
+        provider = new OpenAICompatibleProvider(
+          this.config.openai.baseUrl!,
+          this.config.openai.apiKey,
+          this.config.openai.model,
+        );
+        break;
+      default:
+        provider = new DryRunProvider();
+    }
+    this.cache.set(name, provider);
+    return provider;
+  }
+}

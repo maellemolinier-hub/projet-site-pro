@@ -4,13 +4,13 @@ import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { MapPin, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 function ConnexionForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/pilotage";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,7 +44,7 @@ function ConnexionForm() {
     <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 space-y-6">
       <div className="text-center">
         <h1 className="text-2xl font-bold text-gray-900">Connexion</h1>
-        <p className="text-gray-500 text-sm mt-1">Bienvenue sur ImmoExpert</p>
+        <p className="text-gray-500 text-sm mt-1">Bienvenue sur CAP Entreprendre France</p>
       </div>
 
       <button
@@ -131,13 +131,13 @@ function ConnexionForm() {
 
 export default function ConnexionPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a1626] via-[#0d1b2a] to-[#12234a] flex flex-col items-center justify-center p-4">
       <Link href="/" className="flex items-center gap-2 mb-8">
-        <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
-          <MapPin className="w-4 h-4 text-white" />
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-emerald-400 flex items-center justify-center font-black text-sm text-white">
+          C
         </div>
         <span className="font-bold text-xl text-white">
-          Immo<span className="text-accent-400">Expert</span>
+          CAP <span className="text-white/50 font-medium">Entreprendre France</span>
         </span>
       </Link>
 
