@@ -5,12 +5,13 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
   Map, Smartphone, GraduationCap, BarChart3,
-  Settings, MapPin, BadgeCheck, LogOut, User,
+  Settings, MapPin, BadgeCheck, LogOut, User, Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/dashboard", icon: Map, label: "Tableau de bord", exact: true },
+  { href: "/dashboard/assistants", icon: Sparkles, label: "Assistants IA" },
   { href: "/dashboard/carte", icon: Map, label: "Carte des prix" },
   { href: "/dashboard/prospects", icon: Smartphone, label: "Prospection IA" },
   { href: "/dashboard/formation", icon: GraduationCap, label: "Formation" },
