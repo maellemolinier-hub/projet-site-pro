@@ -36,3 +36,11 @@ packages/db/node_modules/
 # Expo
 apps/mobile/.expo/
 apps/mobile/dist/
+
+# Playwright
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/blob-report/
+apps/web/playwright/.cache/
+# Playwright CLI output (may contain credentials)
+.playwright-cli/
