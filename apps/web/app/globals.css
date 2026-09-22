@@ -5,7 +5,6 @@
 @layer base {
   :root {
     --font-inter: "Inter", system-ui, sans-serif;
-    --font-display: "Fraunces", Georgia, serif;
   }
 
   * {
@@ -39,21 +38,8 @@
     background-clip: text;
   }
 
-  .gradient-gold-text {
-    background: linear-gradient(135deg, #e9d9ae 0%, #c9a24c 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
   .glass {
     background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .glass-dark {
-    background: rgba(9, 11, 20, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
@@ -67,17 +53,17 @@
 /* Scroll-reveal : état piloté par le composant <Reveal> (apps/web/components/marketing/Reveal.tsx) */
 .reveal-root {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(24px);
 }
 
 .reveal-root.is-visible {
-  animation: reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes reveal {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;

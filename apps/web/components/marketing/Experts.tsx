@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { BadgeCheck, MapPin, Star } from "lucide-react";
+import { BadgeCheck, Star } from "lucide-react";
+
+// Fonds pastels tournants pour les cartes portrait (style "annuaire"
+// observé dans les captures partagées : photo/avatar sur aplat pastel).
+const PORTRAIT_BG = [
+  "bg-[#EFE1CB]", // sable
+  "bg-[#D8E0CE]", // sauge
+  "bg-[#EAD3CC]", // rose poudré
+];
 
 const expertsSample = [
   {
@@ -8,9 +16,7 @@ const expertsSample = [
     rating: 4.9,
     reviews: 47,
     specialty: "Résidentiel ancien",
-    since: "2024",
     initials: "SM",
-    color: "bg-brand-100 text-brand-700",
   },
   {
     name: "Thomas Girard",
@@ -18,9 +24,7 @@ const expertsSample = [
     rating: 5.0,
     reviews: 32,
     specialty: "Investissement locatif",
-    since: "2023",
     initials: "TG",
-    color: "bg-orange-100 text-orange-700",
   },
   {
     name: "Marie Dupont",
@@ -28,9 +32,7 @@ const expertsSample = [
     rating: 4.8,
     reviews: 61,
     specialty: "Transactions de prestige",
-    since: "2023",
     initials: "MD",
-    color: "bg-purple-100 text-purple-700",
   },
 ];
 
@@ -44,11 +46,11 @@ export function Experts() {
             <span className="inline-block text-xs font-semibold tracking-widest text-brand-600 uppercase">
               Annuaire des Experts
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl sm:text-4xl font-bold text-ink-950">
               Le badge qui fait la{" "}
               <span className="gradient-text">différence</span>
             </h2>
-            <p className="text-gray-500 text-lg leading-relaxed">
+            <p className="text-ink-500 text-lg leading-relaxed">
               Après votre certification, vous êtes référencé dans notre annuaire
               national. Les vendeurs vous cherchent, vous trouvent, et vous font
               confiance avant même de vous avoir parlé.
@@ -64,7 +66,7 @@ export function Experts() {
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <BadgeCheck className="w-5 h-5 text-brand-600 mt-0.5 shrink-0" />
-                  <span className="text-gray-700 text-sm">{item}</span>
+                  <span className="text-ink-700 text-sm">{item}</span>
                 </li>
               ))}
             </ul>
@@ -77,48 +79,50 @@ export function Experts() {
             </Link>
           </div>
 
-          {/* Right — sample cards */}
-          <div className="space-y-4">
-            {expertsSample.map((expert) => (
+          {/* Right — cartes portrait sur fond pastel */}
+          <div className="grid grid-cols-3 gap-4">
+            {expertsSample.map((expert, i) => (
               <div
                 key={expert.name}
-                className="flex items-center gap-4 bg-gray-50 hover:bg-white border border-gray-100 hover:border-brand-200 rounded-2xl p-4 transition-all shadow-sm hover:shadow-md group cursor-pointer"
+                className="group flex flex-col rounded-2xl overflow-hidden border border-ink-100 bg-white shadow-sm hover:shadow-md transition-shadow"
               >
-                {/* Avatar */}
+                {/* Portrait pastel */}
                 <div
-                  className={`w-12 h-12 rounded-xl ${expert.color} flex items-center justify-center font-bold text-sm shrink-0`}
+                  className={`relative aspect-square ${PORTRAIT_BG[i % PORTRAIT_BG.length]} flex items-center justify-center`}
                 >
-                  {expert.initials}
+                  <span className="text-3xl font-bold text-ink-900/70">
+                    {expert.initials}
+                  </span>
+                  <BadgeCheck className="absolute top-2 right-2 w-5 h-5 text-brand-600 bg-white rounded-full p-0.5 shadow-sm" />
                 </div>
 
                 {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-gray-900 text-sm">
-                      {expert.name}
-                    </span>
-                    <BadgeCheck className="w-4 h-4 text-brand-600 shrink-0" />
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
-                    <MapPin className="w-3 h-3" />
+                <div className="p-3 space-y-1">
+                  <p className="font-semibold text-ink-950 text-sm truncate">
+                    {expert.name}
+                  </p>
+                  <p className="text-xs text-ink-400 truncate">
                     {expert.city} · {expert.specialty}
+                  </p>
+                  <div className="flex items-center gap-1 pt-0.5">
+                    <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                    <span className="text-xs font-bold text-ink-900">
+                      {expert.rating}
+                    </span>
+                    <span className="text-xs text-ink-300">
+                      ({expert.reviews})
+                    </span>
                   </div>
                 </div>
 
-                {/* Rating */}
-                <div className="text-right shrink-0">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                    <span className="text-sm font-bold text-gray-900">
-                      {expert.rating}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-400">{expert.reviews} avis</p>
-                </div>
+                {/* CTA pilule noire, comme la ref */}
+                <button className="mx-3 mb-3 bg-ink-950 hover:bg-ink-800 text-white text-xs font-semibold py-2 rounded-full transition-colors">
+                  Voir le profil
+                </button>
               </div>
             ))}
 
-            <p className="text-center text-sm text-gray-400 pt-2">
+            <p className="col-span-3 text-center text-sm text-ink-400 pt-2">
               +3 700 experts certifiés dans toute la France
             </p>
           </div>

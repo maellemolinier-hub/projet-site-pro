@@ -1,56 +1,110 @@
-# Design system — direction "premium" (inspirée wealth-management / fintech haut de gamme)
+# Design system — direction visuelle inspirée de delos.so
 
-## Contexte et limite importante
+## Contexte et méthode
 
-Cette direction a été demandée en référence à `delos.so`. **L'accès réseau sortant vers ce domaine est bloqué pour cette session** (policy d'egress de l'environnement Claude Code) : ni le code source, ni des captures d'écran du site réel n'ont pu être récupérés.
+`delos.so` reste inaccessible en scraping direct depuis cette session (policy
+réseau). Les tokens ci-dessous viennent en revanche de **captures d'écran
+réelles du site (marketing + app.delos.so) partagées dans la conversation** :
+les couleurs sont donc des **estimations visuelles** (pas des valeurs hex
+extraites du CSS réel, auquel je n'ai pas accès), et la mise en page /
+les patterns de composants sont observés directement sur les captures.
 
-Ce document ne décrit donc **pas** un clonage pixel-perfect de delos.so, mais une **interprétation originale des codes visuels du secteur "wealth-management / fintech premium"** (sobriété, contraste encre/or, typographie éditoriale, animations discrètes au scroll) — appliquée à l'identité ImmoExpert.
+Le code, la copy et les visuels ci-dessous sont une implémentation
+**originale** pour ImmoExpert — aucun texte, image ou code de delos.so n'est
+repris tel quel.
 
-Si tu veux affiner pour coller plus précisément à delos.so : colle le HTML d'une section (clic droit → *Afficher le code source*, ou l'inspecteur du navigateur) ou des screenshots ici, et les tokens ci-dessous seront ajustés en conséquence.
+## Ce qu'on voit sur les captures
 
-## Palette
+- **Bandeau noir tout en haut** : annonce + compte à rebours + lien
+  d'inscription (→ composant `AnnouncementBar`, non branché par défaut).
+- **Nav claire** : logo noir + petit icône, liens gris, un seul CTA bleu en
+  pilule ("Essayer gratuitement").
+- **Hero centré, fond crème** (pas de hero sombre) : petits badges en
+  pilule au-dessus du titre ("Essai gratuit", "Sans carte bancaire"...),
+  titre noir avec un mot-clé en bleu, sous-texte gris, deux CTA en pilule
+  (bleu plein + blanc contouré), puis une démo produit juste en dessous
+  (chez Delos : un carrousel de "workers" ; chez ImmoExpert : la carte).
+- **Cartes "portrait"** : photo/avatar sur aplat de couleur pastel (sable,
+  sauge, rose poudré, gris...), nom + rôle en dessous, description courte,
+  puis un **bouton noir plein en pilule** ("Recruter"). C'est le motif le
+  plus caractéristique du site — repris pour les cartes `Experts`.
+- **Section comparatif** ("CHATBOTS & COPILOTS" vs "AI WORKERS") : deux
+  colonnes, coches bleues sur la colonne "gagnante", cercles gris sur
+  l'autre. Pas encore repris (pas de contenu comparatif équivalent côté
+  ImmoExpert pour l'instant).
+- **Bandeau CTA sombre** avant le footer : photo assombrie en fond, titre
+  blanc centré, deux boutons (blanc plein + contour blanc). Pas encore
+  repris.
+- **Footer clair** : logo noir, adresse, colonnes de liens gris.
 
-### Encre (`ink`) — nouvelle base sombre, en complément du bleu `brand` existant
+## Palette (estimée depuis les captures)
 
-| Token | Hex | Usage |
+### Encre (`ink`) — neutres quasi-noirs, remplacent le gris par défaut sur les sections retravaillées
+
+| Token | Hex (estimé) | Usage |
 |---|---|---|
-| `ink-950` | `#090b14` | Fond hero, `theme-color` mobile |
-| `ink-900` | `#0f1320` | Fond secondaire, logo mark |
-| `ink-800` | `#171c2c` | Dégradé hero |
-| `ink-600` | `#333c54` | Texte secondaire sur fond clair |
-| `ink-500` | `#48526b` | Liens de nav |
-| `ink-100` | `#e4e7ec` | Bordures hairline |
-| `ink-50` | `#f4f5f7` | Fonds au hover |
+| `ink-950` | `#0d0d0e` | Logo mark, boutons pilule noirs, `theme-color` |
+| `ink-900` | `#161618` | Titres, hover des boutons noirs |
+| `ink-600` | `#4a4a4e` | Liens de nav, texte secondaire |
+| `ink-400` | `#94949a` | Texte tertiaire, légendes |
+| `ink-100` | `#ececee` | Bordures hairline |
+| `ink-50` | `#f7f7f8` | Fonds au hover |
 
-### Or (`gold`) — nouvel accent, en complément de l'orange `accent` existant
+### Crème (`cream`) — fond chaud du hero et de la nav, remplace le blanc pur
 
-| Token | Hex | Usage |
+| Token | Hex (estimé) | Usage |
 |---|---|---|
-| `gold-400` | `#d9bd78` | Icônes, highlights clairs |
-| `gold-500` | `#c9a24c` | CTA primaire, accents |
-| `gold-600` | `#ad8636` | Hover CTA, liens actifs |
-| `gold-700` | `#8c6b29` | Texte accent sur fond clair |
+| `cream-50` | `#fdfcfa` | Nav au scroll |
+| `cream-100` | `#f8f5ef` | Fond du hero |
+| `cream-200` | `#f1ece1` | Variante plus contrastée |
 
-Les tokens `brand` (bleu) et `accent` (orange) existants **restent en place** — ils sont encore utilisés par `Features`, `Pricing`, `Testimonials`, etc. `ink`/`gold` sont une couche additive, pour l'instant appliquée au `Hero` et à la `Navbar`.
+### Bleu — le token `brand` existant (ex. `brand-600 #4449e7`) est déjà assez
+proche du bleu CTA observé chez Delos : pas de nouveau token, on l'utilise
+simplement de manière plus ciblée (CTA principal, mot-clé dans le titre,
+accents), à la place du gris/violet utilisé avant.
+
+### Pastels des cartes portrait
+
+Définis directement en arbitrary values dans `Experts.tsx` (pas dans
+`tailwind.config`, car ce sont des couleurs "décoratives tournantes", pas des
+tokens sémantiques) : `#EFE1CB` (sable), `#D8E0CE` (sauge), `#EAD3CC` (rose
+poudré).
 
 ## Typographie
 
-- **Display** (titres) : `Fraunces` — serif éditorial, variable font, chargée via `next/font/google`, exposée en `font-display` / var `--font-display`.
-- **Texte courant** : `Inter` (inchangé) — `font-sans`.
-- Échelle resserrée sur les titres : `leading-[1.08]`, `tracking-tight` ; labels/badges en `uppercase tracking-widest text-[11px]`.
+**Correction** par rapport à la première passe (avant d'avoir les captures) :
+pas de serif éditorial chez Delos — tout est en sans-serif grotesque, gras
+sur les titres, avec un mot-clé coloré (bleu) dans le titre du hero. `Inter`
+seul suffit, pas besoin d'une deuxième famille de police.
 
-## Espacement
+## Forme
 
-Aucune nouvelle échelle custom : on reste sur l'échelle Tailwind standard pour rester cohérent avec le reste du site (`py-20`, `gap-12 lg:gap-20`, `max-w-7xl`, etc.).
+Les boutons et pilules sont systématiquement en `rounded-full` (contre
+`rounded-xl`/`rounded-lg` avant) : c'est le changement de forme le plus
+visible sur les captures, aussi bien pour les CTA principaux que pour les
+boutons "Recruter" et les badges.
 
 ## Animation
 
-- Nouveau composant `<Reveal>` (`apps/web/components/marketing/Reveal.tsx`) : fade + `translateY(28px)` déclenché au scroll via `IntersectionObserver`, courbe `cubic-bezier(0.16, 1, 0.3, 1)` (utilitaire Tailwind `ease-premium`), délai configurable en prop pour un effet de stagger entre éléments.
-- Respecte `prefers-reduced-motion` (animation totalement désactivée si l'utilisateur l'a demandé côté OS).
-- Les animations existantes (`fade-up`, `fade-in`, `float`) sont conservées pour les composants qui les utilisent déjà.
+- `<Reveal>` (`apps/web/components/marketing/Reveal.tsx`) : fade +
+  `translateY` au scroll via `IntersectionObserver`, courbe
+  `cubic-bezier(0.16, 1, 0.3, 1)` (`ease-premium`), délai par prop pour un
+  effet de stagger. Respecte `prefers-reduced-motion`.
+- Les captures ne permettent pas de confirmer les animations réelles du
+  carrousel de "workers" (drag/autoplay) — ce n'est **pas** reproduit tel
+  quel, faute de pouvoir l'observer en direct.
 
 ## État d'implémentation
 
-- ✅ Fondations : couleurs `ink`/`gold`, typo `Fraunces`, easing `premium`, composant `Reveal`
-- ✅ `Hero.tsx` et `Navbar.tsx` migrés
-- ⬜ `Features`, `HowItWorks`, `Pricing`, `Experts`, `Testimonials`, `CTA`, `Footer` — encore sur `brand`/`accent`, à migrer ensuite avec la même logique de tokens pour une cohérence visuelle totale sur toute la page.
+- ✅ Tokens (`ink`, `cream`), formes en pilule, easing `premium`, `Reveal`
+- ✅ `Hero.tsx`, `Navbar.tsx` : fond crème, badges en pilule, CTA bleu +
+  contour noir, mot-clé bleu dans le titre
+- ✅ `Experts.tsx` : cartes portrait sur fond pastel + bouton noir pilule
+- ✅ `AnnouncementBar.tsx` : composant prêt, **non branché** sur la home —
+  à activer uniquement avec un vrai contenu (éviter un faux compte à
+  rebours)
+- ⬜ `Features`, `HowItWorks`, `Pricing`, `Testimonials`, `CTA`, `Footer` :
+  encore sur l'ancien style (`rounded-xl`, gris standard) — à migrer
+  ensuite avec la même logique
+- ⬜ Section comparatif type "avant/après" et bandeau CTA sombre en pied de
+  page : pas encore repris, à faire si utile pour ImmoExpert
