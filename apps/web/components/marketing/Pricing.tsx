@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Check, Zap } from "lucide-react";
+import { Reveal } from "@/components/marketing/Reveal";
 
 const plans = [
   {
@@ -11,8 +12,8 @@ const plans = [
     monthlyPrice: 59,
     annualPrice: 490,
     annualMonthly: 41,
-    color: "border-gray-200",
-    buttonClass: "bg-gray-900 hover:bg-gray-800 text-white",
+    color: "border-ink-100",
+    buttonClass: "bg-ink-950 hover:bg-ink-800 text-white",
     popular: false,
     features: [
       "Carte des prix nationale",
@@ -56,8 +57,8 @@ const plans = [
     monthlyPrice: 249,
     annualPrice: 1990,
     annualMonthly: 166,
-    color: "border-gray-200",
-    buttonClass: "bg-gray-900 hover:bg-gray-800 text-white",
+    color: "border-ink-100",
+    buttonClass: "bg-ink-950 hover:bg-ink-800 text-white",
     popular: false,
     features: [
       "Tout du plan Expert",
@@ -77,31 +78,31 @@ export function Pricing() {
   const [annual, setAnnual] = useState(true);
 
   return (
-    <section id="tarifs" className="py-24 bg-gray-50">
+    <section id="tarifs" className="py-24 bg-cream-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <Reveal className="text-center max-w-2xl mx-auto mb-12">
           <span className="inline-block text-xs font-semibold tracking-widest text-brand-600 uppercase mb-3">
             Tarifs
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-ink-950 mb-4">
             Transparent, sans surprise
           </h2>
-          <p className="text-gray-500 text-lg">
+          <p className="text-ink-500 text-lg">
             Commencez gratuitement 14 jours. Aucune carte bancaire requise.
           </p>
 
           {/* Toggle */}
           <div className="flex items-center justify-center gap-4 mt-8">
             <span
-              className={`text-sm font-medium ${!annual ? "text-gray-900" : "text-gray-400"}`}
+              className={`text-sm font-medium ${!annual ? "text-ink-950" : "text-ink-300"}`}
             >
               Mensuel
             </span>
             <button
               onClick={() => setAnnual(!annual)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                annual ? "bg-brand-600" : "bg-gray-300"
+                annual ? "bg-brand-600" : "bg-ink-200"
               }`}
               aria-label="Facturation annuelle"
             >
@@ -112,7 +113,7 @@ export function Pricing() {
               />
             </button>
             <span
-              className={`text-sm font-medium ${annual ? "text-gray-900" : "text-gray-400"}`}
+              className={`text-sm font-medium ${annual ? "text-ink-950" : "text-ink-300"}`}
             >
               Annuel{" "}
               <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold ml-1">
@@ -120,14 +121,15 @@ export function Pricing() {
               </span>
             </span>
           </div>
-        </div>
+        </Reveal>
 
         {/* Cards */}
         <div className="grid lg:grid-cols-3 gap-8 items-start">
-          {plans.map((plan) => (
-            <div
+          {plans.map((plan, i) => (
+            <Reveal
               key={plan.name}
-              className={`bg-white rounded-2xl border-2 ${plan.color} p-8 relative shadow-sm`}
+              delay={i * 100}
+              className={`bg-white rounded-3xl border-2 ${plan.color} p-8 relative shadow-sm`}
             >
               {plan.popular && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
@@ -138,25 +140,25 @@ export function Pricing() {
               )}
 
               <div className="mb-6">
-                <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
-                <p className="text-sm text-gray-500 mt-0.5">{plan.tagline}</p>
+                <h3 className="text-xl font-bold text-ink-950">{plan.name}</h3>
+                <p className="text-sm text-ink-500 mt-0.5">{plan.tagline}</p>
               </div>
 
               <div className="mb-6">
                 <div className="flex items-end gap-1">
-                  <span className="text-4xl font-bold text-gray-900">
+                  <span className="text-4xl font-bold text-ink-950">
                     {annual
                       ? `${plan.annualMonthly} €`
                       : `${plan.monthlyPrice} €`}
                   </span>
-                  <span className="text-gray-400 text-sm mb-1">
+                  <span className="text-ink-400 text-sm mb-1">
                     / mois HT
                   </span>
                 </div>
                 {annual && (
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-ink-500 mt-1">
                     Facturé{" "}
-                    <span className="font-semibold text-gray-700">
+                    <span className="font-semibold text-ink-700">
                       {plan.annualPrice} €
                     </span>{" "}
                     par an
@@ -166,7 +168,7 @@ export function Pricing() {
 
               <Link
                 href="/inscription"
-                className={`block text-center py-3 px-6 rounded-xl font-semibold text-sm transition-all mb-8 ${plan.buttonClass}`}
+                className={`block text-center py-3 px-6 rounded-full font-semibold text-sm transition-all mb-8 ${plan.buttonClass}`}
               >
                 Commencer gratuitement
               </Link>
@@ -175,24 +177,24 @@ export function Pricing() {
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                    <span className="text-sm text-gray-700">{f}</span>
+                    <span className="text-sm text-ink-700">{f}</span>
                   </li>
                 ))}
                 {plan.missing.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 opacity-35">
-                    <span className="w-4 h-4 mt-0.5 shrink-0 text-gray-300 text-center leading-none">
+                    <span className="w-4 h-4 mt-0.5 shrink-0 text-ink-300 text-center leading-none">
                       —
                     </span>
-                    <span className="text-sm text-gray-400">{f}</span>
+                    <span className="text-sm text-ink-400">{f}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           ))}
         </div>
 
         {/* Enterprise */}
-        <div className="mt-8 text-center p-8 bg-brand-950 rounded-2xl text-white">
+        <Reveal className="mt-8 text-center p-8 bg-ink-950 rounded-3xl text-white">
           <h3 className="text-xl font-bold mb-2">
             Réseau d&apos;agences ou Promoteur immobilier ?
           </h3>
@@ -202,11 +204,11 @@ export function Pricing() {
           </p>
           <Link
             href="/contact-entreprise"
-            className="inline-flex items-center gap-2 bg-white text-brand-900 font-semibold px-6 py-3 rounded-xl hover:bg-white/90 transition-colors"
+            className="inline-flex items-center gap-2 bg-white text-ink-950 font-semibold px-6 py-3 rounded-full hover:bg-white/90 transition-colors"
           >
             Demander un devis personnalisé
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

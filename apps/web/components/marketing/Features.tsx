@@ -8,6 +8,7 @@ import {
   BarChart3,
   Shield,
 } from "lucide-react";
+import { Reveal } from "@/components/marketing/Reveal";
 
 const features = [
   {
@@ -72,43 +73,44 @@ export function Features() {
   return (
     <section
       id="fonctionnalites"
-      className="py-24 bg-gray-50"
+      className="py-24 bg-cream-100"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <Reveal className="text-center max-w-2xl mx-auto mb-16">
           <span className="inline-block text-xs font-semibold tracking-widest text-brand-600 uppercase mb-3">
             Fonctionnalités
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-ink-950 mb-4">
             Tout ce dont un professionnel{" "}
-            <span className="gradient-text">a vraiment besoin</span>
+            <span className="text-brand-600">a vraiment besoin</span>
           </h2>
-          <p className="text-gray-500 text-lg">
+          <p className="text-ink-500 text-lg">
             Une seule plateforme remplace cinq abonnements. Et vous donne un
             avantage que vos concurrents n&apos;ont pas encore.
           </p>
-        </div>
+        </Reveal>
 
         {/* Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature) => (
-            <div
+          {features.map((feature, i) => (
+            <Reveal
               key={feature.title}
-              className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 group"
+              delay={(i % 4) * 80}
+              className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-ink-100 group h-full"
             >
               <div
-                className={`w-10 h-10 rounded-xl ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
+                className={`w-10 h-10 rounded-full ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
               >
                 <feature.icon className="w-5 h-5" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">
+              <h3 className="font-semibold text-ink-950 mb-2">
                 {feature.title}
               </h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
+              <p className="text-sm text-ink-500 leading-relaxed">
                 {feature.description}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

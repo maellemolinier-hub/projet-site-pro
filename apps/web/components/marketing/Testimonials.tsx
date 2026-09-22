@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { Reveal } from "@/components/marketing/Reveal";
 
 const testimonials = [
   {
@@ -43,20 +44,21 @@ export function Testimonials() {
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <Reveal className="text-center max-w-2xl mx-auto mb-16">
           <span className="inline-block text-xs font-semibold tracking-widest text-brand-600 uppercase mb-3">
             Témoignages
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-ink-950 mb-4">
             Ils ont déjà une longueur d&apos;avance
           </h2>
-        </div>
+        </Reveal>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {testimonials.map((t) => (
-            <div
+          {testimonials.map((t, i) => (
+            <Reveal
               key={t.name}
-              className="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4"
+              delay={i * 80}
+              className="bg-cream-100 rounded-2xl p-6 border border-ink-100 space-y-4"
             >
               {/* Stars */}
               <div className="flex gap-0.5">
@@ -68,24 +70,22 @@ export function Testimonials() {
                 ))}
               </div>
 
-              <p className="text-sm text-gray-700 leading-relaxed italic">
+              <p className="text-sm text-ink-700 leading-relaxed italic">
                 &ldquo;{t.quote}&rdquo;
               </p>
 
-              <div className="flex items-center gap-3 pt-2 border-t border-gray-100">
-                <div
-                  className={`w-9 h-9 rounded-lg ${t.color} flex items-center justify-center text-xs font-bold shrink-0`}
-                >
+              <div className="flex items-center gap-3 pt-2 border-t border-ink-100">
+                <div className="w-9 h-9 rounded-full bg-ink-950 text-white flex items-center justify-center text-xs font-bold shrink-0">
                   {t.initials}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">
+                  <p className="text-sm font-semibold text-ink-950">
                     {t.name}
                   </p>
-                  <p className="text-xs text-gray-500">{t.role}</p>
+                  <p className="text-xs text-ink-400">{t.role}</p>
                 </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 
 interface RevealProps {
   children: ReactNode;
@@ -12,14 +18,23 @@ interface RevealProps {
 /**
  * Fait apparaître son contenu (fade + translateY) quand il entre dans le
  * viewport. Respecte prefers-reduced-motion (voir globals.css).
+ *
+ * Le contenu est visible par défaut (rendu serveur, JS désactivé, JS cassé,
+ * crawler qui n'exécute pas le JS) : on ne bascule en état "caché en
+ * attente de scroll" qu'une fois confirmé, côté client, qu'IntersectionObserver
+ * est disponible pour le révéler ensuite. Un contenu qui reste invisible en
+ * permanence serait pire qu'une animation qui ne se joue pas.
  */
 export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [armed, setArmed] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const node = ref.current;
-    if (!node) return;
+    if (!node || typeof IntersectionObserver === "undefined") return;
+
+    setArmed(true);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -41,7 +56,7 @@ export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
     <div
       ref={ref}
       style={style}
-      className={`reveal-root ${visible ? "is-visible" : ""} ${className}`}
+      className={`${armed ? "reveal-root" : ""} ${visible ? "is-visible" : ""} ${className}`}
     >
       {children}
     </div>
