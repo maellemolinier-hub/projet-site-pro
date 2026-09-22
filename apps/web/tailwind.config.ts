@@ -27,10 +27,34 @@ const config: Config = {
           500: "#f97316",
           600: "#ea580c",
         },
+        // Palette éditoriale "premium" (encre + or) — voir apps/web/DESIGN_SYSTEM.md
+        ink: {
+          50: "#f4f5f7",
+          100: "#e4e7ec",
+          200: "#c7cdd9",
+          300: "#9ca6bb",
+          400: "#6b7690",
+          500: "#48526b",
+          600: "#333c54",
+          700: "#242b3f",
+          800: "#171c2c",
+          900: "#0f1320",
+          950: "#090b14",
+        },
+        gold: {
+          300: "#e9d9ae",
+          400: "#d9bd78",
+          500: "#c9a24c",
+          600: "#ad8636",
+          700: "#8c6b29",
+        },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-cal)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
+      },
+      transitionTimingFunction: {
+        premium: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
       animation: {
         "fade-up": "fadeUp 0.6s ease-out forwards",

@@ -23,9 +23,9 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-premium ${
         scrolled
-          ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100"
+          ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-ink-100"
           : "bg-transparent"
       }`}
     >
@@ -33,11 +33,11 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center group-hover:bg-brand-700 transition-colors">
-              <MapPin className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-lg bg-ink-900 flex items-center justify-center group-hover:bg-ink-800 transition-colors">
+              <MapPin className="w-4 h-4 text-gold-400" />
             </div>
-            <span className="font-bold text-gray-900 text-lg tracking-tight">
-              Immo<span className="text-brand-600">Expert</span>
+            <span className="font-display font-medium text-ink-900 text-lg tracking-tight">
+              Immo<span className="text-gold-600">Expert</span>
             </span>
           </Link>
 
@@ -47,7 +47,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors"
+                className="text-sm font-medium text-ink-500 hover:text-gold-600 transition-colors"
               >
                 {link.label}
               </Link>
@@ -58,13 +58,13 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/connexion"
-              className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+              className="text-sm font-medium text-ink-600 hover:text-ink-900 transition-colors"
             >
               Connexion
             </Link>
             <Link
               href="/inscription"
-              className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-ink-950 text-sm font-semibold px-4 py-2 rounded-lg transition-colors shadow-sm"
             >
               Essai gratuit 14 jours
             </Link>
@@ -72,7 +72,7 @@ export function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100"
+            className="md:hidden p-2 rounded-lg text-ink-600 hover:bg-ink-50"
             onClick={() => setOpen(!open)}
             aria-label="Menu"
           >
@@ -82,13 +82,13 @@ export function Navbar() {
 
         {/* Mobile menu */}
         {open && (
-          <div className="md:hidden pb-4 border-t border-gray-100 mt-2 pt-4 space-y-2">
+          <div className="md:hidden pb-4 border-t border-ink-100 mt-2 pt-4 space-y-2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="block px-3 py-2 text-sm font-medium text-gray-700 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
+                className="block px-3 py-2 text-sm font-medium text-ink-600 hover:text-gold-600 hover:bg-ink-50 rounded-lg transition-colors"
               >
                 {link.label}
               </Link>
@@ -96,13 +96,13 @@ export function Navbar() {
             <div className="pt-2 flex flex-col gap-2">
               <Link
                 href="/connexion"
-                className="text-center py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50"
+                className="text-center py-2 text-sm font-medium text-ink-600 border border-ink-200 rounded-lg hover:bg-ink-50"
               >
                 Connexion
               </Link>
               <Link
                 href="/inscription"
-                className="text-center py-2 text-sm font-semibold text-white bg-brand-600 rounded-lg hover:bg-brand-700"
+                className="text-center py-2 text-sm font-semibold text-ink-950 bg-gold-500 rounded-lg hover:bg-gold-600"
               >
                 Essai gratuit 14 jours
               </Link>
