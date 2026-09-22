@@ -93,18 +93,35 @@ boutons "Recruter" et les badges.
 - Les captures ne permettent pas de confirmer les animations réelles du
   carrousel de "workers" (drag/autoplay) — ce n'est **pas** reproduit tel
   quel, faute de pouvoir l'observer en direct.
+- **Fail-safe important** : `Reveal` ne masque son contenu qu'une fois
+  confirmé côté client qu'`IntersectionObserver` est disponible pour le
+  révéler ensuite (`useLayoutEffect`). Sans JS, avec JS cassé, ou pour un
+  crawler qui n'exécute pas le JS, le contenu reste visible par défaut —
+  jamais caché en permanence. Repéré en testant un screenshot plein-page
+  automatisé (voir ci-dessous) : sans ce garde-fou, tout ce qui n'a jamais
+  été dans le viewport observé restait à `opacity: 0` pour de bon.
 
 ## État d'implémentation
 
 - ✅ Tokens (`ink`, `cream`), formes en pilule, easing `premium`, `Reveal`
+  (avec fallback visible par défaut)
 - ✅ `Hero.tsx`, `Navbar.tsx` : fond crème, badges en pilule, CTA bleu +
   contour noir, mot-clé bleu dans le titre
 - ✅ `Experts.tsx` : cartes portrait sur fond pastel + bouton noir pilule
+- ✅ `Features.tsx`, `HowItWorks.tsx`, `Pricing.tsx`, `Testimonials.tsx`,
+  `CTA.tsx`, `Footer.tsx` : migrés vers `ink`/`cream`, boutons en pilule,
+  `<Reveal>` avec stagger sur les grilles de cartes
 - ✅ `AnnouncementBar.tsx` : composant prêt, **non branché** sur la home —
   à activer uniquement avec un vrai contenu (éviter un faux compte à
   rebours)
-- ⬜ `Features`, `HowItWorks`, `Pricing`, `Testimonials`, `CTA`, `Footer` :
-  encore sur l'ancien style (`rounded-xl`, gris standard) — à migrer
-  ensuite avec la même logique
 - ⬜ Section comparatif type "avant/après" et bandeau CTA sombre en pied de
   page : pas encore repris, à faire si utile pour ImmoExpert
+
+## Vérifié en local
+
+Rendu testé avec `pnpm --filter @immoexpert/db run db:generate` puis
+`next dev` + un screenshot plein-page (Playwright) sur toutes les
+sections de la home. RAS visuellement. Une erreur `MissingSecret`
+(next-auth) apparaît dans l'overlay de dev : c'est l'absence de variable
+d'env `AUTH_SECRET` en local, préexistante et sans rapport avec ce
+travail de design — à définir dans `.env` pour la faire disparaître.
